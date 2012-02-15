@@ -11,7 +11,7 @@ public class FeedReader {
     public static void main(final String[] args) {
             try {
             	
-            	//  Initialize feed
+            	// Initialize feed
                 final URL feedUrl = new URL("http://news.google.com/news?pz=1&cf=all&ned=uk&hl=en&q=Oil&output=rss");
                 final SyndFeedInput input = new SyndFeedInput();
                 final SyndFeed feed = input.build(new XmlReader(feedUrl));

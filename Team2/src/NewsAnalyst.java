@@ -22,10 +22,12 @@ public class NewsAnalyst {
 	
 	private void grabTitles() {
 		try {
+			// Initialize feed
 	        final URL feedUrl = new URL(rURL);
 	        final SyndFeedInput input = new SyndFeedInput();
 	        final SyndFeed feed = input.build(new XmlReader(feedUrl));
 	        
+	        // Concatenate all the titles together
 	        for (final Iterator iter = feed.getEntries().iterator();
 	                iter.hasNext();) {
 	        	keyWords = keyWords + " " + ((String) ((SyndEntry) iter.next()).getTitle()); 
