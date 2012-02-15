@@ -1,8 +1,6 @@
 import java.net.URL;
 import java.util.Iterator;
-import java.lang.*;
 
-import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.SyndFeedInput;
@@ -18,9 +16,11 @@ public class FeedReader {
                 final SyndFeedInput input = new SyndFeedInput();
                 final SyndFeed feed = input.build(new XmlReader(feedUrl));
                 
+                // Initialize storage
                 Integer index, subIndex, numNews, sHttp;
                 String sTitle, sDesc, relURL;
                 SyndEntry synd;
+                NewsAnalyst nAnal;
                 
                 for (final Iterator iter = feed.getEntries().iterator();
                      iter.hasNext();)
@@ -35,7 +35,8 @@ public class FeedReader {
                        
                         // Print the number of related articles
                         index = sDesc.lastIndexOf("<b>all ") + 7;
-                        if (index != 6) {                  	
+                        if (index != 6) {           
+                        	// Grabs the number of articles
 	                        subIndex = sDesc.substring(index).indexOf(" ") + index;
 	                        numNews = Integer.parseInt(sDesc.substring(index, subIndex).replaceAll(",", ""));
 	                        System.out.println(numNews);
@@ -44,6 +45,10 @@ public class FeedReader {
 	                        sHttp = sDesc.substring(0, index).lastIndexOf("http://");
 	                        relURL = sDesc.substring(sHttp, index - 15).replaceAll("&amp;", "&") + "&output=rss";
                         	System.out.println(relURL);
+                        	
+                        	// Prints all top 10 related titles
+	                        nAnal = new NewsAnalyst(relURL);
+	                        System.out.println(nAnal.getkeyWords());
 	                        
                         }
                         else {
