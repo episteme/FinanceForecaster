@@ -21,13 +21,12 @@ public class FeedReader {
 
                 final SyndFeedInput input = new SyndFeedInput();
                 final SyndFeed feed = input.build(new XmlReader(feedUrl));
-
-                System.out.println("Title: " + feed.getTitle());
-                System.out.println("Author: " + feed.getAuthor());
-                System.out.println("Description: " + feed.getDescription());
-                System.out.println("Pub date: " + feed.getPublishedDate());
-                System.out.println("Copyright: " + feed.getCopyright());
-                System.out.println("Modules used:");
+//                System.out.println("Title: " + feed.getTitle());
+//                System.out.println("Author: " + feed.getAuthor());
+//                System.out.println("Description: " + feed.getDescription());
+//                System.out.println("Pub date: " + feed.getPublishedDate());
+//                System.out.println("Copyright: " + feed.getCopyright());
+//                System.out.println("Modules used:");
                 for (final Iterator iter = feed.getModules().iterator();
                      iter.hasNext();)
                 {
@@ -38,8 +37,14 @@ public class FeedReader {
                 for (final Iterator iter = feed.getEntries().iterator();
                      iter.hasNext();)
                 {
-                    System.out.println("\t" +
-                                       ((SyndEntry)iter.next()).getTitle());
+          
+                    	SyndEntry trial = (SyndEntry) iter.next();
+                    	
+
+                    	String title = (String) trial.getTitle();
+                        
+                        String description = (String) trial.getDescription().getValue();
+                        System.out.println(title + "\n" + description + "\n");
                 }
                 if (feed.getImage() != null)
                 {
