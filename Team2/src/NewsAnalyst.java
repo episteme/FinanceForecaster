@@ -6,10 +6,25 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
+import com.alchemyapi.api.AlchemyAPI;
+import com.alchemyapi.api.AlchemyAPI_KeywordParams;
+
+import org.xml.sax.SAXException;
+import org.w3c.dom.Document;
+import java.io.*;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+
 
 public class NewsAnalyst {
 	
-	private String rURL;
+	private String rURL, nextStr;
 	private Integer sent;
 	private String keyWords;
 	
@@ -30,9 +45,17 @@ public class NewsAnalyst {
 	        // Concatenate all the titles together
 	        for (final Iterator iter = feed.getEntries().iterator();
 	                iter.hasNext();) {
-	        	keyWords = keyWords + " " + ((String) ((SyndEntry) iter.next()).getTitle()); 
+	        	nextStr = ((String) ((SyndEntry) iter.next()).getTitle());
+	        	keyWords = keyWords + " " + nextStr.substring(0, nextStr.lastIndexOf("-")); 
 	        }
-			
+	        
+	        AlchemyAPI alchemyObj = AlchemyAPI.GetInstanceFromString("fbde73712800960605177cdcf8cc5ade6ebd15a5");
+	        AlchemyAPI_KeywordParams params = new AlchemyAPI_KeywordParams();
+	        params.setKeywordExtractMode("strict");
+	        Document doc = alchemyObj.TextGetRankedKeywords(keyWords, params);
+	        
+	        System.out.println(getStringFromDocument(doc));
+
 	        
 		}
         catch (Exception ex) {
@@ -45,5 +68,24 @@ public class NewsAnalyst {
 		grabTitles();
 		return keyWords;
 	}
+	
+    // utility method
+    private static String getStringFromDocument(Document doc) {
+        try {
+            DOMSource domSource = new DOMSource(doc);
+            StringWriter writer = new StringWriter();
+            StreamResult result = new StreamResult(writer);
+
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+
+            return writer.toString();
+        } catch (TransformerException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
 	
 }

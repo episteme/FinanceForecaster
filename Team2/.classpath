@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="Resources/jdom-1.1.2.jar"/>
 	<classpathentry kind="lib" path="Resources/rome-1.0.jar"/>
+	<classpathentry kind="lib" path="Resources/AlchemyAPI.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
