@@ -9,11 +9,8 @@ import com.sun.syndication.io.XmlReader;
 import com.alchemyapi.api.AlchemyAPI;
 import com.alchemyapi.api.AlchemyAPI_KeywordParams;
 
-import org.xml.sax.SAXException;
 import org.w3c.dom.Document;
 import java.io.*;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -25,38 +22,55 @@ import javax.xml.transform.stream.StreamResult;
 public class NewsAnalyst {
 	
 	private String rURL, nextStr;
-	private Integer sent;
-	private String keyWords;
+
+	private Story story;
 	
 	// Constructor
-	NewsAnalyst(String URL) {
+	NewsAnalyst(String URL, int sites, int order, String t) {
 		rURL = URL;
-		sent = 0;
-		keyWords = "";
+		story = new Story(sites, order, t, rURL);
 	}
 	
-	private void grabTitles() {
+	private void analyse() {
 		try {
+			
+			
 			// Initialize feed
 	        final URL feedUrl = new URL(rURL);
 	        final SyndFeedInput input = new SyndFeedInput();
 	        final SyndFeed feed = input.build(new XmlReader(feedUrl));
 	        
+	        String titles  = "";
+	        
 	        // Concatenate all the titles together
-	        for (final Iterator iter = feed.getEntries().iterator();
+	        for (final Iterator<?> iter = feed.getEntries().iterator();
 	                iter.hasNext();) {
 	        	nextStr = ((String) ((SyndEntry) iter.next()).getTitle());
-	        	keyWords = keyWords + " " + nextStr.substring(0, nextStr.lastIndexOf("-")); 
+	        	titles = titles + "." + nextStr.substring(0, nextStr.lastIndexOf("-")); 
 	        }
 	        
 	        AlchemyAPI alchemyObj = AlchemyAPI.GetInstanceFromString("fbde73712800960605177cdcf8cc5ade6ebd15a5");
 	        AlchemyAPI_KeywordParams params = new AlchemyAPI_KeywordParams();
 	        params.setKeywordExtractMode("strict");
-	        Document doc = alchemyObj.TextGetRankedKeywords(keyWords, params);
+	        Document doc = alchemyObj.TextGetRankedKeywords(titles, params);
 	        
-	        System.out.println(getStringFromDocument(doc));
+	        String alchemyOutput = getStringFromDocument(doc);
+	        	        
+	        // Removes XML tags
+	        alchemyOutput = alchemyOutput.substring(alchemyOutput.indexOf("<keywords>"));
+	        alchemyOutput = alchemyOutput.substring(0,alchemyOutput.lastIndexOf("</results>"));
+	        alchemyOutput = alchemyOutput.replaceAll("<.*keyword.*>","");
+	        alchemyOutput = alchemyOutput.replaceAll("\\s+?<text>(.*?)</text>\\s+?<relevance>(.*?)</relevance>\\s+?","$1;$2;");
+	        alchemyOutput = alchemyOutput.substring(0,alchemyOutput.lastIndexOf(";"));
 
 	        
+	        // Splits remainder into words and their relevances
+	        String[] result = alchemyOutput.split(";");
+	        
+	        // Puts each word and its relevance into a list of keyWord types
+	        for (int x=0; x<result.length; x+=2){
+	        	story.getList().add(new keyWord(result[x],result[x+1]));
+	        }
 		}
         catch (Exception ex) {
             ex.printStackTrace();
@@ -64,9 +78,9 @@ public class NewsAnalyst {
         }
 	}
 	
-	public String getkeyWords() {
-		grabTitles();
-		return keyWords;
+	public Story getStory() {
+		analyse();
+		return story;
 	}
 	
     // utility method
@@ -86,6 +100,10 @@ public class NewsAnalyst {
             return null;
         }
     }
+    
 
 	
 }
+
+
+

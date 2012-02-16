@@ -21,10 +21,14 @@ public class FeedReader {
                 String sTitle, sDesc, relURL;
                 SyndEntry synd;
                 NewsAnalyst nAnal;
+                Story[] stories = new Story[10];
                 
-                for (final Iterator iter = feed.getEntries().iterator();
+                int n = 1;
+                
+                for (final Iterator<?> iter = feed.getEntries().iterator();
                      iter.hasNext();)
                 {
+                		
                 		// Grabs the RSS object
                     	synd = (SyndEntry) iter.next();
                     	sTitle = (String) synd.getTitle();         
@@ -45,10 +49,14 @@ public class FeedReader {
 	                        sHttp = sDesc.substring(0, index).lastIndexOf("http://");
 	                        relURL = sDesc.substring(sHttp, index - 15).replaceAll("&amp;", "&") + "&output=rss";
                         	System.out.println(relURL);
-                        	
-                        	// Prints all top 10 related titles
-	                        nAnal = new NewsAnalyst(relURL);
-	                        System.out.println(nAnal.getkeyWords());
+	                        
+                        	// Prints out just 1 analysis for testing
+	                        if(n==1){
+	                        	nAnal = new NewsAnalyst(relURL,numNews,n,sTitle);
+	                        	stories[n-1] = nAnal.getStory();
+	                        	System.out.println(stories[n-1].printKeyWords());
+	                        	n++;
+	                        }
 	                        
                         }
                         else {
