@@ -39,6 +39,7 @@ public class FeedReader {
                        
                         // Print the number of related articles
                         index = sDesc.lastIndexOf("<b>all ") + 7;
+                        
                         if (index != 6) {           
                         	// Grabs the number of articles
 	                        subIndex = sDesc.substring(index).indexOf(" ") + index;
@@ -49,19 +50,29 @@ public class FeedReader {
 	                        sHttp = sDesc.substring(0, index).lastIndexOf("http://");
 	                        relURL = sDesc.substring(sHttp, index - 15).replaceAll("&amp;", "&") + "&output=rss";
                         	System.out.println(relURL);
-	                        
-                        	// Prints out just 1 analysis for testing
-	                        if(n==1){
-	                        	nAnal = new NewsAnalyst(relURL,numNews,n,sTitle);
-	                        	stories[n-1] = nAnal.getStory();
-	                        	System.out.println(stories[n-1].printKeyWords());
-	                        	n++;
-	                        }
-	                        
+     
                         }
                         else {
-                        	System.out.println("1");
+                        	// Number of articles not listed
+                        	index = sDesc.lastIndexOf("<b>and more") + 11;
+                        	numNews = 10;
+                        	System.out.println(numNews);
+                        	
+                        	// Grab related articles RSS feed
+	                        sHttp = sDesc.substring(0, index).lastIndexOf("http://");
+	                        relURL = sDesc.substring(sHttp, index - 19).replaceAll("&amp;", "&") + "&output=rss";
+                        	System.out.println(relURL);
+                        	
                         }
+                        
+                    	// Prints out just 1 analysis for testing
+                        if(n == 1) {
+                        	nAnal = new NewsAnalyst(relURL, numNews, n, sTitle);
+                        	stories[n-1] = nAnal.getStory();
+                        	System.out.println(stories[n-1].printKeyWords());
+                        	n++;
+                        }
+                        
                 }
             }
             catch (Exception ex) {

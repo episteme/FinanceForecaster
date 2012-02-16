@@ -21,9 +21,11 @@ import javax.xml.transform.stream.StreamResult;
 
 public class NewsAnalyst {
 	
-	private String rURL, nextStr;
+	private String rURL, nextStr, nextTit;
 
 	private Story story;
+	
+	private Document doc, docSent;
 	
 	// Constructor
 	NewsAnalyst(String URL, int sites, int order, String t) {
@@ -40,34 +42,47 @@ public class NewsAnalyst {
 	        final SyndFeedInput input = new SyndFeedInput();
 	        final SyndFeed feed = input.build(new XmlReader(feedUrl));
 	        
-	        String titles  = "";
+	        String allInfo  = "";
 	        
 	        // Concatenate all the titles together
 	        for (final Iterator<?> iter = feed.getEntries().iterator();
 	                iter.hasNext();) {
-	        	nextStr = ((String) ((SyndEntry) iter.next()).getTitle());
-	        	titles = titles + "." + nextStr.substring(0, nextStr.lastIndexOf("-")); 
+	        	SyndEntry synd =  ((SyndEntry) iter.next());
+	        	nextTit = synd.getTitle();
+	        	nextStr = nextTit.substring(0, nextTit.lastIndexOf("-"));
+	        	allInfo = allInfo + " " + nextStr + synd.getDescription();
 	        }
 	        
+	        // Grabs Document for these titles
 	        AlchemyAPI alchemyObj = AlchemyAPI.GetInstanceFromString("fbde73712800960605177cdcf8cc5ade6ebd15a5");
 	        AlchemyAPI_KeywordParams params = new AlchemyAPI_KeywordParams();
 	        params.setKeywordExtractMode("strict");
-	        Document doc = alchemyObj.TextGetRankedKeywords(titles, params);
+	        params.setMaxRetrieve(5);
+	        doc = alchemyObj.TextGetRankedKeywords(allInfo, params);
+	        docSent = alchemyObj.TextGetTextSentiment(allInfo);
 	        
+	        // Convert output to String
 	        String alchemyOutput = getStringFromDocument(doc);
-	        	        
-	        // Removes XML tags
+	        String alchemyOutputSent = getStringFromDocument(docSent);
+	        
+	        // Removes XML tags from doc
 	        alchemyOutput = alchemyOutput.substring(alchemyOutput.indexOf("<keywords>"));
 	        alchemyOutput = alchemyOutput.substring(0,alchemyOutput.lastIndexOf("</results>"));
 	        alchemyOutput = alchemyOutput.replaceAll("<.*keyword.*>","");
 	        alchemyOutput = alchemyOutput.replaceAll("\\s+?<text>(.*?)</text>\\s+?<relevance>(.*?)</relevance>\\s+?","$1;$2;");
 	        alchemyOutput = alchemyOutput.substring(0,alchemyOutput.lastIndexOf(";"));
 
+	        // Removes XML tags from docSent
+	        alchemyOutputSent = alchemyOutputSent.substring(alchemyOutputSent.indexOf("<score>"));
+	        alchemyOutputSent = alchemyOutputSent.substring(7,alchemyOutputSent.lastIndexOf("</score>"));
 	        
-	        // Splits remainder into words and their relevances
+	        story.setSentiment(Double.parseDouble(alchemyOutputSent));
+	        System.out.println("Sentiment: " + alchemyOutputSent);
+	        
+	        // Result is array of form result[0] = topic, result[1] = relevance etc
 	        String[] result = alchemyOutput.split(";");
 	        
-	        // Puts each word and its relevance into a list of keyWord types
+	        // Puts each word and its relevance into a list of keyWord tuples
 	        for (int x=0; x<result.length; x+=2){
 	        	story.getList().add(new keyWord(result[x],result[x+1]));
 	        }

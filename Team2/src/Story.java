@@ -16,6 +16,7 @@ public class Story {
 		title = t;
 		link = l;
 		keyWords = new LinkedList<keyWord>();
+		sentiment = 0;
 	}
 	
 	// prints the keywords to a string
@@ -47,6 +48,10 @@ public class Story {
 	
 	public String getTitle(){
 		return title;
+	}
+
+	public void setSentiment(double sentiment) {
+		this.sentiment = sentiment;
 	}
 	
 }
