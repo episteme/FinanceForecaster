@@ -7,16 +7,18 @@ public class Story {
 	private int rank;
 	private double sentiment;
 	private String title;
+	private int sites;
 	private String link;
 	private LinkedList<keyWord> keyWords;
 	
 	// Creates basic story - sentiment and keywords not added yet
-	Story(int sites, int order, String t, String l){
-		rank = sites/order;
+	Story(int s, int o, String t, String l){
+		rank = s/o;
 		title = t;
 		link = l;
 		keyWords = new LinkedList<keyWord>();
 		sentiment = 0;
+		sites = s;
 	}
 	
 	// prints the keywords to a string
@@ -34,6 +36,14 @@ public class Story {
 		return keyWords;
 	}
 	
+	public int getSites() {
+		return sites;
+	}
+
+	public void setSites(int sites) {
+		this.sites = sites;
+	}
+
 	public int getRank(){
 		return rank;
 	}
@@ -53,6 +63,20 @@ public class Story {
 	public void setSentiment(double sentiment) {
 		this.sentiment = sentiment;
 	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
+	
 	
 }
 
