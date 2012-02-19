@@ -18,12 +18,12 @@ public class FeedReader {
     	while(true){
 	    		try {
 	            	
-	            	// Initialize feed
+	            	// Initialise feed
 	                final URL feedUrl = new URL("http://news.google.com/news?pz=1&cf=all&hl=en&q=Oil&output=rss");
 	                final SyndFeedInput input = new SyndFeedInput();
 	                final SyndFeed feed = input.build(new XmlReader(feedUrl));
 	                
-	                // Initialize storage
+	                // Initialise storage
 	                Integer index, subIndex, numNews, sHttp;
 	                String sTitle, sDesc, relURL;
 	                SyndEntry synd;
@@ -64,19 +64,15 @@ public class FeedReader {
 		                        relURL = sDesc.substring(sHttp, index - 19).replaceAll("&amp;", "&") + "&output=rss";
 	                        	
 	                        }
-	                       
-	                        System.out.println(n);
 	                        
 	                        byte storyid = -1;
 	                        if(!firstrun){
 	                        	// iterates through the ten old stories, checking whether they match
 		                        for(byte i = 0; i < 10; i++){
 		                        	if(stories[i].getLink().compareTo(relURL) == 0 || stories[i].getTitle().compareTo(sTitle) == 0){
-		                        		System.out.println("OLD STORY");
 		                        		storyid = i;
 		                        		// if there are many new stories, it will reanalyse the story
 		                        		if(numNews > (10 + stories[i].getSites())){
-		                        			System.out.println("CHANGED");
 		                        			storyid = -1;
 		                        			break;
 		                        		}
@@ -91,22 +87,24 @@ public class FeedReader {
 		                    
 	                        if(storyid == -1){
 	                        	// analyses story
-	                        	System.out.println("NEW STORY");
+	                        	System.out.println("----- NEW/UPDATED -------");
 	                        	nAnal = new NewsAnalyst(relURL, numNews, n, sTitle);
 	                        	newstories[n-1] = nAnal.getStory();
-	                        	// prints story details
-	                        	System.out.println("Title: " + newstories[n-1].getTitle());
-	                        	System.out.println("Sites: " + newstories[n-1].getSites());
-	                        	System.out.println("URL: " + newstories[n-1].getLink());
-	                        	System.out.println("Rank: " + newstories[n-1].getRank());
-	                        	System.out.println("Sentiment: " + newstories[n-1].getSentiment());
-	                        	System.out.println("Keywords:\n" + newstories[n-1].printKeyWords());
 	                        }
+	                        
+	                     // prints story details
+	                        System.out.println("--------------" + n + "---------------");
+                        	System.out.println("Title: " + newstories[n-1].getTitle());
+                        	System.out.println("Sites: " + newstories[n-1].getSites() + "; Rank: " + newstories[n-1].getRank());
+                        	System.out.println("URL: " + newstories[n-1].getLink());
+                        	System.out.println("Sentiment: " + newstories[n-1].getSentiment());
+                        	System.out.println("Keywords: " + newstories[n-1].printKeyWords());
+	                        
 	                        n++;
 	                        Thread.sleep( (5000) ); 
 	                }
 	                
-	                Thread.sleep( (60000) ); 
+	                Thread.sleep( (10000) ); 
 	                firstrun = false;
 	                stories = newstories;
 	                
@@ -115,6 +113,7 @@ public class FeedReader {
 	                ex.printStackTrace();
 	                System.out.println("ERROR: " + ex.getMessage());
 	            }
+	    		System.out.println("---------------------------------------------------------");
             }
     }
 }

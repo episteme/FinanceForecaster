@@ -27,7 +27,7 @@ public class Story {
 		for (final ListIterator<keyWord> listiter = keyWords.listIterator();listiter.hasNext();)
 		{
 			keyWord word = listiter.next();
-			temp += word.getWord() + " : " + word.getRel() + "\n";
+			temp += word.getWord() + ": " + word.getRel() + "; ";
 		}
 		return temp;
 	}

@@ -50,14 +50,14 @@ public class NewsAnalyst {
 	        	SyndEntry synd =  ((SyndEntry) iter.next());
 	        	nextTit = synd.getTitle();
 	        	nextStr = nextTit.substring(0, nextTit.lastIndexOf("-"));
-	        	allInfo = allInfo + " " + nextStr + synd.getDescription();
+	        	allInfo = allInfo + " " + nextStr + synd.getDescription().getValue();
 	        }
 	        
 	        // Grabs Document for these titles
 	        AlchemyAPI alchemyObj = AlchemyAPI.GetInstanceFromString("fbde73712800960605177cdcf8cc5ade6ebd15a5");
 	        AlchemyAPI_KeywordParams params = new AlchemyAPI_KeywordParams();
 	        params.setKeywordExtractMode("strict");
-	        params.setMaxRetrieve(5);
+	        params.setMaxRetrieve(10);
 	        doc = alchemyObj.TextGetRankedKeywords(allInfo, params);
 	        docSent = alchemyObj.TextGetTextSentiment(allInfo);
 	        
@@ -77,7 +77,6 @@ public class NewsAnalyst {
 	        alchemyOutputSent = alchemyOutputSent.substring(7,alchemyOutputSent.lastIndexOf("</score>"));
 	        
 	        story.setSentiment(Double.parseDouble(alchemyOutputSent));
-	        System.out.println("Sentiment: " + alchemyOutputSent);
 	        
 	        // Result is array of form result[0] = topic, result[1] = relevance etc
 	        String[] result = alchemyOutput.split(";");
