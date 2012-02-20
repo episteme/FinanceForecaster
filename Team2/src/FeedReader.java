@@ -6,12 +6,12 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
-public class FeedReader {
+public class FeedReader implements Runnable {
 
 	// Permanent store of 10 stories
-	static Story[] stories = new Story[10];
+	Story[] stories = new Story[10];
 	
-    public static void main(final String[] args) {
+    public void run() {
     	
         boolean firstrun = true;
     	
@@ -31,7 +31,6 @@ public class FeedReader {
 	                Story[] newstories = new Story[10];
 	                
 	                int n = 1;
-	                
 	                for (final Iterator<?> iter = feed.getEntries().iterator();
 	                     iter.hasNext();)
 	                {
@@ -64,10 +63,10 @@ public class FeedReader {
 		                        	n++;
 		                        	System.out.println("Skipping");
 		                        	continue;
-		                       }
+		        	                                    }
 	                        	
 	                        	numNews = 1;
-	                        	
+	        	                                 	
 	                        	// Grab related articles RSS feed
 	                        	
 		                        sHttp = sDesc.substring(0, index).lastIndexOf("http://");
@@ -98,7 +97,8 @@ public class FeedReader {
 		                    
 	                        if(storyid == -1){
 	                        	// analyses story
-	                        	System.out.println("----- NEW/UPDATED -------");
+
+	                      	    	System.out.println("----- NEW/UPDATED -------");
 	                        	nAnal = new NewsAnalyst(relURL, numNews, n, sTitle);
 	                        	newstories[n-1] = nAnal.getStory();
 	                        }
@@ -127,4 +127,8 @@ public class FeedReader {
 	    		System.out.println("---------------------------------------------------------");
             }
     }
+
+	public Story[] getStories() {
+		return stories;
+	}
 }
