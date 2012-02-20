@@ -54,21 +54,32 @@ public class FeedReader {
 		                        relURL = sDesc.substring(sHttp, index - 15).replaceAll("&amp;", "&") + "&output=rss";
 	     
 	                        }
-	                        else {
+	                        else{
+
+	                        	
 	                        	// Number of articles not listed
 	                        	index = sDesc.lastIndexOf("<b>and more") + 11;
-	                        	numNews = 10;
+	                        	
+	                        	if(index == 10){
+		                        	n++;
+		                        	System.out.println("Skipping");
+		                        	continue;
+		                       }
+	                        	
+	                        	numNews = 1;
 	                        	
 	                        	// Grab related articles RSS feed
+	                        	
 		                        sHttp = sDesc.substring(0, index).lastIndexOf("http://");
 		                        relURL = sDesc.substring(sHttp, index - 19).replaceAll("&amp;", "&") + "&output=rss";
-	                        	
 	                        }
 	                        
 	                        byte storyid = -1;
 	                        if(!firstrun){
 	                        	// iterates through the ten old stories, checking whether they match
 		                        for(byte i = 0; i < 10; i++){
+		                        	if(stories[i] == null)
+		                        		continue;
 		                        	if(stories[i].getLink().compareTo(relURL) == 0 || stories[i].getTitle().compareTo(sTitle) == 0){
 		                        		storyid = i;
 		                        		// if there are many new stories, it will reanalyse the story
