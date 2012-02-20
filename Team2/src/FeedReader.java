@@ -25,7 +25,7 @@ public class FeedReader implements Runnable {
     	while(true) {
 			try {
             	// Initialise feed
-                final URL feedUrl = new URL("http://news.google.com/news?pz=1&cf=all&hl=en&q=Oil&output=rss");
+                final URL feedUrl = new URL("http://news.google.com/news?pz=1&cf=all&hl=en&q=" + sector + "&output=rss");
                 final SyndFeedInput input = new SyndFeedInput();
                 final SyndFeed feed = input.build(new XmlReader(feedUrl));
                 
@@ -121,9 +121,9 @@ public class FeedReader implements Runnable {
                         Thread.sleep( (1000) ); 
                 }
                 
-                Thread.sleep( (10000) ); 
                 firstrun = false;
                 stories = newstories;
+                Thread.sleep( (10000) ); 
                 
 	            }
 	            catch (Exception ex) {
