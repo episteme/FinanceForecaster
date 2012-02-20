@@ -4,7 +4,7 @@ import java.util.*;
 
 public class MultipleSocketServer implements Runnable {
 	
-	Runnable run2 = new FeedReader();
+	Runnable run2;
 
   private Socket connection;
   private String TimeStamp;
@@ -37,7 +37,7 @@ public class MultipleSocketServer implements Runnable {
 
 
 public MultipleSocketServer() {
-	// TODO Auto-generated constructor stub
+	 run2 = new FeedReader("Oil");
 }
 
 public void run() {
@@ -51,10 +51,6 @@ public void run() {
       }
       System.out.println(process);
       //need to wait 10 seconds to pretend that we're processing something
-      try {
-        Thread.sleep(10000);
-      }
-      catch (Exception e){}
       TimeStamp = new java.util.Date().toString();
       String title = ((FeedReader) run2).getStories()[0].getTitle();
       String returnCode = "MultipleSocketServer responded at "+ TimeStamp + '\n';
@@ -66,6 +62,7 @@ public void run() {
       osw.flush();
     }
     catch (Exception e) {
+      e.printStackTrace();
       System.out.println(e);
     }
     finally {
