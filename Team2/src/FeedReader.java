@@ -17,7 +17,6 @@ public class FeedReader implements Runnable {
 	}
 	// 'Main'
 	public void run() {
-		boolean firstrun = true;
 		while(true) {
 			try {
 				// Initialise storage
@@ -58,25 +57,23 @@ public class FeedReader implements Runnable {
 					// relURL is now RSS URL for this story
 					byte storyid = -1;
 					// Compare to old stories
-					if (!firstrun) {
-						// Iterates through the ten old stories, checking whether they match
-						for (byte i = 0; i < 10; i++) {
-							if (stories[i] == null)
-								continue;
-							if(stories[i].getLink().compareTo(relURL) == 0 ||
-									stories[i].getTitle().compareTo(sTitle) == 0) {
-								storyid = i;
-								// if there are many new stories, it will reanalyse the story
-								if (numNews > (10 + stories[i].getSites())) {
-									storyid = -1;
-									break;
-								}
-								// updates title and link
-								newStories[n-1] = stories[i];
-								newStories[n-1].setTitle(sTitle);
-								newStories[n-1].setLink(relURL);
+					// Iterates through the ten old stories, checking whether they match
+					for (byte i = 0; i < 10; i++) {
+						if (stories[i] == null)
+							continue;
+						if(stories[i].getLink().compareTo(relURL) == 0 ||
+								stories[i].getTitle().compareTo(sTitle) == 0) {
+							storyid = i;
+							// if there are many new stories, it will reanalyse the story
+							if (numNews > (10 + stories[i].getSites())) {
+								storyid = -1;
 								break;
 							}
+							// updates title and link
+							newStories[n-1] = stories[i];
+							newStories[n-1].setTitle(sTitle);
+							newStories[n-1].setLink(relURL);
+							break;
 						}
 					}
 					// If story is new
@@ -92,8 +89,6 @@ public class FeedReader implements Runnable {
 					// Wait to avoid Google throttle
 					Thread.sleep( (1000) ); 
 				}
-				// Flag that we've run once
-				firstrun = false;
 				stories = newStories;
 				// Wait before repeating
 				Thread.sleep( (10000) ); 
