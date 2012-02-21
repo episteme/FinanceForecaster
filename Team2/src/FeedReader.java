@@ -136,7 +136,7 @@ public class FeedReader implements Runnable {
 	private void printStory(Integer n, Story[] stories) {
 		System.out.println("---------------" + n + "---------------");
 		System.out.println("Title: " + stories[n-1].getTitle());
-		System.out.println("Date: " + stories[n-1].printDate());
+		System.out.println("Date: " + stories[n-1].getDate());
 		System.out.println("Sites: " + stories[n-1].getSites());
 		System.out.println(" Rank: " + stories[n-1].getRank());
 		System.out.println("URL: " + stories[n-1].getLink());

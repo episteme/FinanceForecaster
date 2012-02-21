@@ -30,7 +30,7 @@ public class Story {
 		return timestamp;
 	}
 
-	public String printDate(){
+	public String getDate(){
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		return dateFormat.format(timestamp);
 	}

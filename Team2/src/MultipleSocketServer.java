@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class MultipleSocketServer implements Runnable {
@@ -52,12 +53,24 @@ public class MultipleSocketServer implements Runnable {
 			String[] topicArr = processArr[0].split(";");
 			BufferedOutputStream os = new BufferedOutputStream(connection.getOutputStream());
 			OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
+			Date convertedDate = dateFormat.parse(processArr[1]); 
+			System.out.println(processArr[1]);
 			for (String topic : topicArr) {
 				for (int i = 0; i < feeds.length; i++) {
-					if (((FeedReader) feeds[i]).getSector() == topic) {
-						String title = ((FeedReader) feeds[i]).getStories()[0].getTitle();
-						String returnTitle = "Title: " + title + '\n';
-						osw.write(returnTitle);
+					if (((FeedReader) feeds[i]).getSector().compareTo(topic) == 0) {
+						FeedReader thefeed = ((FeedReader) feeds[i]);
+						for (Story S: thefeed.getStories()) {
+							if (S == null) {
+									continue;
+							}
+							if (convertedDate.compareTo(S.getTimestamp()) < 0) {
+								String title = S.getTitle();
+								String returnTitle = thefeed.getSector() + ": " + title + " @ " + S.getDate() + '\n';
+								osw.write(returnTitle);
+							}
+						}
+
 					}
 				}
 			}
