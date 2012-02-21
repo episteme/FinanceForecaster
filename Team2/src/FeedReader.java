@@ -51,21 +51,9 @@ public class FeedReader implements Runnable {
 						relURL = rawURL.replaceAll("&amp;", "&") + "&output=rss";
 
 					}
-					// If number of other articles is not stated
+					// If number of other articles is not stated, skip it
 					else {
-						// Number of articles not listed
-						index = sDesc.lastIndexOf("<b>and more") + 11;
-						// If no other articles (lastIndexOf error)
-						if (index == 10) {
-							n++;
-							System.out.println("Skipping");
-							continue;
-						}
-						numNews = 1;
-						// Grab related articles RSS feed
-						sHttp = sDesc.substring(0, index).lastIndexOf("http://");
-						rawURL = sDesc.substring(sHttp, index - 19);
-						relURL = rawURL.replaceAll("&amp;", "&") + "&output=rss";
+						continue;
 					}
 					// relURL is now RSS URL for this story
 					byte storyid = -1;
@@ -93,7 +81,7 @@ public class FeedReader implements Runnable {
 					}
 					// If story is new
 					if (storyid == -1){
-						// analyses story
+						// Analyses story
 						System.out.println("------- NEW/UPDATED -------");
 						nAnal = new NewsAnalyst(relURL, numNews, n, sTitle);
 						newStories[n-1] = nAnal.getStory();
