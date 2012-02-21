@@ -154,7 +154,7 @@ public class FeedReader implements Runnable {
 		System.out.println("Sites: " + stories[n-1].getSites());
 		System.out.println(" Rank: " + stories[n-1].getRank());
 		System.out.println("URL: " + stories[n-1].getLink());
-		System.out.println("Sentiment: " + stories[n-1].getSentiment());
-		System.out.println("Keywords: " + stories[n-1].printKeyWords());
+		// System.out.println("Sentiment: " + stories[n-1].getSentiment());
+		// System.out.println("Keywords: " + stories[n-1].printKeyWords());
 	}
 }

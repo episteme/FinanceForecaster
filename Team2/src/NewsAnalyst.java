@@ -93,7 +93,7 @@ public class NewsAnalyst {
 	}
 	
 	public Story getStory() {
-		analyse();
+		// analyse();
 		return story;
 	}
 	
