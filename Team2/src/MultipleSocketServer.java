@@ -12,7 +12,6 @@ public class MultipleSocketServer implements Runnable {
 	public static void main(String[] args) {
 		feeds[0] = new FeedReader("oil");
 		feeds[1] = new FeedReader("currency");
-		System.out.println("go");
 		int port = 19999;
 		int count = 0;
 		Thread tf = new Thread(feeds[0]);
@@ -21,7 +20,7 @@ public class MultipleSocketServer implements Runnable {
 		tf2.start();
 		try {
 			ServerSocket socket1 = new ServerSocket(port);
-			System.out.println("MultipleSocketServer Initialized");
+			System.out.println("Server starting..");
 			while (true) {
 				Socket connection = socket1.accept();
 				Runnable runnable = new MultipleSocketServer(connection, ++count);
