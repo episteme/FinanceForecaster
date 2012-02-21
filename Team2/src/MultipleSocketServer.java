@@ -47,16 +47,22 @@ public class MultipleSocketServer implements Runnable {
 			while((character = isr.read()) != '\n') {
 				process.append((char)character);
 			}
-			System.out.println(process);
-			String title = ((FeedReader) feeds[0]).getStories()[0].getTitle();
-			String title2 = ((FeedReader) feeds[1]).getStories()[0].getTitle();
-			String returnTitle2 = "Title2: " + title2 + '\n';
-			String returnTitle = "Title: " + title + '\n';
+			String processStr = process.toString();
+			String[] processArr = processStr.split(";;");
+			String[] topicArr = processArr[0].split(";");
 			BufferedOutputStream os = new BufferedOutputStream(connection.getOutputStream());
 			OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
-			osw.write(returnTitle);
-			osw.write(returnTitle2);
+			for (String topic : topicArr) {
+				for (int i = 0; i < feeds.length; i++) {
+					if (((FeedReader) feeds[i]).getSector() == topic) {
+						String title = ((FeedReader) feeds[i]).getStories()[0].getTitle();
+						String returnTitle = "Title: " + title + '\n';
+						osw.write(returnTitle);
+					}
+				}
+			}
 			osw.flush();
+
 		}
 		catch (Exception e) {
 			e.printStackTrace();
