@@ -104,7 +104,7 @@ public class FeedReader implements Runnable {
                         if(storyid == -1){
                         	// analyses story
 
-                      	    	System.out.println("----- NEW/UPDATED -------");
+                      	    System.out.println("----- NEW/UPDATED -------");
                         	nAnal = new NewsAnalyst(relURL, numNews, n, sTitle);
                         	newstories[n-1] = nAnal.getStory();
                         }
