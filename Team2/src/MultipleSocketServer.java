@@ -4,19 +4,19 @@ import java.util.*;
 
 public class MultipleSocketServer implements Runnable {
 
-	static Runnable run2, run3;
+	static Runnable[] feeds = new Runnable[2];
 	private Socket connection;
 	private String TimeStamp;
 	private int ID;
 	public static void main(String[] args) {
-		run2 = new FeedReader("oil");
-		run3 = new FeedReader("natural+gas");
+		feeds[0] = new FeedReader("oil");
+		feeds[1] = new FeedReader("currency");
 		System.out.println("go");
 		int port = 19999;
 		int count = 0;
-		Thread tf = new Thread(run2);
+		Thread tf = new Thread(feeds[0]);
 		tf.start();
-		Thread tf2 = new Thread(run3);
+		Thread tf2 = new Thread(feeds[1]);
 		tf2.start();
 		try {
 			ServerSocket socket1 = new ServerSocket(port);
@@ -38,11 +38,6 @@ public class MultipleSocketServer implements Runnable {
 		this.ID = i;
 	}
 
-
-	public MultipleSocketServer() {
-		run2 = new FeedReader("oil");
-	}
-
 	public void run() {
 		try {
 			BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
@@ -53,8 +48,8 @@ public class MultipleSocketServer implements Runnable {
 				process.append((char)character);
 			}
 			System.out.println(process);
-			String title = ((FeedReader) run2).getStories()[0].getTitle();
-			String title2 = ((FeedReader) run3).getStories()[0].getTitle();
+			String title = ((FeedReader) feeds[0]).getStories()[0].getTitle();
+			String title2 = ((FeedReader) feeds[1]).getStories()[0].getTitle();
 			String returnTitle2 = "Title2: " + title2 + '\n';
 			String returnTitle = "Title: " + title + '\n';
 			BufferedOutputStream os = new BufferedOutputStream(connection.getOutputStream());

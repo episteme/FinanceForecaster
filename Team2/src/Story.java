@@ -1,3 +1,6 @@
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -10,6 +13,7 @@ public class Story {
 	private int sites;
 	private String link;
 	private LinkedList<keyWord> keyWords;
+	private Date timestamp;
 	
 	// Creates basic story - sentiment and keywords not added yet
 	Story(int s, int o, String t, String l){
@@ -19,6 +23,16 @@ public class Story {
 		keyWords = new LinkedList<keyWord>();
 		sentiment = 0;
 		sites = s;
+		timestamp = new Date();
+	}
+	
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public String printDate(){
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		return dateFormat.format(timestamp);
 	}
 	
 	// prints the keywords to a string
