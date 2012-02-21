@@ -7,88 +7,79 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
 public class FeedReader implements Runnable {
-
 	// Permanent store of 10 stories
 	Story[] stories = new Story[10];
 	// Specifies which sector to watch
 	String sector;
-
 	// Constructor
 	FeedReader(String sector) {
 		this.sector = sector;
 	}
-
 	// 'Main'
 	public void run() {
-
 		boolean firstrun = true;
-
 		while(true) {
 			try {
-				// Initialise feed
-				final SyndFeed feed = makeFeed(sector);
-
 				// Initialise storage
 				Integer index, subIndex, numNews, sHttp, n;
-				String sTitle, sDesc, relURL;
+				String sTitle, sDesc, relURL, strNum, rawURL;
 				SyndEntry synd;
 				NewsAnalyst nAnal;
 				Story[] newstories = new Story[10];
-
+				// Initialise feed
+				final SyndFeed feed = makeFeed(sector);
+				// n keeps track of which story we are looking at
 				n = 1;
 				for (final Iterator<?> iter = feed.getEntries().iterator();
 						iter.hasNext();)
 				{
-
-
-					// Grabs the RSS object
 					synd = (SyndEntry) iter.next();
 					sTitle = (String) synd.getTitle();         
 					sDesc = (String) synd.getDescription().getValue();
-
 					// Print the number of related articles
 					index = sDesc.lastIndexOf("<b>all ") + 7;
-
-					if (index != 6) {           
+					// Grabs the RSS object
+					// If number of other articles is stated
+					if (index != 6) {
 						// Grabs the number of articles
 						subIndex = sDesc.substring(index).indexOf(" ") + index;
-						numNews = Integer.parseInt(sDesc.substring(index, subIndex).replaceAll(",", ""));
-
+						strNum = sDesc.substring(index, subIndex).replaceAll(",", "");
+						numNews = Integer.parseInt(strNum);
 						// Grab related articles RSS feed
 						sHttp = sDesc.substring(0, index).lastIndexOf("http://");
-						relURL = sDesc.substring(sHttp, index - 15).replaceAll("&amp;", "&") + "&output=rss";
+						rawURL = sDesc.substring(sHttp, index - 15);
+						relURL = rawURL.replaceAll("&amp;", "&") + "&output=rss";
 
 					}
-					else{
-
-
+					// If number of other articles is not stated
+					else {
 						// Number of articles not listed
 						index = sDesc.lastIndexOf("<b>and more") + 11;
-
-						if(index == 10){
+						// If no other articles (lastIndexOf error)
+						if (index == 10) {
 							n++;
 							System.out.println("Skipping");
 							continue;
 						}
-
 						numNews = 1;
-
 						// Grab related articles RSS feed
-
 						sHttp = sDesc.substring(0, index).lastIndexOf("http://");
-						relURL = sDesc.substring(sHttp, index - 19).replaceAll("&amp;", "&") + "&output=rss";
+						rawURL = sDesc.substring(sHttp, index - 19);
+						relURL = rawURL.replaceAll("&amp;", "&") + "&output=rss";
 					}
-
+					// relURL is now RSS URL for this story
 					byte storyid = -1;
-					if(!firstrun){
-						// iterates through the ten old stories, checking whether they match
-						for(byte i = 0; i < 10; i++){
-							if(stories[i] == null)
+					// Compare to old stories
+					if (!firstrun) {
+						// Iterates through the ten old stories, checking whether they match
+						for (byte i = 0; i < 10; i++) {
+							if (stories[i] == null)
 								continue;
-							if(stories[i].getLink().compareTo(relURL) == 0 || stories[i].getTitle().compareTo(sTitle) == 0){
+							if(stories[i].getLink().compareTo(relURL) == 0 ||
+									stories[i].getTitle().compareTo(sTitle) == 0) {
 								storyid = i;
 								// if there are many new stories, it will reanalyse the story
-								if(numNews > (10 + stories[i].getSites())){
+								if (numNews > (10 + stories[i].getSites())) {
 									storyid = -1;
 									break;
 								}
@@ -100,36 +91,36 @@ public class FeedReader implements Runnable {
 							}
 						}
 					}
-
-					if(storyid == -1){
+					// If story is new
+					if (storyid == -1){
 						// analyses story
-
-						System.out.println("----- NEW/UPDATED -------");
+						System.out.println("------- NEW/UPDATED -------");
 						nAnal = new NewsAnalyst(relURL, numNews, n, sTitle);
 						newstories[n-1] = nAnal.getStory();
 					}
-
 					// prints story details
-					System.out.println("--------------" + n + "---------------");
+					System.out.println("---------------" + n + "---------------");
 					System.out.println("Title: " + newstories[n-1].getTitle());
-					System.out.println("Sites: " + newstories[n-1].getSites() + "; Rank: " + newstories[n-1].getRank());
+					System.out.println("Sites: " + newstories[n-1].getSites());
+					System.out.println(" Rank: " + newstories[n-1].getRank());
 					System.out.println("URL: " + newstories[n-1].getLink());
 					System.out.println("Sentiment: " + newstories[n-1].getSentiment());
 					System.out.println("Keywords: " + newstories[n-1].printKeyWords());
-
 					n++;
+					// Wait to avoid Google throttle
 					Thread.sleep( (1000) ); 
 				}
-
+				// Flag that we've run once
 				firstrun = false;
 				stories = newstories;
+				// Wait before repeating
 				Thread.sleep( (10000) ); 
-
 			}
 			catch (Exception ex) {
 				ex.printStackTrace();
 				System.out.println("ERROR: " + ex.getMessage());
 			}
+			// Spacer
 			System.out.println("---------------------------------------------------------");
 		}
 	}
