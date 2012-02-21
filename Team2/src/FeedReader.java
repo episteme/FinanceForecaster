@@ -52,6 +52,8 @@ public class FeedReader implements Runnable {
 					}
 					// If number of other articles is not stated, skip it
 					else {
+						System.out.println("Story skipped");
+						n++;
 						continue;
 					}
 					// relURL is now RSS URL for this story
