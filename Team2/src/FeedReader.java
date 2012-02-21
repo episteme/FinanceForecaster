@@ -25,7 +25,7 @@ public class FeedReader implements Runnable {
 				String sTitle, sDesc, relURL, strNum, rawURL;
 				SyndEntry synd;
 				NewsAnalyst nAnal;
-				Story[] newstories = new Story[10];
+				Story[] newStories = new Story[10];
 				// Initialise feed
 				final SyndFeed feed = makeFeed(sector);
 				// n keeps track of which story we are looking at
@@ -84,9 +84,9 @@ public class FeedReader implements Runnable {
 									break;
 								}
 								// updates title and link
-								newstories[n-1] = stories[i];
-								newstories[n-1].setTitle(sTitle);
-								newstories[n-1].setLink(relURL);
+								newStories[n-1] = stories[i];
+								newStories[n-1].setTitle(sTitle);
+								newStories[n-1].setLink(relURL);
 								break;
 							}
 						}
@@ -96,23 +96,17 @@ public class FeedReader implements Runnable {
 						// analyses story
 						System.out.println("------- NEW/UPDATED -------");
 						nAnal = new NewsAnalyst(relURL, numNews, n, sTitle);
-						newstories[n-1] = nAnal.getStory();
+						newStories[n-1] = nAnal.getStory();
 					}
 					// prints story details
-					System.out.println("---------------" + n + "---------------");
-					System.out.println("Title: " + newstories[n-1].getTitle());
-					System.out.println("Sites: " + newstories[n-1].getSites());
-					System.out.println(" Rank: " + newstories[n-1].getRank());
-					System.out.println("URL: " + newstories[n-1].getLink());
-					System.out.println("Sentiment: " + newstories[n-1].getSentiment());
-					System.out.println("Keywords: " + newstories[n-1].printKeyWords());
+					printStory(n, newStories);
 					n++;
 					// Wait to avoid Google throttle
 					Thread.sleep( (1000) ); 
 				}
 				// Flag that we've run once
 				firstrun = false;
-				stories = newstories;
+				stories = newStories;
 				// Wait before repeating
 				Thread.sleep( (10000) ); 
 			}
@@ -153,5 +147,14 @@ public class FeedReader implements Runnable {
 				+ sector + "&output=rss";
 	}
 
-
+	// Print info for the nth story
+	private void printStory(Integer n, Story[] stories) {
+		System.out.println("---------------" + n + "---------------");
+		System.out.println("Title: " + stories[n-1].getTitle());
+		System.out.println("Sites: " + stories[n-1].getSites());
+		System.out.println(" Rank: " + stories[n-1].getRank());
+		System.out.println("URL: " + stories[n-1].getLink());
+		System.out.println("Sentiment: " + stories[n-1].getSentiment());
+		System.out.println("Keywords: " + stories[n-1].printKeyWords());
+	}
 }
