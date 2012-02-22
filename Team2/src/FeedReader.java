@@ -53,6 +53,7 @@ public class FeedReader implements Runnable {
 					// If number of other articles is not stated, skip it
 					else {
 						System.out.println("Story skipped");
+						newStories[n-1] = null;
 						n++;
 						continue;
 					}
@@ -68,7 +69,7 @@ public class FeedReader implements Runnable {
 								stories[i].getTitle().compareTo(sTitle) == 0) {
 							storyid = i;
 							// if there are some new stories, it will reanalyse the story
-							if (numNews >= stories[i].getSites()) {
+							if (numNews > (4 + stories[i].getSites())) {
 								System.out.println("----- UPDATED -----");
 								nAnal = new NewsAnalyst(stories[i]);
 								// updates the stires
