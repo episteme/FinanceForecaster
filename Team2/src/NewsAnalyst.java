@@ -28,9 +28,9 @@ public class NewsAnalyst {
 	private Document doc, docSent;
 	
 	// Constructor
-	NewsAnalyst(String URL, int sites, int order, String t) {
-		rURL = URL;
-		story = new Story(sites, order, t, rURL);
+	NewsAnalyst(Story current) {
+		rURL = current.getLink();
+		story = current;
 	}
 	
 	private void analyse() {
@@ -93,6 +93,12 @@ public class NewsAnalyst {
 	}
 	
 	public Story getStory() {
+		// analyse();
+		return story;
+	}
+	
+	public Story updateStory() {
+		story.clearKeyWords();
 		// analyse();
 		return story;
 	}

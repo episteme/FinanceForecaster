@@ -46,6 +46,10 @@ public class Story {
 		return temp;
 	}
 	
+	public void clearKeyWords() {
+		keyWords = new LinkedList<keyWord>();
+	}
+	
 	public LinkedList<keyWord> getList(){
 		return keyWords;
 	}
@@ -78,8 +82,8 @@ public class Story {
 		this.sentiment = sentiment;
 	}
 
-	public void setRank(int rank) {
-		this.rank = rank;
+	public void setRank(int r, int s) {
+		this.rank = s/r;
 	}
 
 	public void setTitle(String title) {

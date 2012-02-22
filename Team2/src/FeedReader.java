@@ -56,6 +56,7 @@ public class FeedReader implements Runnable {
 						n++;
 						continue;
 					}
+
 					// relURL is now RSS URL for this story
 					byte storyid = -1;
 					// Compare to old stories
@@ -66,23 +67,31 @@ public class FeedReader implements Runnable {
 						if(stories[i].getLink().compareTo(relURL) == 0 ||
 								stories[i].getTitle().compareTo(sTitle) == 0) {
 							storyid = i;
-							// if there are many new stories, it will reanalyse the story
-							if (numNews > (10 + stories[i].getSites())) {
-								storyid = -1;
-								break;
+							// if there are some new stories, it will reanalyse the story
+							if (numNews >= stories[i].getSites()) {
+								System.out.println("----- UPDATED -----");
+								nAnal = new NewsAnalyst(stories[i]);
+								// updates the stires
+								newStories[n-1] = nAnal.updateStory();
+								newStories[n-1].setSites(numNews);
+								newStories[n-1].setRank(n,numNews);
+							}else{
+							// if not, the story is simply copied
+								newStories[n-1] = stories[i];
 							}
 							// updates title and link
-							newStories[n-1] = stories[i];
 							newStories[n-1].setTitle(sTitle);
 							newStories[n-1].setLink(relURL);
 							break;
 						}
 					}
+
 					// If story is new
 					if (storyid == -1){
 						// Analyses story
-						System.out.println("------- NEW/UPDATED -------");
-						nAnal = new NewsAnalyst(relURL, numNews, n, sTitle);
+						System.out.println("------- NEW -------");
+						newStories[n-1] = new Story(numNews, n, sTitle, relURL);
+						nAnal = new NewsAnalyst(newStories[n-1]);
 						newStories[n-1] = nAnal.getStory();
 					}
 					// prints story details
