@@ -35,8 +35,7 @@ public class NewsAnalyst {
 	
 	private void analyse() {
 		try {
-			
-			
+	
 			// Initialize feed
 	        final URL feedUrl = new URL(rURL);
 	        final SyndFeedInput input = new SyndFeedInput();
@@ -104,7 +103,7 @@ public class NewsAnalyst {
 	}
 	
     // utility method
-    private static String getStringFromDocument(Document doc) {
+    public static String getStringFromDocument(Document doc) {
         try {
             DOMSource domSource = new DOMSource(doc);
             StringWriter writer = new StringWriter();
