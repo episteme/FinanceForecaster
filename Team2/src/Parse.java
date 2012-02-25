@@ -1,4 +1,5 @@
 import java.net.*;
+import java.util.Date;
 import java.util.LinkedList;
 import java.io.*;
 
@@ -36,6 +37,7 @@ public class Parse {
                 theURLS.add(theURL);
         	}
         }
+        // close input stream
         in.close();
         
         String APIkey = "fbde73712800960605177cdcf8cc5ade6ebd15a5";
@@ -50,15 +52,16 @@ public class Parse {
             	doc = alchemyObj.URLGetRankedKeywords(URL, params);
             	// Convert output to String
             	String alchemyOutput = NewsAnalyst.getStringFromDocument(doc);
-            	
             	alchemyOutput = NewsAnalyst.removeKeywordXML(alchemyOutput);
-
+            	Topic nextTopic = new Topic(new Article(URL, new Date()));
             	String[] result = alchemyOutput.split(";");
-
-            	for (String s: result) {
-            		System.out.println(s);
+            	for (int i = 0; i < result.length; i += 2) {
+            		nextTopic.addWord(result[i], Double.parseDouble(result[i+1]));
             	}
-            } catch (Exception e) {}
+            	nextTopic.printWords();
+            } catch (Exception e) {
+            	System.out.println("URL parsed incorrectly");
+            }
         }
     }
 }
