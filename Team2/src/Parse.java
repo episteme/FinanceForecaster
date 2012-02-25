@@ -13,20 +13,20 @@ public class Parse {
 	
     public static void main(String[] args) throws Exception {
     
-    	
-        URL yahoo = new URL("http://www.google.co.uk/search?q=oil&tbm=nws&tbs=sbd:1");
-        URLConnection yc = yahoo.openConnection();
-        yc.setRequestProperty
+        URL newsURL = new URL("http://www.google.co.uk/search?q=oil&tbm=nws&tbs=sbd:1");
+        URLConnection uc = newsURL.openConnection();
+        uc.setRequestProperty
         ( "User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)" );
         BufferedReader in = new BufferedReader(
                                 new InputStreamReader(
-                                yc.getInputStream()));
+                                uc.getInputStream()));
         String inputLine;
         
         // Grabs all the links and stuffs them into theURLS
         LinkedList<String> theURLS = new LinkedList<String>();
         while ((inputLine = in.readLine()) != null) {
-        	if (inputLine.indexOf(" minute") != -1 || inputLine.indexOf("></span>Shopping</a>") != -1) {
+        	if (inputLine.indexOf(" minute") != -1 ||
+        			inputLine.indexOf("></span>Shopping</a>") != -1) {
         		int linkPos = inputLine.indexOf("<a href=\"/url?q=http:");
         		if (linkPos == -1)
         			break;
@@ -38,9 +38,11 @@ public class Parse {
         }
         in.close();
         
+        String APIkey = "fbde73712800960605177cdcf8cc5ade6ebd15a5";
+        
         for (String URL : theURLS) {
         	System.out.println(URL);
-            AlchemyAPI alchemyObj = AlchemyAPI.GetInstanceFromString("fbde73712800960605177cdcf8cc5ade6ebd15a5");
+            AlchemyAPI alchemyObj = AlchemyAPI.GetInstanceFromString(APIkey);
             AlchemyAPI_KeywordParams params = new AlchemyAPI_KeywordParams();
             params.setKeywordExtractMode("strict");
             params.setMaxRetrieve(10);
@@ -48,13 +50,8 @@ public class Parse {
             	doc = alchemyObj.URLGetRankedKeywords(URL, params);
             	// Convert output to String
             	String alchemyOutput = NewsAnalyst.getStringFromDocument(doc);
-
-            	// Removes XML tags from doc
-            	alchemyOutput = alchemyOutput.substring(alchemyOutput.indexOf("<keywords>"));
-            	alchemyOutput = alchemyOutput.substring(0,alchemyOutput.lastIndexOf("</results>"));
-            	alchemyOutput = alchemyOutput.replaceAll("<.*keyword.*>","");
-            	alchemyOutput = alchemyOutput.replaceAll("\\s+?<text>(.*?)</text>\\s+?<relevance>(.*?)</relevance>\\s+?","$1;$2;");
-            	alchemyOutput = alchemyOutput.substring(0,alchemyOutput.lastIndexOf(";"));
+            	
+            	alchemyOutput = NewsAnalyst.removeKeywordXML(alchemyOutput);
 
             	String[] result = alchemyOutput.split(";");
 
@@ -63,8 +60,5 @@ public class Parse {
             	}
             } catch (Exception e) {}
         }
-        
-
-    
     }
 }

@@ -20,7 +20,5 @@ public class Article {
 	public Date getDate() {
 		return date;
 	}
-	
-	
 
 }

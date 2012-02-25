@@ -63,14 +63,9 @@ public class NewsAnalyst {
 	        // Convert output to String
 	        String alchemyOutput = getStringFromDocument(doc);
 	        String alchemyOutputSent = getStringFromDocument(docSent);
+	       
+	        alchemyOutput = removeKeywordXML(alchemyOutput);
 	        
-	        // Removes XML tags from doc
-	        alchemyOutput = alchemyOutput.substring(alchemyOutput.indexOf("<keywords>"));
-	        alchemyOutput = alchemyOutput.substring(0,alchemyOutput.lastIndexOf("</results>"));
-	        alchemyOutput = alchemyOutput.replaceAll("<.*keyword.*>","");
-	        alchemyOutput = alchemyOutput.replaceAll("\\s+?<text>(.*?)</text>\\s+?<relevance>(.*?)</relevance>\\s+?","$1;$2;");
-	        alchemyOutput = alchemyOutput.substring(0,alchemyOutput.lastIndexOf(";"));
-
 	        // Removes XML tags from docSent
 	        alchemyOutputSent = alchemyOutputSent.substring(alchemyOutputSent.indexOf("<score>"));
 	        alchemyOutputSent = alchemyOutputSent.substring(7,alchemyOutputSent.lastIndexOf("</score>"));
@@ -102,7 +97,6 @@ public class NewsAnalyst {
 		return story;
 	}
 	
-    // utility method
     public static String getStringFromDocument(Document doc) {
         try {
             DOMSource domSource = new DOMSource(doc);
@@ -120,8 +114,15 @@ public class NewsAnalyst {
         }
     }
     
-
-	
+    public static String removeKeywordXML(String s) {
+    	// Removes XML tags from doc
+    	s = s.substring(s.indexOf("<keywords>"));
+    	s = s.substring(0,s.lastIndexOf("</results>"));
+    	s = s.replaceAll("<.*keyword.*>","");
+    	s = s.replaceAll("\\s+?<text>(.*?)</text>\\s+?<relevance>(.*?)</relevance>\\s+?","$1;$2;");
+    	s = s.substring(0,s.lastIndexOf(";"));
+    	return s;
+    }
 }
 
 

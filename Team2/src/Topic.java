@@ -33,5 +33,4 @@ public class Topic {
 		return articles;
 	}
 	
-	
 }
