@@ -69,6 +69,7 @@ public class Parse {
 					boolean isNewTopic = true;
 					int overlap;
 					// Check for overlap in existing topics
+					// Current check is if at least 3 words 
 					for (Topic t : topics) {
 						overlap = 0;
 						for (int i = 0; i <= 3; i += 1) {
@@ -81,7 +82,10 @@ public class Parse {
 						if (overlap >= 3) {
 							isNewTopic = false;
 							t.addArticle(new Article(URL, new Date()));
-							// no concept of word merging yet
+							// initial word merging, adds together
+							for (int i = 0; i < result.length; i += 2) {
+								t.addWord(result[i], Double.parseDouble(result[i+1]));
+							}
 							System.out.println("Topic overlap found");
 						}
 					}
@@ -102,7 +106,6 @@ public class Parse {
 			for (Topic t : topics) {
 				System.out.println("Topic has " + (t.getArticles().size()) + " articles");
 			    Iterator<Article> iterator = t.getArticles().iterator();  
-			       
 			    while (iterator.hasNext()) {
 			    	Article nextart = iterator.next();
 			    	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");

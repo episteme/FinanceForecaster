@@ -45,7 +45,13 @@ public class Topic {
 	public void addWord(String s, Double d) {
 		if (numWords == 0)
 			words = new HashMap<String, Double>();
-		words.put(s, d);
+		if (words.containsKey(s)) {
+			Double currentVal = words.get(s);
+			words.remove(s);
+			words.put(s, (currentVal + d) / 2.0);
+		}
+		else
+			words.put(s, d);
 		numWords++;
 	}
 
