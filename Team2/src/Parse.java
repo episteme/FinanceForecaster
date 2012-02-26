@@ -81,6 +81,7 @@ public class Parse {
 						if (overlap >= 3) {
 							isNewTopic = false;
 							t.addArticle(new Article(URL, new Date()));
+							// no concept of word merging yet
 							System.out.println("Topic overlap found");
 						}
 					}
