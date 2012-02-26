@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.io.*;
+import java.net.URLDecoder;
 
 import org.w3c.dom.Document;
 
@@ -41,6 +42,7 @@ public class Parse {
 					String noFront = inputLine.substring(linkPos + 16, inputLine.length());
 					int endLink = noFront.indexOf("&amp;sa");
 					String theURL = noFront.substring(0, endLink);
+					theURL = URLDecoder.decode(theURL, "UTF-8");
 					theURLS.add(theURL);
 				}
 			}
@@ -111,7 +113,8 @@ public class Parse {
 			    	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			    	String date = dateFormat.format(nextart.getDate());
 			    	System.out.println(nextart.getURL() + " @ " + date);
-			    }  
+			    } 
+			    t.printWords();
 			}
 			Thread.sleep(10000);
 		}
