@@ -27,8 +27,19 @@ public class Topic {
 		numWords = 0;
 	}
 	
+	// Add article only if new
 	public void addArticle(Article article) {
-		articles.push(article);
+	    Iterator<Article> iterator = articles.iterator();
+	    boolean repeat = false;
+	    while (iterator.hasNext()) {
+	       if (article.getURL().compareTo(iterator.next().getURL()) == 0) {
+	    	   repeat = true;
+	    	   System.out.println("Repeat URL");
+	    	   break;
+	       }
+	    }
+	    if (!repeat)
+	    	articles.push(article);
 	}
 	
 	public void addWord(String s, Double d) {
@@ -55,12 +66,10 @@ public class Topic {
 	
 	// Displays all the keyword information
 	public void printWords() {
-	    Iterator<String> iterator = words.keySet().iterator();  
-	       
+	    Iterator<String> iterator = words.keySet().iterator();
 	    while (iterator.hasNext()) {  
 	       String key = iterator.next().toString();  
-	       String value = words.get(key).toString();  
-	       
+	       String value = words.get(key).toString(); 
 	       System.out.println(key + " " + value);  
 	    }  
 	}

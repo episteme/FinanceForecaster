@@ -1,4 +1,6 @@
 import java.net.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -101,7 +103,10 @@ public class Parse {
 			    Iterator<Article> iterator = t.getArticles().iterator();  
 			       
 			    while (iterator.hasNext()) {
-			       System.out.println(iterator.next().getURL());  
+			    	Article nextart = iterator.next();
+			    	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+			    	String date = dateFormat.format(nextart.getDate());
+			    	System.out.println(nextart.getURL() + " @ " + date);
 			    }  
 			}
 			Thread.sleep(10000);
