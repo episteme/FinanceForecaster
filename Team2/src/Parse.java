@@ -18,9 +18,12 @@ public class Parse {
 	public static void main(String[] args) throws Exception {
 
 		LinkedList<Topic> topics = new LinkedList<Topic>();
+		String urlCache = null;
 
 		// run 10 times
 		for (int k = 0; k < 10; k++) {
+			
+			System.out.println("Starting search");
 			URL newsURL = new URL("http://www.google.co.uk/search?q=oil&tbm=nws&tbs=sbd:1");
 			URLConnection uc = newsURL.openConnection();
 			uc.setRequestProperty
@@ -48,9 +51,18 @@ public class Parse {
 			// close input stream
 			in.close();
 
+			boolean urlCheck = false;
+			LinkedList<String> newURLS = new LinkedList<String>();
+			for(String URL : theURLS) {
+				if(URL.equals(urlCache))
+					urlCheck = true;
+				if(!urlCheck)
+					newURLS.add(URL);
+			}
+
 			String APIkey = "fbde73712800960605177cdcf8cc5ade6ebd15a5";
 
-			for (String URL : theURLS) {
+			for (String URL : newURLS) {
 				System.out.println(URL);
 				AlchemyAPI alchemyObj = AlchemyAPI.GetInstanceFromString(APIkey);
 				AlchemyAPI_KeywordParams params = new AlchemyAPI_KeywordParams();
@@ -76,8 +88,7 @@ public class Parse {
 						for (int i = 0; i <= 3; i += 1) {
 							if (t.containsWord(newWords.get(i))) {
 								overlap++;
-								System.out.println("Word overlap found");
-								System.out.println(newWords.get(i));
+								System.out.println("Word overlap found: " + newWords.get(i));
 							}
 						}
 						if (overlap >= 3) {
@@ -102,19 +113,21 @@ public class Parse {
 					System.out.println("URL parsed incorrectly");
 				}
 			}
-			System.out.println("Waiting before rerunning");
 			// Output information on topics
 			for (Topic t : topics) {
 				System.out.println("Topic has " + (t.getArticles().size()) + " articles");
-			    Iterator<Article> iterator = t.getArticles().iterator();  
-			    while (iterator.hasNext()) {
-			    	Article nextart = iterator.next();
-			    	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			    	String date = dateFormat.format(nextart.getDate());
-			    	System.out.println(nextart.getURL() + " @ " + date);
-			    } 
-			    t.printWords();
+				Iterator<Article> iterator = t.getArticles().iterator();  
+				while (iterator.hasNext()) {
+					Article nextart = iterator.next();
+					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+					String date = dateFormat.format(nextart.getDate());
+					System.out.println(nextart.getURL() + " @ " + date);
+				} 
+				t.printWords();
 			}
+			if(newURLS.size() != 0)
+				urlCache = newURLS.get(0);
+			System.out.println("Waiting before rerunning");
 			Thread.sleep(10000);
 		}
 	}
