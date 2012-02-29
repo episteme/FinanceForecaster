@@ -15,9 +15,9 @@ public class MultipleSocketServer implements Runnable {
 		int port = 19999;
 		int count = 0;
 		Thread tf = new Thread(feeds[0]);
-		tf.start();
+		//tf.start();
 		Thread tf2 = new Thread(feeds[1]);
-		tf2.start();
+		//tf2.start();
 		try {
 			ServerSocket socket1 = new ServerSocket(port);
 			System.out.println("Server starting..");
