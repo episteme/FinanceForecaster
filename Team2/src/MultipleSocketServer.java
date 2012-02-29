@@ -10,8 +10,8 @@ public class MultipleSocketServer implements Runnable {
 	private String TimeStamp;
 	private int ID;
 	public static void main(String[] args) {
-		//feeds[0] = new FeedReader("oil");
-		//feeds[1] = new FeedReader("currency");
+		feeds[0] = new FeedReader("oil");
+		feeds[1] = new FeedReader("currency");
 		int port = 19999;
 		int count = 0;
 		Thread tf = new Thread(feeds[0]);
