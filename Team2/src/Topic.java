@@ -1,3 +1,6 @@
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -12,6 +15,8 @@ public class Topic {
 	private HashMap<String, Double> words;
 	private LinkedList<Article> articles;
 	private int numWords;
+	private Date timestamp;
+	private String recentTitle;
 	
 	// Constructor, begins list with first article
 	public Topic(HashMap<String, Double> words, Article article) {
@@ -19,12 +24,19 @@ public class Topic {
 		this.articles = new LinkedList<Article>();
 		articles.push(article);
 		numWords = 1;
+		timestamp = new Date();
+		recentTitle = article.getTitle();
 	}
 	
+	public String getRecentTitle() {
+		return recentTitle;
+	}
+
 	public Topic(Article article) {
 		this.articles = new LinkedList<Article>();
 		articles.push(article);
 		numWords = 0;
+		timestamp = new Date();
 	}
 	
 	// Add article only if new
@@ -40,8 +52,14 @@ public class Topic {
 	    }
 	    if (!repeat)
 	    	articles.push(article);
+	    timestamp = new Date();
+	    recentTitle = article.getTitle();
 	}
 	
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
 	public void addWord(String s, Double d) {
 		if (numWords == 0)
 			words = new HashMap<String, Double>();
@@ -78,5 +96,10 @@ public class Topic {
 	       String value = words.get(key).toString(); 
 	       System.out.println(key + " " + value);  
 	    }  
+	}
+
+	public String getDate() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		return dateFormat.format(timestamp);
 	}
 }

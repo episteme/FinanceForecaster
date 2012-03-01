@@ -7,10 +7,16 @@ public class Article {
 	
 	private String URL;
 	private Date date;
+	private String title;
 	
-	public Article(String URL, Date date) {
+	public Article(String URL, String title, Date date) {
 		this.URL = URL;
 		this.date = date;
+		this.title = title;
+	}
+
+	public String getTitle() {
+		return title;
 	}
 
 	public String getURL() {
