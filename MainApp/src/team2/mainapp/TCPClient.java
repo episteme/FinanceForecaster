@@ -22,7 +22,7 @@ public class TCPClient implements Runnable {
 
 			Socket socket = new Socket("www.ruination.org.uk", 19999);
 
-			String message = "oil;;1212/12/12 12:12:12";
+			String message = "oil;currency;;1212/12/12 12:12:12";
 
 			try {
 
