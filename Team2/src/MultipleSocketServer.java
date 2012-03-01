@@ -23,6 +23,8 @@ public class MultipleSocketServer implements Runnable {
 		tf2.start();
 		Thread tf3 = new Thread(parsers[0]);
 		tf3.start();
+		Thread tf4 = new Thread(parsers[1]);
+		tf4.start();
 		try {
 			ServerSocket socket1 = new ServerSocket(port);
 			System.out.println("Server starting..");
@@ -87,7 +89,7 @@ public class MultipleSocketServer implements Runnable {
 								continue;
 							}
 							if (convertedDate.compareTo(T.getTimestamp()) < 0) {
-								String returnTitle = theparse.getSector() + "Topic: " + T.getRecentTitle() + ": @ " + T.getDate() + '\n';
+								String returnTitle = theparse.getSector() + " Topic: " + T.getRecentTitle() + ": @ " + T.getDate() + '\n';
 								osw.write(returnTitle);
 							}
 						}
@@ -95,6 +97,7 @@ public class MultipleSocketServer implements Runnable {
 					}
 				}
 			}
+			osw.write("\t");
 		osw.flush();
 
 	}

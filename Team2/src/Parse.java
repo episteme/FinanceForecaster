@@ -13,10 +13,10 @@ import com.alchemyapi.api.AlchemyAPI_KeywordParams;
 
 public class Parse implements Runnable {
 
-	static Document doc;
-	static LinkedList<Topic> topics = new LinkedList<Topic>();
+	private Document doc;
+	private LinkedList<Topic> topics = new LinkedList<Topic>();
 	private String sector;
-	static String urlCache;
+	private String urlCache;
 
 
 	Parse(String sector) {
@@ -80,14 +80,14 @@ public class Parse implements Runnable {
 					for(Article art : articles) {
 						if(art.getURL().equals(urlCache))
 							urlCheck = true;
-						if(urlCheck)
+						if(!urlCheck)
 							newArticles.add(art);
 					}
 				}
 
 				String APIkey = "fbde73712800960605177cdcf8cc5ade6ebd15a5";
 
-				for (Article art : articles) {
+				for (Article art : newArticles) {
 					System.out.println(art.getURL());
 					AlchemyAPI alchemyObj = AlchemyAPI.GetInstanceFromString(APIkey);
 					AlchemyAPI_KeywordParams params = new AlchemyAPI_KeywordParams();
@@ -141,6 +141,7 @@ public class Parse implements Runnable {
 				// Output information on topics
 				for (Topic t : topics) {
 					System.out.println("Topic has " + (t.getArticles().size()) + " articles");
+					System.out.println(t.getRecentTitle());
 					Iterator<Article> iterator = t.getArticles().iterator();  
 					while (iterator.hasNext()) {
 						Article nextart = iterator.next();

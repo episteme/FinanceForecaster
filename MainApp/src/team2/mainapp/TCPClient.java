@@ -19,13 +19,16 @@ public class TCPClient {
 
 		String r;
 		
+		Log.d("Connection: ",s);
+		
 		try {
 
 			Log.d("TCP", "C: Connecting...");
 
-			Socket socket = new Socket("www.ruination.org.uk", 19999);
+			Socket socket = new Socket("10.0.2.2", 19999);
 
 			String message = "oil;currency;;" + s;
+			
 
 			try {
 
@@ -47,7 +50,7 @@ public class TCPClient {
 				Log.d("Debug", "Printing");
 				
 				r = process.toString();
-				//Log.d("Output", s);
+				Log.d("Output", s);
 
 				Log.d("TCP", "C: Done.");
 				return r;

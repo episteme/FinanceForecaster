@@ -37,6 +37,7 @@ public class Topic {
 		articles.push(article);
 		numWords = 0;
 		timestamp = new Date();
+		recentTitle = article.getTitle();
 	}
 	
 	// Add article only if new
