@@ -10,11 +10,11 @@ import java.net.Socket;
 import android.util.Log;
 
 
-public class TCPClient implements Runnable {
+public class TCPClient {
 	
-	static String[] output;
-
-	public void run() {
+	public static String go() {
+		
+		String s;
 
 		try {
 
@@ -42,10 +42,11 @@ public class TCPClient implements Runnable {
 				
 				Log.d("Debug", "Printing");
 				
-				String s = process.toString();
-				Log.d("Output", s);
+				s = process.toString();
+				//Log.d("Output", s);
 
 				Log.d("TCP", "C: Done.");
+				return s;
 
 
 			} catch(Exception e) {
@@ -62,6 +63,7 @@ public class TCPClient implements Runnable {
 			Log.e("TCP", "C: Error", e);
 
 		}
+		return "error";
 
 	}
 
