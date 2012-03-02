@@ -109,9 +109,12 @@ public class Parse implements Runnable {
 						// Convert output to String
 						String alchemyOutput = NewsAnalyst.getStringFromDocument(doc);
 						alchemyOutput = NewsAnalyst.removeKeywordXML(alchemyOutput);
+						alchemyOutput = Jsoup.parse(alchemyOutput).text();
 						String[] result = alchemyOutput.split(";");
 						// Add words to list
 						LinkedList<String> newWords = new LinkedList<String>();
+						if (result.length < 6)
+							continue;
 						for (int i = 0; i < result.length; i += 2) {
 							newWords.addLast(result[i]);
 						}
