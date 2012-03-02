@@ -39,17 +39,23 @@ public class MainAppActivity extends Activity {
 			}
 		};
 		new Thread(runnable).start();
-		while (true) {
-			try {
-				Thread.sleep(11111);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+
+		Runnable runnable2 = new Runnable () {
+			public void run(){
+				while (true) {
+					try {
+						Thread.sleep(11111);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					Log.d("Debug", "Hello world");
+					if (s == null)
+						continue;
+					Log.d("Debug", s);
+					s = null;
+				}
 			}
-			Log.d("Debug", "Hello world");
-			if (s == null)
-				continue;
-			Log.d("Debug", s);
-			s = null;
-		}
+		};
+		new Thread(runnable).start();
 	}
 }
