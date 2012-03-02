@@ -19,13 +19,14 @@ public class MainAppActivity extends Activity {
 		super.onCreate(icicle);
 
 		setContentView(R.layout.main);
-		Log.d("Debug", "Created?");
+		Log.d("Debug", "onCreate");		
 
-		Runnable runnable = new Runnable () {
+		Runnable runnable = new Runnable() {
 			public void run() {
 				String date = "1212/12/12 12:12:12";
 				while (true) {
 					try {
+						Log.d("Debug", "Thread1");
 						Thread.sleep(10000);
 						Date dateType = new Date();
 						s = TCPClient.go(date);
@@ -40,15 +41,14 @@ public class MainAppActivity extends Activity {
 		};
 		new Thread(runnable).start();
 
-		Runnable runnable2 = new Runnable () {
+		Runnable runnable2 = new Runnable() {
 			public void run(){
 				while (true) {
 					try {
-						Thread.sleep(11111);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+						Log.d("Debug", "Thread2");
+						Thread.sleep(10000);
 					}
-					Log.d("Debug", "Hello world");
+					catch (Exception e) {}
 					if (s == null)
 						continue;
 					Log.d("Debug", s);
@@ -56,6 +56,8 @@ public class MainAppActivity extends Activity {
 				}
 			}
 		};
-		new Thread(runnable).start();
+		new Thread(runnable2).start();
+
+	Log.d("On Create", "onCreate finished");
 	}
 }

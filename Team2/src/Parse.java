@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.io.*;
 
+import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 
 import com.alchemyapi.api.AlchemyAPI;
@@ -38,32 +39,41 @@ public class Parse implements Runnable {
 				String inputLine;
 
 				// Grabs all the links and stuffs them into theURLS
+				// Grabs all the titles and stuffs them into theTitles
+				// Title appears between "> and </a></h3>
+				// URL appears between <a href="/url?q= and &amp;
 				LinkedList<String> theURLS = new LinkedList<String>();
 				LinkedList<String> theTitles = new LinkedList<String>();
+				// while we have a line to read
 				while ((inputLine = in.readLine()) != null) {
-					if (inputLine.indexOf(" minute") != -1 ||
-							inputLine.indexOf("></span>Shopping</a>") != -1) {
-
-
-						int linkPos = inputLine.indexOf("<a href=\"/url?q=http:");
-						int titleEndPos = inputLine.indexOf("</a></h3><br>");
+					// each interesting line begins with X minute(s) ago</span><br>
+					// apart from a single line that starts with "></span>Shopping</a></li></ul>
+					if (inputLine.indexOf(" ago</span><br>") != -1 ||
+							inputLine.indexOf("></span>Shopping</a></li></ul>") != -1) {
+						// find start of URL
+						int linkPos = inputLine.indexOf("<a href=\"/url?q=") + 16;
+						// find end of Title
+						int titleEndPos = inputLine.lastIndexOf("</a></h3>");
+						// if there isn't a title or a link, break
 						if (linkPos == -1 || titleEndPos == -1)
 							break;
-						String noFront = inputLine.substring(linkPos + 16, inputLine.length());
-						int endLink = noFront.indexOf("&amp;sa");
-						String theURL = noFront.substring(0, endLink);
-						theURL = URLDecoder.decode(theURL, "UTF-8");
-						theURLS.add(theURL);
-						String titleMed = inputLine.substring(0,titleEndPos);
-						int titleStartPos = titleMed.lastIndexOf("\">");
-						String title = titleMed.substring(titleStartPos + 2);
-						title = title.replace("<b>...</b>","");
-						title = title.replace("</b>","");
-						title = title.replace("<b>","");
+						// let titleEnd be the string that ends with the title
+						String titleEnd = inputLine.substring(0, titleEndPos);
+						// let title be the title
+						int titleStart = titleEnd.lastIndexOf("\">") + 2;
+						String title = titleEnd.substring(titleStart);
+						// let URL be the URL
+						String linkStart = inputLine.substring(linkPos);
+						int endLink = linkStart.indexOf("&amp;");
+						String URL = linkStart.substring(0, endLink);
+						// strip title of HTML
+						title = Jsoup.parse(title).text();
+						// adds them to lists
 						theTitles.add(title);
+						URL = URLDecoder.decode(URL, "UTF-8");
+						theURLS.add(URL);
 					}
 				}
-
 
 				// close input stream
 				in.close();
@@ -88,7 +98,8 @@ public class Parse implements Runnable {
 				String APIkey = "fbde73712800960605177cdcf8cc5ade6ebd15a5";
 
 				for (Article art : newArticles) {
-					System.out.println(art.getURL());
+					//System.out.println(art.getURL());
+					art.printMe();
 					AlchemyAPI alchemyObj = AlchemyAPI.GetInstanceFromString(APIkey);
 					AlchemyAPI_KeywordParams params = new AlchemyAPI_KeywordParams();
 					params.setKeywordExtractMode("strict");
@@ -110,7 +121,7 @@ public class Parse implements Runnable {
 						// Current check is if at least 3 words 
 						for (Topic t : topics) {
 							overlap = 0;
-							for (int i = 0; i <= 3; i += 1) {
+							for (int i = 0; i < newWords.size(); i += 1) {
 								if (t.containsWord(newWords.get(i))) {
 									overlap++;
 									System.out.println("Word overlap found: " + newWords.get(i));
@@ -135,6 +146,7 @@ public class Parse implements Runnable {
 							topics.add(nextTopic);
 						}
 					} catch (Exception e) {
+						e.printStackTrace();
 						System.out.println("URL parsed incorrectly");
 					}
 				}
@@ -149,7 +161,7 @@ public class Parse implements Runnable {
 						String date = dateFormat.format(nextart.getDate());
 						System.out.println(nextart.getURL() + " @ " + date);
 					} 
-					t.printWords();
+					//t.printWords();
 				}
 				if(articles.size() != 0)
 					urlCache = articles.get(0).getURL();

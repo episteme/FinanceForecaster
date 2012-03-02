@@ -26,5 +26,10 @@ public class Article {
 	public Date getDate() {
 		return date;
 	}
+	
+	public void printMe() {
+		System.out.println(title);
+		System.out.println(URL);
+	}
 
 }

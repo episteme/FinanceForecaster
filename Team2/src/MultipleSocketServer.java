@@ -18,9 +18,9 @@ public class MultipleSocketServer implements Runnable {
 		int port = 19999;
 		int count = 0;
 		Thread tf = new Thread(feeds[0]);
-		tf.start();
+		//tf.start();
 		Thread tf2 = new Thread(feeds[1]);
-		tf2.start();
+		//tf2.start();
 		Thread tf3 = new Thread(parsers[0]);
 		tf3.start();
 		Thread tf4 = new Thread(parsers[1]);

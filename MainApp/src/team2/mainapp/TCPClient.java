@@ -25,7 +25,7 @@ public class TCPClient {
 
 			Log.d("TCP", "C: Connecting...");
 
-			Socket socket = new Socket("10.0.2.2", 19999);
+			Socket socket = new Socket("www.ruination.org.uk", 19999);
 
 			String message = "oil;currency;;" + s;
 			
