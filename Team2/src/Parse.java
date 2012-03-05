@@ -14,7 +14,7 @@ import com.alchemyapi.api.AlchemyAPI_KeywordParams;
 
 public class Parse implements Runnable {
 
-	private Document doc;
+	private Document doc; // Stores the response from Alchemy
 	private LinkedList<Topic> topics = new LinkedList<Topic>();
 	private String sector;
 	private String urlCache;
@@ -26,8 +26,8 @@ public class Parse implements Runnable {
 	}
 
 	public void run() {
-		while(true){
-			try{
+		while (true) {
+			try {
 				System.out.println("Starting search");
 				URL newsURL = new URL("http://www.google.co.uk/search?q=" + sector + "&tbm=nws&tbs=sbd:1");
 				URLConnection uc = newsURL.openConnection();
@@ -74,18 +74,18 @@ public class Parse implements Runnable {
 				// Create a list of articles and titles
 				// Is there a guarantee that these match up?
 				LinkedList<Article> articles = new LinkedList<Article>();
-				for(int i = 0; i < theURLS.size(); i++){
+				for (int i = 0; i < theURLS.size(); i++){
 					articles.add(new Article(theURLS.get(i),theTitles.get(i),new Date()));
 				}
 
+				
 				boolean urlCheck = false;
-
 				LinkedList<Article> newArticles = new LinkedList<Article>();
-				if(articles.size() > 0){
-					for(Article art : articles) {
-						if(art.getURL().equals(urlCache))
+				if (articles.size() > 0) {
+					for (Article art : articles) {
+						if (art.getURL().equals(urlCache))
 							urlCheck = true;
-						if(!urlCheck)
+						if (!urlCheck)
 							newArticles.add(art);
 					}
 				}
@@ -110,9 +110,8 @@ public class Parse implements Runnable {
 						LinkedList<String> newWords = new LinkedList<String>();
 						if (result.length < 6)
 							continue;
-						for (int i = 0; i < result.length; i += 2) {
+						for (int i = 0; i < result.length; i += 2)
 							newWords.addLast(result[i]);
-						}
 						boolean isNewTopic = true;
 						int overlap;
 						// Check for overlap in existing topics
@@ -129,17 +128,15 @@ public class Parse implements Runnable {
 								isNewTopic = false;
 								t.addArticle(art);
 								// initial word merging, adds together
-								for (int i = 0; i < result.length; i += 2) {
+								for (int i = 0; i < result.length; i += 2)
 									t.addWord(result[i], Double.parseDouble(result[i+1]));
-								}
 								System.out.println("Topic overlap found");
 							}
 						}
 						if (isNewTopic) {
 							Topic nextTopic = new Topic(art);
-							for (int i = 0; i < result.length; i += 2) {
+							for (int i = 0; i < result.length; i += 2)
 								nextTopic.addWord(result[i], Double.parseDouble(result[i+1]));
-							}
 							nextTopic.printWords();
 							topics.add(nextTopic);
 						}
@@ -159,13 +156,13 @@ public class Parse implements Runnable {
 						String date = dateFormat.format(nextart.getDate());
 						System.out.println(nextart.getURL() + " @ " + date);
 					} 
-					//t.printWords();
+					// t.printWords();
 				}
-				if(articles.size() != 0)
+				if (articles.size() != 0)
 					urlCache = articles.get(0).getURL();
 				System.out.println("Waiting before rerunning");
 				Thread.sleep(10000);
-			}catch (Exception e){
+			} catch (Exception e){
 				e.printStackTrace();
 				System.out.println(e);
 			}
