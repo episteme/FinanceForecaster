@@ -31,6 +31,7 @@ public class Parse implements Runnable {
 				System.out.println("Starting search");
 				URL newsURL = new URL("http://www.google.co.uk/search?q=" + sector + "&tbm=nws&tbs=sbd:1");
 				URLConnection uc = newsURL.openConnection();
+				// Need to pretend we are a browser so that google responds
 				uc.setRequestProperty
 				( "User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)" );
 				BufferedReader in = new BufferedReader(
