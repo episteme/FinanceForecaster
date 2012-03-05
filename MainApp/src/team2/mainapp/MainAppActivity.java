@@ -37,7 +37,7 @@ public class MainAppActivity extends Activity {
 		al.add("vagenda");
 		
 		lv = (ListView)	findViewById(R.id.listView1);
-		ads = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, al);
+		ads = new ArrayAdapter<String>(this, R.layout.rowlayout, R.id.labelo, al);
 		lv.setAdapter(ads);
 		
 	}

@@ -4,6 +4,22 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+    <GridLayout
+        android:id="@+id/gridLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:columnCount="2"
+    	android:rowCount="1" 
+        >
+        
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="startProgress"
+        android:text="Start Progress" >
+    </Button>
+
     <ProgressBar
         android:id="@+id/progressBar1"
         style="?android:attr/progressBarStyleHorizontal"
@@ -12,15 +28,13 @@
         android:indeterminate="false"
         android:max="10"
         android:padding="4dip" >
-    </ProgressBar>
+    </ProgressBar>    
+        
+    </GridLayout>
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="startProgress"
-        android:text="Start Progress" >
-    </Button>
+
+
+
     
         <ListView
         android:id="@+id/listView1"
