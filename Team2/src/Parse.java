@@ -50,25 +50,17 @@ public class Parse implements Runnable {
 					// apart from a single line that starts with "></span>Shopping</a></li></ul>
 					if (inputLine.indexOf(" ago</span><br>") != -1 ||
 							inputLine.indexOf("></span>Shopping</a></li></ul>") != -1) {
-						// find start of URL
 						int linkPos = inputLine.indexOf("<a href=\"/url?q=") + 16;
-						// find end of Title
 						int titleEndPos = inputLine.lastIndexOf("</a></h3>");
-						// if there isn't a title or a link, break
 						if (linkPos == -1 || titleEndPos == -1)
 							break;
-						// let titleEnd be the string that ends with the title
 						String titleEnd = inputLine.substring(0, titleEndPos);
-						// let title be the title
 						int titleStart = titleEnd.lastIndexOf("\">") + 2;
 						String title = titleEnd.substring(titleStart);
-						// let URL be the URL
 						String linkStart = inputLine.substring(linkPos);
 						int endLink = linkStart.indexOf("&amp;");
 						String URL = linkStart.substring(0, endLink);
-						// strip title of HTML
 						title = Jsoup.parse(title).text();
-						// adds them to lists
 						theTitles.add(title);
 						URL = URLDecoder.decode(URL, "UTF-8");
 						theURLS.add(URL);
@@ -78,6 +70,8 @@ public class Parse implements Runnable {
 				// close input stream
 				in.close();
 
+				// Create a list of articles and titles
+				// Is there a guarantee that these match up?
 				LinkedList<Article> articles = new LinkedList<Article>();
 				for(int i = 0; i < theURLS.size(); i++){
 					articles.add(new Article(theURLS.get(i),theTitles.get(i),new Date()));
