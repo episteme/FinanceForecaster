@@ -72,8 +72,8 @@ public class MultipleSocketServer implements Runnable {
 			System.out.println(processArr[1]);
 			
 			// Send news - Feedreader
-			osw.write("Start of news\n");
 			for (String topic : topicArr) {
+				osw.write("NEWSTOP\n");
 				for (int i = 0; i < feeds.length; i++) {
 					if (((FeedReader) feeds[i]).getSector().compareTo(topic) == 0) {
 						FeedReader thefeed = ((FeedReader) feeds[i]);
@@ -91,11 +91,11 @@ public class MultipleSocketServer implements Runnable {
 					}
 				}
 			}
-			osw.write("End of news\n");
+			osw.write("SPLITINFO\n");
 			
 			// Send topics - Parse
-			osw.write("Start of topics\n");
 			for (String topic : topicArr) {
+				osw.write("TOPSTOP\n");
 				for (int i = 0; i < parsers.length; i++) {
 					if (((Parse) parsers[i]).getSector().compareTo(topic) == 0) {
 						Parse theparse = ((Parse) parsers[i]);
@@ -103,11 +103,12 @@ public class MultipleSocketServer implements Runnable {
 							if (T == null) {
 								continue;
 							}
+							osw.write("SPECTOPS\n");
 							if (convertedDate.compareTo(T.getTimestamp()) < 0) {
-								String returnTitle = theparse.getSector() + " Topic: " + T.getRecentTitle(); 
-								returnTitle = returnTitle + " ;@; " + T.getDate() + '\n';
-								returnTitle = returnTitle + T.topLinks();
-								returnTitle = returnTitle + T.topWords();
+								String returnTitle = T.getRecentTitle() + ";;\n"; 
+								returnTitle = returnTitle + T.getDate() + ";;\n";
+								returnTitle = returnTitle + T.topLinks() + ";;\n";
+								returnTitle = returnTitle + T.topWords()+ ";;\n";
 								osw.write(returnTitle);
 							}
 						}
@@ -115,7 +116,6 @@ public class MultipleSocketServer implements Runnable {
 					}
 				}
 			}
-			osw.write("End of topics\n");
 			osw.write("\t");
 		osw.flush();
 
