@@ -103,7 +103,8 @@ public class MultipleSocketServer implements Runnable {
 								continue;
 							}
 							if (convertedDate.compareTo(T.getTimestamp()) < 0) {
-								String returnTitle = theparse.getSector() + " Topic: " + T.getRecentTitle() + " ;@; " + T.getDate() + '\n';
+								String returnTitle = theparse.getSector() + " Topic: " + T.getRecentTitle(); 
+								returnTitle = returnTitle + " ;@; " + T.getDate() + '\n';
 								returnTitle = returnTitle + T.topLinks();
 								returnTitle = returnTitle + T.topWords();
 								osw.write(returnTitle);
