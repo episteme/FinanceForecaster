@@ -72,11 +72,11 @@ public class FeedReader implements Runnable {
 							if (numNews > (4 + stories[i].getSites())) {
 								System.out.println("----- UPDATED -----");
 								nAnal = new NewsAnalyst(stories[i]);
-								// updates the stires
+								// updates the stories
 								newStories[n-1] = nAnal.updateStory();
 								newStories[n-1].setSites(numNews);
 								newStories[n-1].setRank(n,numNews);
-							}else{
+							} else {
 							// if not, the story is simply copied
 								newStories[n-1] = stories[i];
 							}
@@ -150,8 +150,8 @@ public class FeedReader implements Runnable {
 		System.out.println("Sites: " + stories[n-1].getSites());
 		System.out.println("Rank: " + stories[n-1].getRank());
 		System.out.println("URL: " + stories[n-1].getLink());
-		// System.out.println("Sentiment: " + stories[n-1].getSentiment());
-		// System.out.println("Keywords: " + stories[n-1].printKeyWords());
+		System.out.println("Sentiment: " + stories[n-1].getSentiment());
+		System.out.println("Keywords: " + stories[n-1].printKeyWords());
 	}
 	public String getSector() {
 		return sector;

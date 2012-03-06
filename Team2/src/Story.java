@@ -41,7 +41,7 @@ public class Story {
 		for (final ListIterator<keyWord> listiter = keyWords.listIterator();listiter.hasNext();)
 		{
 			keyWord word = listiter.next();
-			temp += word.getWord() + ": " + word.getRel() + "; ";
+			temp += word.getWord() + ": " + word.getRel() + "; " + word.getSentiment() + " ";
 		}
 		return temp;
 	}
@@ -102,16 +102,22 @@ public class Story {
 class keyWord {
 	String word;
 	double relevance;
+	double sentiment;
 	
-		keyWord(String w, String r) {
+		keyWord(String w, String r, String s) {
 			word = w;
 			relevance = Double.parseDouble(r);
+			sentiment = Double.parseDouble(s);
 		}
 		
 		public String getWord(){
 			return word;
 		}
 		
+		public double getSentiment() {
+			return sentiment;
+		}
+
 		public double getRel(){
 			return relevance;
 		}

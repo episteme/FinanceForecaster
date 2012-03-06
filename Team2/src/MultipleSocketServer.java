@@ -83,7 +83,8 @@ public class MultipleSocketServer implements Runnable {
 							}
 							if (convertedDate.compareTo(S.getTimestamp()) < 0) {
 								String title = S.getTitle();
-								String returnTitle = thefeed.getSector() + ": " + title + " ;@; " + S.getDate() + '\n';
+								String returnTitle = thefeed.getSector() + ": " + title ;
+								returnTitle = returnTitle + " ;@; " + S.getDate() + '\n';
 								osw.write(returnTitle);
 							}
 						}

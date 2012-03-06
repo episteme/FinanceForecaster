@@ -13,14 +13,14 @@ import java.util.LinkedList;
 // dates these articles were picked up
 public class Topic {
 	
-	private HashMap<String, Double> words;
+	private HashMap<String, WordInfo> words;
 	private LinkedList<Article> articles;
 	private int numWords;
 	private Date timestamp;
 	private String recentTitle;
 	
 	// Constructor, begins list with first article
-	public Topic(HashMap<String, Double> words, Article article) {
+	public Topic(HashMap<String, WordInfo> words, Article article) {
 		this.words = words;
 		this.articles = new LinkedList<Article>();
 		articles.push(article);
@@ -62,20 +62,22 @@ public class Topic {
 		return timestamp;
 	}
 
-	public void addWord(String s, Double d) {
+	public void addWord(String s, Double d, Double sent) {
 		if (numWords == 0)
-			words = new HashMap<String, Double>();
+			words = new HashMap<String, WordInfo>();
 		if (words.containsKey(s)) {
-			Double currentVal = words.get(s);
+			WordInfo currentInfo = words.get(s);
+			currentInfo.setRel((currentInfo.getRel() + d) / 2.0);
+			currentInfo.setSent((currentInfo.getSent() + sent) / 2.0);
 			words.remove(s);
-			words.put(s, (currentVal + d) / 2.0);
+			words.put(s, currentInfo);
 		}
 		else
-			words.put(s, d);
+			words.put(s, new WordInfo(d, sent));
 		numWords++;
 	}
 
-	public HashMap<String, Double> getWords() {
+	public HashMap<String, WordInfo> getWords() {
 		return words;
 	}
 
@@ -95,8 +97,9 @@ public class Topic {
 	    Iterator<String> iterator = words.keySet().iterator();
 	    while (iterator.hasNext()) {  
 	       String key = iterator.next().toString();  
-	       String value = words.get(key).toString(); 
-	       System.out.println(key + " " + value);  
+	       String value = words.get(key).getRel().toString(); 
+	       String sent = words.get(key).getSent().toString(); 
+	       System.out.println(key + " " + value + " " + sent);  
 	    }  
 	}
 	
@@ -131,7 +134,7 @@ public class Topic {
 	    ArrayList<WordAndVal> wavl = new ArrayList<WordAndVal>();
 	    while (iterator.hasNext()) {  
 	       String key = iterator.next();  
-	       Double val = words.get(key);
+	       Double val = words.get(key).getRel();
 	       wavl.add(new WordAndVal(key, val));
 	    }  
 	    Collections.sort(wavl);
@@ -140,7 +143,8 @@ public class Topic {
 	    	j = wavl.size();
 	    String rString = "";
 	    for (int i = 1; i <= j; i++) {
-	    	rString = rString + wavl.get(wavl.size() - i).getWord() + "\n";
+	    	WordAndVal nextWord = wavl.get(wavl.size() - i);
+	    	rString = rString + nextWord.getWord() + " " + words.get(nextWord.getWord()).getSent() + "\n";
 	    }
 	    return rString;
 	}

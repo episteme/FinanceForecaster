@@ -99,6 +99,7 @@ public class Parse implements Runnable {
 					AlchemyAPI_KeywordParams params = new AlchemyAPI_KeywordParams();
 					params.setKeywordExtractMode("strict");
 					params.setMaxRetrieve(10);
+					params.setSentiment(true);
 					try {
 						doc = alchemyObj.URLGetRankedKeywords(art.getURL(), params);
 						// Convert output to String
@@ -128,15 +129,15 @@ public class Parse implements Runnable {
 								isNewTopic = false;
 								t.addArticle(art);
 								// initial word merging, adds together
-								for (int i = 0; i < result.length; i += 2)
-									t.addWord(result[i], Double.parseDouble(result[i+1]));
+								for (int i = 0; i < result.length; i += 3)
+									t.addWord(result[i], Double.parseDouble(result[i+1]), Double.parseDouble(result[i+2]));
 								System.out.println("Topic overlap found");
 							}
 						}
 						if (isNewTopic) {
 							Topic nextTopic = new Topic(art);
-							for (int i = 0; i < result.length; i += 2)
-								nextTopic.addWord(result[i], Double.parseDouble(result[i+1]));
+							for (int i = 0; i < result.length; i += 3)
+								nextTopic.addWord(result[i], Double.parseDouble(result[i+1]), Double.parseDouble(result[i+2]));
 							nextTopic.printWordData();
 							topics.add(nextTopic);
 						}
