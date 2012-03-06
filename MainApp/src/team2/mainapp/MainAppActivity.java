@@ -3,6 +3,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -55,6 +56,10 @@ public class MainAppActivity extends Activity {
 						Thread.sleep(10000);
 						Date dateType = new Date();
 						s = TCPClient.go(date);
+						
+						parseInput(s);
+						
+					
 						DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/d HH:mm:ss");
 						date = dateFormat.format(dateType);
 						Log.d("Debug", s);
@@ -72,5 +77,47 @@ public class MainAppActivity extends Activity {
 			}
 		};
 		new Thread(runnable).start();
+	}
+	
+	LinkedList<LinkedList<Topic>> allTopics = new LinkedList<LinkedList<Topic>>(); 
+
+	protected void parseInput(String s2) {
+		String[] type = s2.split("SPLITINFO\n");
+		String[] topicsectors = type[1].split("TOPSTOP\n");
+		
+		for (String sector : topicsectors)
+		{
+			LinkedList<Topic> topicSector = new LinkedList<Topic>();
+			
+			String[] topics = sector.split("SPECTOPS\n");
+			for (String topic : topics)
+			{
+				
+				String[] rawData = topic.split(";;\n");
+				String[] links = rawData[2].split(";\n");
+				String[] words = rawData[3].split(";\n");
+				
+				ArrayList<String> URLS = new ArrayList<String>();
+				for (String link : links)
+				{
+					String[] bits = link.split("@");
+					for(String bit : bits)
+						URLS.add(bit);
+				}
+				
+				ArrayList<KeyWord> KeyWords = new ArrayList<KeyWord>();
+				for (String word : words)
+				{
+					String[] bits = word.split("@");
+					for (int i = 0; i < bits.length; i += 2)
+						KeyWords.add(new KeyWord(bits[i], bits[i+1]));
+				}
+				
+				topicSector.add(new Topic(rawData[0],rawData[1],URLS,KeyWords));
+			}
+			
+			allTopics.add(topicSector);
+		}
+		
 	}
 }

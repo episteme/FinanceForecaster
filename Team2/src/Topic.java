@@ -144,7 +144,7 @@ public class Topic {
 	    String rString = "";
 	    for (int i = 1; i <= j; i++) {
 	    	WordAndVal nextWord = wavl.get(wavl.size() - i);
-	    	rString = rString + nextWord.getWord() + "@" + words.get(nextWord.getWord()).getSent() + ";\n";
+	    	rString = rString + nextWord.getWord() + " " + words.get(nextWord.getWord()).getSent() + "\n";
 	    }
 	    return rString;
 	}
@@ -160,7 +160,7 @@ public class Topic {
 		if (articles.size() < 3)
 			j = articles.size();
 		for (int i = 1; i <= j; i++)
-			rString = rString + articles.get(articles.size() - i).getURL() + ";\n";
+			rString = rString + articles.get(articles.size() - i).getURL() + "\n";
 		return rString;
 	}
 
