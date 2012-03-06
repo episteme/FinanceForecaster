@@ -15,16 +15,19 @@ public class MultipleSocketServer implements Runnable {
 		feeds[1] = new FeedReader("currency");
 		parsers[0] = new Parse("oil");
 		parsers[1] = new Parse("currency");
+
+		Thread oilt = new Thread(feeds[0]);
+		oilt.start();
+		Thread currt = new Thread(feeds[1]);
+		currt.start();
+		Thread oiltopt = new Thread(parsers[0]);
+		oiltopt.start();
+		Thread currtopt = new Thread(parsers[1]);
+		currtopt.start();
+		
+		// Start main server on this port
 		int port = 19999;
 		int count = 0;
-		Thread tf = new Thread(feeds[0]);
-		//tf.start();
-		Thread tf2 = new Thread(feeds[1]);
-		//tf2.start();
-		Thread tf3 = new Thread(parsers[0]);
-		tf3.start();
-		Thread tf4 = new Thread(parsers[1]);
-		tf4.start();
 		try {
 			ServerSocket socket1 = new ServerSocket(port);
 			System.out.println("Server starting..");
@@ -47,6 +50,7 @@ public class MultipleSocketServer implements Runnable {
 
 	public void run() {
 		try {
+			// Read input
 			BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
 			InputStreamReader isr = new InputStreamReader(is);
 			int character;
@@ -55,6 +59,10 @@ public class MultipleSocketServer implements Runnable {
 				process.append((char)character);
 			}
 			String processStr = process.toString();
+			
+			// Process input
+			// Format: topic;topic;;datetime
+			// let convertedDate be input date
 			String[] processArr = processStr.split(";;");
 			String[] topicArr = processArr[0].split(";");
 			BufferedOutputStream os = new BufferedOutputStream(connection.getOutputStream());
@@ -62,6 +70,9 @@ public class MultipleSocketServer implements Runnable {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
 			Date convertedDate = dateFormat.parse(processArr[1]); 
 			System.out.println(processArr[1]);
+			
+			// Send news - Feedreader
+			osw.write("Start of news\n");
 			for (String topic : topicArr) {
 				for (int i = 0; i < feeds.length; i++) {
 					if (((FeedReader) feeds[i]).getSector().compareTo(topic) == 0) {
@@ -72,14 +83,17 @@ public class MultipleSocketServer implements Runnable {
 							}
 							if (convertedDate.compareTo(S.getTimestamp()) < 0) {
 								String title = S.getTitle();
-								String returnTitle = thefeed.getSector() + ": " + title + " @ " + S.getDate() + '\n';
+								String returnTitle = thefeed.getSector() + ": " + title + " ;@; " + S.getDate() + '\n';
 								osw.write(returnTitle);
 							}
 						}
-
 					}
 				}
 			}
+			osw.write("End of news\n");
+			
+			// Send topics - Parse
+			osw.write("Start of topics\n");
 			for (String topic : topicArr) {
 				for (int i = 0; i < parsers.length; i++) {
 					if (((Parse) parsers[i]).getSector().compareTo(topic) == 0) {
@@ -97,6 +111,7 @@ public class MultipleSocketServer implements Runnable {
 					}
 				}
 			}
+			osw.write("End of topics\n");
 			osw.write("\t");
 		osw.flush();
 
