@@ -1,5 +1,7 @@
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -89,13 +91,52 @@ public class Topic {
 	}
 	
 	// Displays all the keyword information
-	public void printWords() {
+	public void printWordData() {
 	    Iterator<String> iterator = words.keySet().iterator();
 	    while (iterator.hasNext()) {  
 	       String key = iterator.next().toString();  
 	       String value = words.get(key).toString(); 
 	       System.out.println(key + " " + value);  
 	    }  
+	}
+	
+	// Displays top 5 words
+	public void printTopWords() {
+		final class WordAndVal implements Comparable<WordAndVal> {
+			private final String _word;
+			private final Double _count;
+			
+			public WordAndVal(String word, double count) {
+				this._word = word;
+				this._count = count;
+			}
+			
+			public Double getCount() {
+				return _count;
+			}
+			
+			public String getWord() {
+				return _word;
+			}
+			
+			public int compareTo(WordAndVal wav) {
+				return this._count.compareTo(wav.getCount());
+			}
+		};
+	    Iterator<String> iterator = words.keySet().iterator();
+	    ArrayList<WordAndVal> wavl = new ArrayList<WordAndVal>();
+	    while (iterator.hasNext()) {  
+	       String key = iterator.next();  
+	       Double val = words.get(key);
+	       wavl.add(new WordAndVal(key, val));
+	    }  
+	    Collections.sort(wavl);
+	    int j = 5;
+	    if (wavl.size() < 5)
+	    	j = wavl.size();
+	    for (int i = 1; i <= j; i++) {
+	    	System.out.println(wavl.get(wavl.size() - i).getWord());
+	    }
 	}
 
 	public String getDate() {

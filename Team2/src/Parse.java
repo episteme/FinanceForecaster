@@ -137,7 +137,7 @@ public class Parse implements Runnable {
 							Topic nextTopic = new Topic(art);
 							for (int i = 0; i < result.length; i += 2)
 								nextTopic.addWord(result[i], Double.parseDouble(result[i+1]));
-							nextTopic.printWords();
+							nextTopic.printWordData();
 							topics.add(nextTopic);
 						}
 					} catch (Exception e) {
@@ -156,7 +156,9 @@ public class Parse implements Runnable {
 						String date = dateFormat.format(nextart.getDate());
 						System.out.println(nextart.getURL() + " @ " + date);
 					} 
-					// t.printWords();
+					// Comment this out to test printTopWords
+					// t.printWordData();
+					t.printTopWords();
 				}
 				if (articles.size() != 0)
 					urlCache = articles.get(0).getURL();
