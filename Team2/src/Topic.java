@@ -100,8 +100,12 @@ public class Topic {
 	    }  
 	}
 	
-	// Displays top 5 words
 	public void printTopWords() {
+		System.out.print(this.topWords());
+	}
+	
+	// Displays top 5 words
+	public String topWords() {
 		final class WordAndVal implements Comparable<WordAndVal> {
 			private final String _word;
 			private final Double _count;
@@ -134,9 +138,26 @@ public class Topic {
 	    int j = 5;
 	    if (wavl.size() < 5)
 	    	j = wavl.size();
+	    String rString = "";
 	    for (int i = 1; i <= j; i++) {
-	    	System.out.println(wavl.get(wavl.size() - i).getWord());
+	    	rString = rString + wavl.get(wavl.size() - i).getWord() + "\n";
 	    }
+	    return rString;
+	}
+	
+	public void printTopLinks() {
+		System.out.println(this.topLinks());
+	}
+	
+	// Displays last 3 links
+	public String topLinks() {
+		String rString = "";
+		int j = articles.size();
+		if (articles.size() < 3)
+			j = articles.size();
+		for (int i = 1; i <= j; i++)
+			rString = rString + articles.get(articles.size() - i).getURL() + "\n";
+		return rString;
 	}
 
 	public String getDate() {
