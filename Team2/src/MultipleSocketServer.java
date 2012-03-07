@@ -73,7 +73,6 @@ public class MultipleSocketServer implements Runnable {
 			
 			// Send news - Feedreader
 			for (String topic : topicArr) {
-				osw.write("NEWSTOP\n");
 				for (int i = 0; i < feeds.length; i++) {
 					if (((FeedReader) feeds[i]).getSector().compareTo(topic) == 0) {
 						FeedReader thefeed = ((FeedReader) feeds[i]);
@@ -90,12 +89,12 @@ public class MultipleSocketServer implements Runnable {
 						}
 					}
 				}
+				osw.write("NEWSTOP\n");
 			}
 			osw.write("SPLITINFO\n");
 			
 			// Send topics - Parse
 			for (String topic : topicArr) {
-				osw.write("TOPSTOP\n");
 				for (int i = 0; i < parsers.length; i++) {
 					if (((Parse) parsers[i]).getSector().compareTo(topic) == 0) {
 						Parse theparse = ((Parse) parsers[i]);
@@ -103,7 +102,6 @@ public class MultipleSocketServer implements Runnable {
 							if (T == null) {
 								continue;
 							}
-							osw.write("SPECTOPS\n");
 							if (convertedDate.compareTo(T.getTimestamp()) < 0) {
 								String returnTitle = T.getRecentTitle() + ";;\n"; 
 								returnTitle = returnTitle + T.getDate() + ";;\n";
@@ -111,10 +109,12 @@ public class MultipleSocketServer implements Runnable {
 								returnTitle = returnTitle + T.topWords()+ ";;\n";
 								osw.write(returnTitle);
 							}
+							osw.write("SPECTOPS\n");
 						}
 
 					}
 				}
+				osw.write("TOPSTOP\n");
 			}
 			osw.write("\t");
 		osw.flush();
