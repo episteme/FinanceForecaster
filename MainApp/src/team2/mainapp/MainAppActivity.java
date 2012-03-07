@@ -53,16 +53,14 @@ public class MainAppActivity extends Activity {
 					final int value = i;
 					String date = "1212/12/12 12:12:12";
 					try {
+						if(i > 1)
+							Thread.sleep(30000);
 						Log.d("Debug", "Thread1");
 						s = TCPClient.go(date);
 						Date dateType = new Date();
-						Log.d("Debug", s);
 						parseInput(s);
 						DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/d HH:mm:ss");
 						date = dateFormat.format(dateType);
-						Log.d("Debug", s);
-						Thread.sleep(30000);
-
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -89,20 +87,15 @@ public class MainAppActivity extends Activity {
 	protected void parseInput(String s2) {
 		allTopics = new LinkedList<LinkedList<Topic>>(); 
 
-		Log.d("String", s2);
 		String[] type = s2.split("SPLITINFO\n");
 		String[] topicsectors = type[1].split("TOPSTOP\n");
-		Log.d("Type1", type[0]);
-		Log.d("Type2", type[1]);
 		for (String sector : topicsectors)
 		{
-			Log.d("Sector", sector);
 			LinkedList<Topic> topicSector = new LinkedList<Topic>();
 
 			String[] topics = sector.split("SPECTOPS\n");
 			for (String topic : topics)
 			{
-				Log.d("Topic", topic);
 				String[] rawData = topic.split(";;\n");
 				String[] links = rawData[2].split(";\n");
 				String[] words = rawData[3].split(";\n");
