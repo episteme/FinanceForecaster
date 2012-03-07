@@ -2,54 +2,82 @@ package team2.mainapp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 
+import team2.mainapp.PullToRefreshListView.OnRefreshListener;
+
 import android.app.Activity;
+import android.app.ListActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
-public class MainAppActivity extends Activity {
-	private Handler handler;
+public class MainAppActivity extends ListActivity {
 	static LinkedList<LinkedList<Topic>> allTopics; 
-	private ProgressBar progress;
 	static String s;
-
-	private ListView lv;
-
-	ArrayAdapter<String> ads;
-
+	private LinkedList<String> mListItems;
 	/** Called when the activity is first created. */
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		progress = (ProgressBar) findViewById(R.id.progressBar1);
-		handler = new Handler();
+		Log.d("debug","Hello");
 
-		final ArrayList<String> al = new ArrayList<String>();
+		mListItems = new LinkedList<String>();
 
-		al.add("penile");
-		al.add("vagenda");
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				R.layout.rowlayout, R.id.labelo, mListItems);
 
-		lv = (ListView)	findViewById(R.id.listView1);
-		ads = new ArrayAdapter<String>(this, R.layout.rowlayout, R.id.labelo, al);
-		lv.setAdapter(ads);
+		setListAdapter(adapter);
 
+		// Set a listener to be invoked when the list should be refreshed.
+		((PullToRefreshListView) getListView()).setOnRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				// Do work to refresh the list here.
+				GetDataTask task = new GetDataTask();
+				task.execute();
+			}
+		});
+
+		startProgress();
+		GetDataTask task = new GetDataTask();
+		task.execute();
 	}
 
-	public void startProgress(View view) {
+	private class GetDataTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... params) {
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void x) {
+			mListItems.clear();
+			if(allTopics != null){
+			for(LinkedList<Topic> topicsector : allTopics){
+				for(Topic topic : topicsector){
+					String allInfo = topic.getTitle() + "\n@ " + topic.getDate();
+					mListItems.add(allInfo);
+				}
+			}
+			((PullToRefreshListView) getListView()).onRefreshComplete();
+		}
+		}
+	}
+
+	public void startProgress() {
 		// Do something long
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
-				for (int i = 0; i <= 10; i++) {
+				for (int i = 0; i <= 1000; i++) {
 					final int value = i;
 					String date = "1212/12/12 12:12:12";
 					try {
@@ -64,25 +92,12 @@ public class MainAppActivity extends Activity {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					handler.post(new Runnable() {
-						@Override
-						public void run() {
-							progress.setProgress(value);
-							ads.clear();
-							for(LinkedList<Topic> topicsector : allTopics){
-								for(Topic topic : topicsector){
-									String allInfo = topic.getTitle() + topic.getDate();
-									ads.add(allInfo);
-								}
-							}
-						}
-					});
+
 				}
 			}
 		};
 		new Thread(runnable).start();
 	}
-
 
 	protected void parseInput(String s2) {
 		allTopics = new LinkedList<LinkedList<Topic>>(); 

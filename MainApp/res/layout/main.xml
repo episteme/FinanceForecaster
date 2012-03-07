@@ -4,42 +4,14 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <GridLayout
-        android:id="@+id/gridLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:columnCount="2"
-    	android:rowCount="1" 
-        >
-        
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="startProgress"
-        android:text="Start Progress" >
-    </Button>
-
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="false"
-        android:max="10"
-        android:padding="4dip" >
-    </ProgressBar>    
-        
-    </GridLayout>
-
-
-
-
+  
     
-        <ListView
-        android:id="@+id/listView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+          <team2.mainapp.PullToRefreshListView
+    android:id="@+id/android:list"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:textSize="10dp"
+    />
+    
 
 </LinearLayout>
