@@ -46,7 +46,9 @@ public class MainAppActivity extends ListActivity {
 			}
 		});
 
+		// Start the process of polling the server
 		startProgress();
+		// Do an initial refresh straight away without user input
 		GetDataTask task = new GetDataTask();
 		task.execute();
 	}
@@ -54,21 +56,26 @@ public class MainAppActivity extends ListActivity {
 	private class GetDataTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... params) {
+			// Do nothing
 			return null;
 		}
 
 		@Override
 		protected void onPostExecute(Void x) {
+			// Clear current list
 			mListItems.clear();
-			if(allTopics != null){
+			// Wait for data to exist
+			while(allTopics == null){			}
+
+			// Go through the allTopics datastructure, pasting title & date
 			for(LinkedList<Topic> topicsector : allTopics){
 				for(Topic topic : topicsector){
 					String allInfo = topic.getTitle() + "\n@ " + topic.getDate();
 					mListItems.add(allInfo);
 				}
 			}
+			// Complete the refresh
 			((PullToRefreshListView) getListView()).onRefreshComplete();
-		}
 		}
 	}
 
@@ -77,18 +84,25 @@ public class MainAppActivity extends ListActivity {
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
-				for (int i = 0; i <= 1000; i++) {
-					final int value = i;
-					String date = "1212/12/12 12:12:12";
+				// Initialise by always-in-past date
+				String date = "1212/12/12 12:12:12";
+				for (int i = 0; i >= 0; i++) {
 					try {
-						if(i > 1)
-							Thread.sleep(30000);
-						Log.d("Debug", "Thread1");
+						if(i > 0)
+							Thread.sleep(60000);
+						// Get new information from remote server
 						s = TCPClient.go(date);
-						Date dateType = new Date();
+						
+						// Parse retrieved information
 						parseInput(s);
+						
+						// Reset date to current
+						Date dateType = new Date();
+						
+						// Turns date into string
 						DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/d HH:mm:ss");
 						date = dateFormat.format(dateType);
+						
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -100,42 +114,60 @@ public class MainAppActivity extends ListActivity {
 	}
 
 	protected void parseInput(String s2) {
-		allTopics = new LinkedList<LinkedList<Topic>>(); 
+		try{
+		// Create a data structure to hold all the parsed information
+		LinkedList<LinkedList<Topic>> parseInfo = new LinkedList<LinkedList<Topic>>(); 
 
+		// Read in flag which splits between feedReader and Parse infos
 		String[] type = s2.split("SPLITINFO\n");
+
+		// Read in flag which splits between each sector in the Parse information
 		String[] topicsectors = type[1].split("TOPSTOP\n");
 		for (String sector : topicsectors)
 		{
-			LinkedList<Topic> topicSector = new LinkedList<Topic>();
+			// Create data structure to hold information for each topic
+			LinkedList<Topic> sectorInfo = new LinkedList<Topic>();
 
+			// Read in flag which splits between each topic in the sector
 			String[] topics = sector.split("SPECTOPS\n");
 			for (String topic : topics)
 			{
+				// Splits the topic data into parts
 				String[] rawData = topic.split(";;\n");
+
+				// Splits the URLS and keyWords into individual parts
 				String[] links = rawData[2].split(";\n");
 				String[] words = rawData[3].split(";\n");
 
+				// Creates an arraylist to hold the URLs
 				ArrayList<String> URLS = new ArrayList<String>();
 				for (String link : links)
 				{
-					String[] bits = link.split("@");
-					for(String bit : bits)
-						URLS.add(bit);
+					// Adds each link to the list
+					URLS.add(link);
 				}
 
+				// Creates an arraylist to hold the keyWords
 				ArrayList<KeyWord> KeyWords = new ArrayList<KeyWord>();
 				for (String word : words)
 				{
+					// Split each keyword into its word and its sentiment
 					String[] bits = word.split("@");
-					for (int i = 0; i < bits.length; i += 2)
-						KeyWords.add(new KeyWord(bits[i], bits[i+1]));
+					// Put each bit into the list
+					KeyWords.add(new KeyWord(bits[0], bits[1]));
 				}
 
-				topicSector.add(new Topic(rawData[0],rawData[1],URLS,KeyWords));
+				// Add the topic info to the sector info
+				sectorInfo.add(new Topic(rawData[0],rawData[1],URLS,KeyWords));
 			}
-
-			allTopics.add(topicSector);
+			// Add the sectorInfo to the parseInfo
+			parseInfo.add(sectorInfo);
 		}
-
+		// Replaces allTopics with parseInf
+		allTopics = parseInfo;
+		}
+		catch (Exception e){
+			Log.d("Debug","Error parsing new data");
+		}
 	}
 }

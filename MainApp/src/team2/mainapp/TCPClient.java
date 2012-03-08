@@ -45,16 +45,9 @@ public class TCPClient {
 					process.append((char)character);
 				}
 
-				Log.d("TCP", "C: Sent.");
-				
-				Log.d("Debug", "Printing");
-				
 				r = process.toString();
-				Log.d("Output", s);
 
-				Log.d("TCP", "C: Done.");
 				return r;
-
 
 			} catch(Exception e) {
 
