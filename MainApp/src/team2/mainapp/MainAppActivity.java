@@ -18,16 +18,33 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class MainAppActivity extends ListActivity {
-	static LinkedList<LinkedList<Topic>> allTopics; 
+	static LinkedList<Sector> allTopics; 
 	static String s;
+	static String sectors;
 	private LinkedList<String> mListItems;
+	int ready;
 	/** Called when the activity is first created. */
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		ready = 0;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		Log.d("debug","Hello");
+				
+		allTopics = new LinkedList<Sector>();
+		allTopics.add(new Sector("oil"));
+		allTopics.add(new Sector("currency"));
+		
+		Log.d("Debug","Bye bye");
+		
+		sectors = "";
+		for(Sector sector : allTopics)
+		{
+			sectors += sector.getName() + ";";
+		}
+		
+		Log.d("debug",sectors);
 
 		mListItems = new LinkedList<String>();
 
@@ -65,11 +82,11 @@ public class MainAppActivity extends ListActivity {
 			// Clear current list
 			mListItems.clear();
 			// Wait for data to exist
-			while(allTopics == null){			}
+			while(ready == 0){			}
 
 			// Go through the allTopics data structure, pasting title & date
-			for(LinkedList<Topic> topicsector : allTopics){
-				for(Topic topic : topicsector){
+			for(Sector topicsector : allTopics){
+				for(Topic topic : topicsector.getTopicData()){
 					String allInfo = topic.getTitle() + "\n@ " + topic.getDate();
 					mListItems.add(allInfo);
 				}
@@ -86,13 +103,14 @@ public class MainAppActivity extends ListActivity {
 			public void run() {
 				// Initialise by always-in-past date
 				String date = "1212/12/12 12:12:12";
+				String query = sectors + ";" + date;
 				for (int i = 0; i >= 0; i++) {
 					try {
 						if(i > 0)
 							Thread.sleep(60000);
 						// Get new information from remote server
 						Date dateType = new Date();
-						s = TCPClient.go(date);
+						s = TCPClient.go(query);
 						
 						// Parse retrieved information
 						parseInput(s);
@@ -101,7 +119,7 @@ public class MainAppActivity extends ListActivity {
 						
 						// Turns date into string
 						DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/d HH:mm:ss");
-						date = dateFormat.format(dateType);
+						query = sectors + ";" + dateFormat.format(dateType);
 						
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -115,19 +133,15 @@ public class MainAppActivity extends ListActivity {
 
 	protected void parseInput(String s2) {
 		try{
-		// Create a data structure to hold all the parsed information
-		LinkedList<LinkedList<Topic>> parseInfo = new LinkedList<LinkedList<Topic>>(); 
-
 		// Read in flag which splits between feedReader and Parse infos
 		String[] type = s2.split("SPLITINFO\n");
 
 		// Read in flag which splits between each sector in the Parse information
 		String[] topicsectors = type[1].split("TOPSTOP\n");
+		Log.d("debug",type[1]);
+		int i = 0;
 		for (String sector : topicsectors)
 		{
-			// Create data structure to hold information for each topic
-			LinkedList<Topic> sectorInfo = new LinkedList<Topic>();
-
 			// Read in flag which splits between each topic in the sector
 			String[] topics = sector.split("SPECTOPS\n");
 			for (String topic : topics)
@@ -135,12 +149,12 @@ public class MainAppActivity extends ListActivity {
 				// Splits the topic data into parts
 				String[] rawData = topic.split(";;\n");
 
-				if(rawData.length < 4)
+				if(rawData.length < 5)
 					break;
 				
 				// Splits the URLS and keyWords into individual parts
-				String[] links = rawData[2].split(";\n");
-				String[] words = rawData[3].split(";\n");
+				String[] links = rawData[3].split(";\n");
+				String[] words = rawData[4].split(";\n");
 
 				// Creates an arraylist to hold the URLs
 				ArrayList<String> URLS = new ArrayList<String>();
@@ -161,18 +175,19 @@ public class MainAppActivity extends ListActivity {
 				}
 
 				// Add the topic info to the sector info
-				sectorInfo.add(new Topic(rawData[0],rawData[1],URLS,KeyWords));
+				allTopics.get(i).addTopic(new Topic(rawData[1],rawData[2],URLS,KeyWords,rawData[0]));
 			}
 			// Add the sectorInfo to the parseInfo
-			parseInfo.add(sectorInfo);
+			i++;
+			ready = 1;
 		}
 		// Replaces allTopics with parseInf
 		Log.d("debug","New info received");
-		allTopics = parseInfo;
 		}
 		catch (Exception e){
 			e.printStackTrace();
 			Log.d("Debug",e.toString());
 		}
 	}
+
 }

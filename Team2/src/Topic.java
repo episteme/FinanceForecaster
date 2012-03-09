@@ -18,6 +18,7 @@ public class Topic {
 	private int numWords;
 	private Date timestamp;
 	private String recentTitle;
+	private int uid;
 	
 	// Constructor, begins list with first article
 	public Topic(HashMap<String, WordInfo> words, Article article) {
@@ -29,16 +30,21 @@ public class Topic {
 		recentTitle = article.getTitle();
 	}
 	
+	public int getUid() {
+		return uid;
+	}
+
 	public String getRecentTitle() {
 		return recentTitle;
 	}
 
-	public Topic(Article article) {
+	public Topic(Article article, int uid) {
 		this.articles = new LinkedList<Article>();
 		articles.push(article);
 		numWords = 0;
 		timestamp = new Date();
 		recentTitle = article.getTitle();
+		this.uid = uid;
 	}
 	
 	// Add article only if new

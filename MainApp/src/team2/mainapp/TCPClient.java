@@ -25,18 +25,15 @@ public class TCPClient {
 
 			Log.d("TCP", "C: Connecting...");
 
-			Socket socket = new Socket("10.0.2.2", 19999);
-
-			String message = "oil;currency;;" + s;
-			
+			Socket socket = new Socket("10.0.2.2", 19999);			
 
 			try {
 
-				Log.d("TCP", "C: Sending: '" + message + "'");
+				Log.d("TCP", "C: Sending: '" + s + "'");
 
 				PrintWriter out = new PrintWriter( new BufferedWriter( new OutputStreamWriter(socket.getOutputStream())),true);
 				Log.d("Message", "Message?");
-				out.println(message);
+				out.println(s);
 				BufferedInputStream is = new BufferedInputStream(socket.getInputStream());
 				InputStreamReader isr = new InputStreamReader(is);
 				int character;
@@ -45,6 +42,7 @@ public class TCPClient {
 					process.append((char)character);
 				}
 
+				Log.d("Message","Received");
 				r = process.toString();
 
 				return r;

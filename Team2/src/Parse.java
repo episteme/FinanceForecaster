@@ -18,6 +18,7 @@ public class Parse implements Runnable {
 	private LinkedList<Topic> topics = new LinkedList<Topic>();
 	private String sector;
 	private String urlCache;
+	private int uid;
 
 
 	Parse(String sector) {
@@ -26,6 +27,7 @@ public class Parse implements Runnable {
 	}
 
 	public void run() {
+		uid = 0;
 		while (true) {
 			try {
 				System.out.println("Starting search");
@@ -135,7 +137,8 @@ public class Parse implements Runnable {
 							}
 						}
 						if (isNewTopic) {
-							Topic nextTopic = new Topic(art);
+							Topic nextTopic = new Topic(art,uid);
+							uid++;
 							for (int i = 0; i < result.length; i += 3)
 								nextTopic.addWord(result[i], Double.parseDouble(result[i+1]), Double.parseDouble(result[i+2]));
 							nextTopic.printWordData();

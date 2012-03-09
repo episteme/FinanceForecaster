@@ -103,13 +103,14 @@ public class MultipleSocketServer implements Runnable {
 								continue;
 							}
 							if (convertedDate.compareTo(T.getTimestamp()) < 0) {
-								String returnTitle = T.getRecentTitle() + ";;\n"; 
-								returnTitle = returnTitle + T.getDate() + ";;\n";
-								returnTitle = returnTitle + T.topLinks() + ";;\n";
-								returnTitle = returnTitle + T.topWords()+ ";;\n";
+								String returnTitle = ((Integer) T.getUid()).toString() + ";;\n";
+								returnTitle += T.getRecentTitle() + ";;\n"; 
+								returnTitle += T.getDate() + ";;\n";
+								returnTitle += T.topLinks() + ";;\n";
+								returnTitle += T.topWords()+ ";;\n";
 								osw.write(returnTitle);
+								osw.write("SPECTOPS\n");
 							}
-							osw.write("SPECTOPS\n");
 						}
 
 					}

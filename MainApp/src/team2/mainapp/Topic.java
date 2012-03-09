@@ -8,12 +8,18 @@ public class Topic {
 	private ArrayList<String> URLS;
 	private ArrayList<KeyWord> keyWords;
 	private String date;
+	private int uid;
 	
-	Topic (String title, String date, ArrayList<String> URLS, ArrayList<KeyWord> keyWords){
+	Topic (String title, String date, ArrayList<String> URLS, ArrayList<KeyWord> keyWords, String uid){
+		this.uid = (int) Integer.parseInt(uid);
 		this.keyWords = keyWords;
 		this.title = title;
 		this.URLS = URLS;
 		this.date = date;
+	}
+
+	public int getUid() {
+		return uid;
 	}
 
 	public String getTitle() {
