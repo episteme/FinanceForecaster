@@ -67,7 +67,7 @@ public class MainAppActivity extends ListActivity {
 			// Wait for data to exist
 			while(allTopics == null){			}
 
-			// Go through the allTopics datastructure, pasting title & date
+			// Go through the allTopics data structure, pasting title & date
 			for(LinkedList<Topic> topicsector : allTopics){
 				for(Topic topic : topicsector){
 					String allInfo = topic.getTitle() + "\n@ " + topic.getDate();
@@ -91,13 +91,13 @@ public class MainAppActivity extends ListActivity {
 						if(i > 0)
 							Thread.sleep(60000);
 						// Get new information from remote server
+						Date dateType = new Date();
 						s = TCPClient.go(date);
 						
 						// Parse retrieved information
 						parseInput(s);
 						
 						// Reset date to current
-						Date dateType = new Date();
 						
 						// Turns date into string
 						DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/d HH:mm:ss");
@@ -135,6 +135,9 @@ public class MainAppActivity extends ListActivity {
 				// Splits the topic data into parts
 				String[] rawData = topic.split(";;\n");
 
+				if(rawData.length < 4)
+					break;
+				
 				// Splits the URLS and keyWords into individual parts
 				String[] links = rawData[2].split(";\n");
 				String[] words = rawData[3].split(";\n");
@@ -164,10 +167,12 @@ public class MainAppActivity extends ListActivity {
 			parseInfo.add(sectorInfo);
 		}
 		// Replaces allTopics with parseInf
+		Log.d("debug","New info received");
 		allTopics = parseInfo;
 		}
 		catch (Exception e){
-			Log.d("Debug","Error parsing new data");
+			e.printStackTrace();
+			Log.d("Debug",e.toString());
 		}
 	}
 }
