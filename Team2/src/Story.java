@@ -1,7 +1,10 @@
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 
 
@@ -38,12 +41,28 @@ public class Story {
 	// prints the keywords to a string
 	public String printKeyWords() {
 		String temp = "";
-		for (final ListIterator<keyWord> listiter = keyWords.listIterator();listiter.hasNext();)
+		for (final ListIterator<keyWord> listiter = keyWords.listIterator(); listiter.hasNext();)
 		{
 			keyWord word = listiter.next();
 			temp += word.getWord() + ": " + word.getRel() + "; " + word.getSentiment() + " ";
 		}
 		return temp;
+	}
+	
+	public String top5keyWords() {
+		List castList = (List) keyWords;
+		Collections.sort(castList);
+		Collections.reverse(castList);
+		String returnString = "";
+		int j = 5;
+		if (castList.size() < 5) {
+			j = castList.size();
+		}
+		for (int i = 0; i < j; i++) {
+			keyWord nextWord = ((keyWord) castList.get(i));
+			returnString += nextWord.getWord() + "@" + nextWord.getSentiment() +";\n";
+		}
+		return returnString;
 	}
 	
 	public void clearKeyWords() {
@@ -99,15 +118,19 @@ public class Story {
 }
 
 //contains the keyword and its relevance
-class keyWord {
+class keyWord implements Comparable<keyWord> {
 	String word;
-	double relevance;
-	double sentiment;
+	Double relevance;
+	Double sentiment;
 	
 		keyWord(String w, String r, String s) {
 			word = w;
 			relevance = Double.parseDouble(r);
 			sentiment = Double.parseDouble(s);
+		}
+		
+		public int compareTo(keyWord k) {
+			return (this.relevance).compareTo(k.getRel());
 		}
 		
 		public String getWord(){

@@ -8,8 +8,6 @@ public class MultipleSocketServer implements Runnable {
 	static Runnable[] feeds = new Runnable[2];
 	static Runnable[] parsers = new Runnable[2];
 	private Socket connection;
-	private String TimeStamp;
-	private int ID;
 	public static void main(String[] args) {
 		feeds[0] = new FeedReader("oil");
 		feeds[1] = new FeedReader("currency");
@@ -27,13 +25,12 @@ public class MultipleSocketServer implements Runnable {
 		
 		// Start main server on this port
 		int port = 19999;
-		int count = 0;
 		try {
 			ServerSocket socket1 = new ServerSocket(port);
 			System.out.println("Server starting..");
 			while (true) {
 				Socket connection = socket1.accept();
-				Runnable runnable = new MultipleSocketServer(connection, ++count);
+				Runnable runnable = new MultipleSocketServer(connection);
 				Thread thread = new Thread(runnable);
 				thread.start();
 			}
@@ -43,9 +40,8 @@ public class MultipleSocketServer implements Runnable {
 		}
 	}
 
-	MultipleSocketServer(Socket s, int i) {
+	MultipleSocketServer(Socket s) {
 		this.connection = s;
-		this.ID = i;
 	}
 
 	public void run() {
@@ -82,9 +78,13 @@ public class MultipleSocketServer implements Runnable {
 							}
 							if (convertedDate.compareTo(S.getTimestamp()) < 0) {
 								String title = S.getTitle();
-								String returnTitle = thefeed.getSector() + ": " + title ;
-								returnTitle = returnTitle + " ;@; " + S.getDate() + '\n';
+								String returnTitle = title ;
+								returnTitle = returnTitle + " ;@; " + S.getDate() + "\n";
 								osw.write(returnTitle);
+								osw.write("KEYWORDSTART\n");
+								String returnWords = S.top5keyWords();
+								osw.write(returnWords);
+								osw.write("KEYWORDEND\n");
 							}
 						}
 					}
@@ -117,7 +117,7 @@ public class MultipleSocketServer implements Runnable {
 				osw.write("TOPSTOP\n");
 			}
 			osw.write("\t");
-		osw.flush();
+			osw.flush();
 
 	}
 	catch (Exception e) {
