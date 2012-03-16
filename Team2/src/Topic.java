@@ -24,29 +24,22 @@ public class Topic {
 	public Topic(HashMap<String, WordInfo> words, Article article) {
 		this.words = words;
 		this.articles = new LinkedList<Article>();
-		articles.push(article);
-		numWords = 1;
-		timestamp = new Date();
-		recentTitle = article.getTitle();
-	}
-	
-	public int getUid() {
-		return uid;
-	}
-
-	public String getRecentTitle() {
-		return recentTitle;
+		this.articles.push(article);
+		this.numWords = 1;
+		this.timestamp = new Date();
+		this.recentTitle = article.getTitle();
+		this.uid = -1;
 	}
 
 	public Topic(Article article, int uid) {
 		this.articles = new LinkedList<Article>();
-		articles.push(article);
-		numWords = 0;
-		timestamp = new Date();
-		recentTitle = article.getTitle();
+		this.articles.push(article);
+		this.numWords = 0;
+		this.timestamp = new Date();
+		this.recentTitle = article.getTitle();
 		this.uid = uid;
 	}
-	
+
 	// Add article only if new
 	public void addArticle(Article article) {
 	    Iterator<Article> iterator = articles.iterator();
@@ -62,10 +55,6 @@ public class Topic {
 	    	articles.push(article);
 	    timestamp = new Date();
 	    recentTitle = article.getTitle();
-	}
-	
-	public Date getTimestamp() {
-		return timestamp;
 	}
 
 	public void addWord(String s, Double d, Double sent) {
@@ -83,14 +72,6 @@ public class Topic {
 		numWords++;
 	}
 
-	public HashMap<String, WordInfo> getWords() {
-		return words;
-	}
-
-	public LinkedList<Article> getArticles() {
-		return articles;
-	}
-	
 	public boolean containsWord(String s) {
 		if (words.containsKey(s))
 			return true;
@@ -170,8 +151,29 @@ public class Topic {
 		return rString;
 	}
 
+	public LinkedList<Article> getArticles() {
+		return articles;
+	}
+
 	public String getDate() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		return dateFormat.format(timestamp);
 	}
+	
+	public String getRecentTitle() {
+		return recentTitle;
+	}
+	
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public int getUid() {
+		return uid;
+	}
+
+	public HashMap<String, WordInfo> getWords() {
+		return words;
+	}
+	
 }
