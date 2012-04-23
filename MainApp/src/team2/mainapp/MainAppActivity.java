@@ -83,14 +83,17 @@ public class MainAppActivity extends ListActivity {
 			mListItems.clear();
 			// Wait for data to exist
 			while (ready == 0) {}
+			
+			
 
 			// Go through the allTopics data structure, pasting title & date
 			for (Sector topicsector : allTopics) {
+				java.util.Collections.sort(topicsector.getTopicData());
 				for (Topic topic : topicsector.getTopicData()) {
 					String allInfo = topic.getTitle() + "\n@ " + topic.getDate() + "\n@" + topic.getArtsLastHour();
 					mListItems.add(allInfo);
 				}
-			}
+			} 
 			// Complete the refresh
 			((PullToRefreshListView) getListView()).onRefreshComplete();
 		}

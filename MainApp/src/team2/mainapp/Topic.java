@@ -3,7 +3,7 @@ package team2.mainapp;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Topic {
+public class Topic implements Comparable<Topic> {
 	private String title;
 	private ArrayList<String> URLS;
 	private ArrayList<KeyWord> keyWords;
@@ -11,13 +11,17 @@ public class Topic {
 	private int uid;
 	private int artsLastHour;
 	
-	Topic (String title, String date,  int artsLH, ArrayList<String> URLS, ArrayList<KeyWord> keyWords, String uid){
+	Topic (String title, String date,  int artsLH, ArrayList<String> URLS, ArrayList<KeyWord> keyWords, String uid) {
 		this.uid = (int) Integer.parseInt(uid);
 		this.keyWords = keyWords;
 		this.title = title;
 		this.URLS = URLS;
 		this.date = date;
 		this.artsLastHour = artsLH;
+	}
+	
+	public int compareTo(Topic temp) {
+		return this.artsLastHour - temp.artsLastHour;
 	}
 
 	public int getArtsLastHour() {

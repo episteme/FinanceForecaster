@@ -36,4 +36,6 @@ public class Sector {
 	    if (!repeat)
 	    	topicData.add(topic);
 	}
+	
+	
 }
