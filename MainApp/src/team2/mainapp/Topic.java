@@ -21,7 +21,7 @@ public class Topic implements Comparable<Topic> {
 	}
 	
 	public int compareTo(Topic temp) {
-		return this.artsLastHour - temp.artsLastHour;
+		return temp.artsLastHour - this.artsLastHour;
 	}
 
 	public int getArtsLastHour() {
