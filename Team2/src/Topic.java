@@ -20,6 +20,7 @@ public class Topic {
 	private String recentTitle;
 	private int uid;
 	
+	
 	// Constructor, begins list with first article
 	public Topic(HashMap<String, WordInfo> words, Article article) {
 		this.words = words;
@@ -149,6 +150,20 @@ public class Topic {
 		for (int i = 1; i <= j; i++)
 			rString = rString + articles.get(articles.size() - i).getURL() + ";\n";
 		return rString;
+	}
+	
+	// Return the number of articles received in the last hour
+	public int artsLastHour() {
+		int result = 0;
+		Date hourAgo = new Date(System.currentTimeMillis() - (60 * 60 * 1000));
+		for (int sizeof = articles.size(); sizeof >= 0; sizeof--) {
+			if (articles.get(sizeof).getDate().compareTo(hourAgo) < 0) {
+				// More than an hour old
+				break;
+			}
+			result++;
+		}
+		return result;
 	}
 
 	public LinkedList<Article> getArticles() {
