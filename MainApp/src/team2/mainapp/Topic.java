@@ -56,11 +56,12 @@ public class Topic implements Comparable<Topic> {
 		return keyWords;
 	}
 	
-	public void printWords() {
+	public String getWords() {
+		String result = "";
 		for (KeyWord kw : keyWords) {
-			System.out.print(kw.word + " ");
+			result = result + kw.word + " ";
 		}
-		System.out.print("\n");
+		return result;
 	}
 
 }
