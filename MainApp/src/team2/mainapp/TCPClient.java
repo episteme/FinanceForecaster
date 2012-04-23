@@ -15,11 +15,11 @@ import android.util.Log;
 
 public class TCPClient {
 	
-	public static String go(String s) {
+	public static String go(String str) {
 
 		String r;
 		
-		Log.d("Connection: ",s);
+		Log.d("Connection: ",str);
 		
 		try {
 
@@ -29,7 +29,7 @@ public class TCPClient {
 
 			try {
 
-				Log.d("TCP", "C: Sending: '" + s + "'");
+				Log.d("TCP", "C: Sending: '" + str + "'");
 
 				PrintWriter out = new PrintWriter( new BufferedWriter( new OutputStreamWriter(socket.getOutputStream())),true);
 				Log.d("Message", "Message?");
