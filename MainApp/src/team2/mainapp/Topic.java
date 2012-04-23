@@ -55,7 +55,13 @@ public class Topic implements Comparable<Topic> {
 	public ArrayList<KeyWord> getKeyWords() {
 		return keyWords;
 	}
-
+	
+	public void printWords() {
+		for (KeyWord kw : keyWords) {
+			System.out.print(kw.word + " ");
+		}
+		System.out.print("\n");
+	}
 
 }
 
@@ -67,8 +73,8 @@ class KeyWord {
 		word = w;
 		sentiment = Double.parseDouble(s);
 	}
-
-	public String getWord(){
+	
+	public String getWord() {
 		return word;
 	}
 

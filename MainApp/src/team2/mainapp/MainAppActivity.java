@@ -91,6 +91,7 @@ public class MainAppActivity extends ListActivity {
 				java.util.Collections.sort(topicsector.getTopicData());
 				for (Topic topic : topicsector.getTopicData()) {
 					String allInfo = topic.getTitle() + "\n@ " + topic.getDate() + "\n " + topic.getArtsLastHour();
+					topic.printWords();
 					mListItems.add(allInfo);
 				}
 			} 
