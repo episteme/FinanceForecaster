@@ -33,7 +33,7 @@ public class TCPClient {
 
 				PrintWriter out = new PrintWriter( new BufferedWriter( new OutputStreamWriter(socket.getOutputStream())),true);
 				Log.d("Message", "Message?");
-				out.println(s);
+				out.println(str);
 				BufferedInputStream is = new BufferedInputStream(socket.getInputStream());
 				InputStreamReader isr = new InputStreamReader(is);
 				int character;
