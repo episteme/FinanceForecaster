@@ -82,12 +82,12 @@ public class MainAppActivity extends ListActivity {
 			// Clear current list
 			mListItems.clear();
 			// Wait for data to exist
-			while(ready == 0){			}
+			while (ready == 0) {}
 
 			// Go through the allTopics data structure, pasting title & date
-			for(Sector topicsector : allTopics){
-				for(Topic topic : topicsector.getTopicData()){
-					String allInfo = topic.getTitle() + "\n@ " + topic.getDate();
+			for (Sector topicsector : allTopics) {
+				for (Topic topic : topicsector.getTopicData()) {
+					String allInfo = topic.getTitle() + "\n@ " + topic.getDate() + "\n@" + topic.getArtsLastHour();
 					mListItems.add(allInfo);
 				}
 			}
@@ -153,8 +153,8 @@ public class MainAppActivity extends ListActivity {
 					break;
 				
 				// Splits the URLS and keyWords into individual parts
-				String[] links = rawData[3].split(";\n");
-				String[] words = rawData[4].split(";\n");
+				String[] links = rawData[4].split(";\n");
+				String[] words = rawData[5].split(";\n");
 
 				// Creates an arraylist to hold the URLs
 				ArrayList<String> URLS = new ArrayList<String>();
@@ -175,7 +175,7 @@ public class MainAppActivity extends ListActivity {
 				}
 
 				// Add the topic info to the sector info
-				allTopics.get(i).addTopic(new Topic(rawData[1],rawData[2],URLS,KeyWords,rawData[0]));
+				allTopics.get(i).addTopic(new Topic(rawData[1],rawData[2],Integer.parseInt(rawData[3]),URLS,KeyWords,rawData[0]));
 			}
 			// Add the sectorInfo to the parseInfo
 			i++;

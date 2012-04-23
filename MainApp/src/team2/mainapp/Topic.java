@@ -9,13 +9,23 @@ public class Topic {
 	private ArrayList<KeyWord> keyWords;
 	private String date;
 	private int uid;
+	private int artsLastHour;
 	
-	Topic (String title, String date, ArrayList<String> URLS, ArrayList<KeyWord> keyWords, String uid){
+	Topic (String title, String date,  int artsLH, ArrayList<String> URLS, ArrayList<KeyWord> keyWords, String uid){
 		this.uid = (int) Integer.parseInt(uid);
 		this.keyWords = keyWords;
 		this.title = title;
 		this.URLS = URLS;
 		this.date = date;
+		this.artsLastHour = artsLH;
+	}
+
+	public int getArtsLastHour() {
+		return artsLastHour;
+	}
+
+	public void setArtsLastHour(int artsLastHour) {
+		this.artsLastHour = artsLastHour;
 	}
 
 	public int getUid() {
