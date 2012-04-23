@@ -104,6 +104,7 @@ public class MultipleSocketServer implements Runnable {
 							}
 							if (convertedDate.compareTo(T.getTimestamp()) < 0) {
 								String returnTitle = ((Integer) T.getUid()).toString() + ";;\n";
+								returnTitle += T.artsLastHour() + ";;\n";
 								returnTitle += T.getRecentTitle() + ";;\n"; 
 								returnTitle += T.getDate() + ";;\n";
 								returnTitle += T.topLinks() + ";;\n";
