@@ -24,7 +24,7 @@ public class MultipleSocketServer implements Runnable {
 		currtopt.start();
 		
 		// Start main server on this port
-		int port = 19999;
+		int port = 8009;
 		try {
 			ServerSocket socket1 = new ServerSocket(port);
 			System.out.println("Server starting..");
