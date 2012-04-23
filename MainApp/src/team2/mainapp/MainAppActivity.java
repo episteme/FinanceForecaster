@@ -113,13 +113,14 @@ public class MainAppActivity extends ListActivity {
 							Thread.sleep(60000);
 						// Get new information from remote server
 						Date dateType = new Date();
+						Log.d("Debug1", query);
 						s = TCPClient.go(query);
 						
 						// Parse retrieved information
 						parseInput(s);
 						
 						// Reset date to current
-						
+						Log.d("Debug2", s);
 						// Turns date into string
 						DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/d HH:mm:ss");
 						query = sectors + ";" + dateFormat.format(dateType);
