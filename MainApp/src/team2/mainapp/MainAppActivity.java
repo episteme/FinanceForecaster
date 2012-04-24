@@ -2,13 +2,11 @@ package team2.mainapp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 
 import team2.mainapp.PullToRefreshListView.OnRefreshListener;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -16,13 +14,15 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainAppActivity extends ListActivity {
-	static LinkedList<Sector> allTopics; 
 	static String s;
 	static String sectors;
 	static int incrementing;
@@ -33,21 +33,22 @@ public class MainAppActivity extends ListActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
 		started = true;
 		ready = 0;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		Log.d("debug","Hello");
-				
-		allTopics = new LinkedList<Sector>();
-		allTopics.add(new Sector("oil"));
-		allTopics.add(new Sector("currency"));
 		
-		Log.d("Debug","Bye bye");
+		GlobalState gState = (GlobalState) getApplication();
+				
+		gState.setAllTopics(new LinkedList<Sector>());
+		gState.getAllTopics().add(new Sector("oil"));
+		gState.getAllTopics().add(new Sector("currency"));
+		
+		Log.d("Debug", "Bye bye");
 		
 		sectors = "";
-		for(Sector sector : allTopics)
+		for(Sector sector : gState.getAllTopics())
 		{
 			sectors += sector.getName() + ";";
 		}
@@ -78,21 +79,48 @@ public class MainAppActivity extends ListActivity {
 		task.execute();
 	}
 	
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.mainmenu, menu);
+		return true;
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menuitem1:
+			Toast.makeText(this, "Menu Item 1 selected", Toast.LENGTH_SHORT)
+					.show();
+			Intent myIntent = new Intent(this, GoogleNews.class);
+			startActivity(myIntent);
+			break;
+		case R.id.menuitem2:
+			Toast.makeText(this, "Menu item 2 selected", Toast.LENGTH_SHORT)
+					.show();
+			break;
+
+		default:
+			break;
+		}
+
+		return true;
+	}
 	
 	public void createNotification(String title, int uid) {
-		Log.d("Hi","Notification");
+		Log.d("Debug", "Creating Notification");
 		NotificationManager notificationManager = (NotificationManager) 
 					getSystemService(NOTIFICATION_SERVICE);
-		Notification notification = new Notification(R.drawable.icon,
-				"A new notification", System.currentTimeMillis());
-		// Hide the notification after its selected
-		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
+		// Construction
+		Notification.Builder not = new Notification.Builder(this);
+		not.setSmallIcon(R.drawable.psyduck2);
+		not.setContentTitle(title);
+		not.setContentText("Blah");
 		Intent intent = new Intent(this, SingleTopic.class);
 		PendingIntent activity = PendingIntent.getActivity(this, 0, intent, 0);
-		notification.setLatestEventInfo(this, title,
-				"Blah", activity);
-		notification.number += 1;
+		not.setContentIntent(activity);
+		// Hide the notification after its selected
+		not.setAutoCancel(true);
+		Notification notification = not.getNotification();
+		Log.d("Debug", "Sending Notification");
 		notificationManager.notify(uid, notification);
 	}
 
@@ -109,11 +137,9 @@ public class MainAppActivity extends ListActivity {
 			mListItems.clear();
 			// Wait for data to exist
 			while (ready == 0) {}
-			
-			boolean alert = false;
-			
+			GlobalState gState = (GlobalState) getApplication();
 			// Go through the allTopics data structure, pasting title & date
-			for (Sector topicsector : allTopics) {
+			for (Sector topicsector : gState.getAllTopics()) {
 				java.util.Collections.sort(topicsector.getTopicData());
 				for (Topic topic : topicsector.getTopicData()) {
 					String allInfo = topic.getTitle() + "\n@ " + topic.getDate() + "\n " + topic.getArtsLastHour() + "\n" + topic.getWords();
@@ -131,6 +157,7 @@ public class MainAppActivity extends ListActivity {
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
+				Looper.prepare();
 				// Initialise by always-in-past date
 				String date = "1212/12/12 12:12:12";
 				String query = sectors + ";" + date;
@@ -163,7 +190,7 @@ public class MainAppActivity extends ListActivity {
 	}
 
 	protected void parseInput(String s2) {
-		try{
+		try {
 		// Read in flag which splits between feedReader and Parse infos
 		String[] type = s2.split("SPLITINFO\n");
 
@@ -180,7 +207,7 @@ public class MainAppActivity extends ListActivity {
 				// Splits the topic data into parts
 				String[] rawData = topic.split(";;\n");
 
-				if(rawData.length < 5)
+				if (rawData.length < 5)
 					break;
 				
 				// Splits the URLS and keyWords into individual parts
@@ -204,11 +231,13 @@ public class MainAppActivity extends ListActivity {
 					// Put each bit into the list
 					KeyWords.add(new KeyWord(bits[0], bits[1]));
 				}
-
+				GlobalState gState = (GlobalState) getApplication();
 				// Add the topic info to the sector info
-				boolean alert = allTopics.get(i).addTopic(new Topic(rawData[1],rawData[2],Integer.parseInt(rawData[3]),URLS,KeyWords,rawData[0]));
-				if(alert)
-					createNotification(rawData[1],Integer.parseInt(rawData[0]));
+				boolean alert = gState.getAllTopics().get(i).addTopic(
+						new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), URLS, KeyWords, rawData[0]));
+				if (alert) {
+					createNotification(rawData[1], Integer.parseInt(rawData[0])); 
+				}
 			}
 			// Add the sectorInfo to the parseInfo
 			i++;

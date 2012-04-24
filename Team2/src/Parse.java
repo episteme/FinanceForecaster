@@ -167,7 +167,7 @@ public class Parse implements Runnable {
 				if (articles.size() != 0)
 					urlCache = articles.get(0).getURL();
 				System.out.println("Waiting before rerunning");
-				Thread.sleep(10000);
+				Thread.sleep(16000);
 			} catch (Exception e){
 				e.printStackTrace();
 				System.out.println(e);

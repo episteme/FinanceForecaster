@@ -21,6 +21,7 @@ public class Sector {
 		return topicData;
 	}
 
+	// Returns true if >= articles added in past hour.
 	public boolean addTopic(Topic topic) {
 		Iterator<Topic> iterator = topicData.iterator();
 	    boolean repeat = false;
@@ -35,7 +36,7 @@ public class Sector {
 	    }
 	    if (!repeat)
 	    	topicData.add(topic);
-	    if(topic.getArtsLastHour() >= 5)
+	    if(topic.getArtsLastHour() >= 3)
 	    	return true;
 	    else
 	    	return false;
