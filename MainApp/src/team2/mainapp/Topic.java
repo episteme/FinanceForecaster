@@ -59,7 +59,7 @@ public class Topic implements Comparable<Topic> {
 	public String getWords() {
 		String result = "";
 		for (KeyWord kw : keyWords) {
-			result = result + kw.word + " ";
+			result = result + kw.word;
 		}
 		return result;
 	}
