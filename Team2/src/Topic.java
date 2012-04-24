@@ -11,7 +11,7 @@ import java.util.LinkedList;
 // it is a collection of relevant keywords,
 // links to the relevant articles and the
 // dates these articles were picked up
-public class Topic {
+public class Topic implements Comparable<Topic> {
 	
 	private HashMap<String, WordInfo> words;
 	private LinkedList<Article> articles;
@@ -39,6 +39,10 @@ public class Topic {
 		this.timestamp = new Date();
 		this.recentTitle = article.getTitle();
 		this.uid = uid;
+	}
+	
+	public int compareTo(Topic temp) {
+		return temp.artsLastHour() - this.artsLastHour();
 	}
 
 	// Add article only if new

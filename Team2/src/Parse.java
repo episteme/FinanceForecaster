@@ -99,7 +99,7 @@ public class Parse implements Runnable {
 					art.printMe();
 					AlchemyAPI alchemyObj = AlchemyAPI.GetInstanceFromString(APIkey);
 					AlchemyAPI_KeywordParams params = new AlchemyAPI_KeywordParams();
-//					params.setKeywordExtractMode("strict");
+					params.setKeywordExtractMode("strict");
 //					params.setMaxRetrieve(10);
 					params.setSentiment(true);
 					try {

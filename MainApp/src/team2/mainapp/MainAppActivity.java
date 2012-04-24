@@ -10,6 +10,10 @@ import team2.mainapp.PullToRefreshListView.OnRefreshListener;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,12 +25,16 @@ public class MainAppActivity extends ListActivity {
 	static LinkedList<Sector> allTopics; 
 	static String s;
 	static String sectors;
+	static int incrementing;
+	static boolean started;
 	private LinkedList<String> mListItems;
 	int ready;
 	/** Called when the activity is first created. */
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		
+		started = true;
 		ready = 0;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
@@ -69,6 +77,24 @@ public class MainAppActivity extends ListActivity {
 		GetDataTask task = new GetDataTask();
 		task.execute();
 	}
+	
+	
+	public void createNotification(String title, int uid) {
+		Log.d("Hi","Notification");
+		NotificationManager notificationManager = (NotificationManager) 
+					getSystemService(NOTIFICATION_SERVICE);
+		Notification notification = new Notification(R.drawable.icon,
+				"A new notification", System.currentTimeMillis());
+		// Hide the notification after its selected
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+		Intent intent = new Intent(this, SingleTopic.class);
+		PendingIntent activity = PendingIntent.getActivity(this, 0, intent, 0);
+		notification.setLatestEventInfo(this, title,
+				"Blah", activity);
+		notification.number += 1;
+		notificationManager.notify(uid, notification);
+	}
 
 	private class GetDataTask extends AsyncTask<Void, Void, Void> {
 		@Override
@@ -84,6 +110,8 @@ public class MainAppActivity extends ListActivity {
 			// Wait for data to exist
 			while (ready == 0) {}
 			
+			boolean alert = false;
+			
 			// Go through the allTopics data structure, pasting title & date
 			for (Sector topicsector : allTopics) {
 				java.util.Collections.sort(topicsector.getTopicData());
@@ -92,6 +120,7 @@ public class MainAppActivity extends ListActivity {
 					mListItems.add(allInfo);
 				}
 			} 
+			
 			// Complete the refresh
 			((PullToRefreshListView) getListView()).onRefreshComplete();
 		}
@@ -178,6 +207,8 @@ public class MainAppActivity extends ListActivity {
 
 				// Add the topic info to the sector info
 				allTopics.get(i).addTopic(new Topic(rawData[1],rawData[2],Integer.parseInt(rawData[3]),URLS,KeyWords,rawData[0]));
+				if(Integer.parseInt(rawData[3]) >= 5)
+					createNotification(rawData[1],Integer.parseInt(rawData[0]));
 			}
 			// Add the sectorInfo to the parseInfo
 			i++;
