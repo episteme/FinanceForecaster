@@ -206,8 +206,8 @@ public class MainAppActivity extends ListActivity {
 				}
 
 				// Add the topic info to the sector info
-				allTopics.get(i).addTopic(new Topic(rawData[1],rawData[2],Integer.parseInt(rawData[3]),URLS,KeyWords,rawData[0]));
-				if(Integer.parseInt(rawData[3]) >= 5)
+				boolean alert = allTopics.get(i).addTopic(new Topic(rawData[1],rawData[2],Integer.parseInt(rawData[3]),URLS,KeyWords,rawData[0]));
+				if(alert)
 					createNotification(rawData[1],Integer.parseInt(rawData[0]));
 			}
 			// Add the sectorInfo to the parseInfo

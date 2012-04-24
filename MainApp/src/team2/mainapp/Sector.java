@@ -21,7 +21,7 @@ public class Sector {
 		return topicData;
 	}
 
-	public void addTopic(Topic topic) {
+	public boolean addTopic(Topic topic) {
 		Iterator<Topic> iterator = topicData.iterator();
 	    boolean repeat = false;
 	    while (iterator.hasNext()) {
@@ -35,6 +35,10 @@ public class Sector {
 	    }
 	    if (!repeat)
 	    	topicData.add(topic);
+	    if(topic.getArtsLastHour() >= 5)
+	    	return true;
+	    else
+	    	return false;
 	}
 	
 	
