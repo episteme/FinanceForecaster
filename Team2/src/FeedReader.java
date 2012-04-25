@@ -99,11 +99,11 @@ public class FeedReader implements Runnable {
 					printStory(n, newStories);
 					n++;
 					// Wait to avoid Google throttle
-					Thread.sleep( (1000) ); 
+					Thread.sleep( (5000) ); 
 				}
 				stories = newStories;
 				// Wait before repeating
-				Thread.sleep( (10000) ); 
+				Thread.sleep( (60000) ); 
 			}
 			catch (Exception ex) {
 				ex.printStackTrace();

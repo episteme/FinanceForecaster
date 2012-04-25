@@ -113,7 +113,7 @@ public class Parse implements Runnable {
 						LinkedList<String> newWords = new LinkedList<String>();
 						if (result.length < 6)
 							continue;
-						for (int i = 0; i < result.length; i += 2)
+						for (int i = 0; i < result.length; i += 3)
 							newWords.addLast(result[i]);
 						boolean isNewTopic = true;
 						int overlap;
