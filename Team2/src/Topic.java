@@ -44,6 +44,10 @@ public class Topic implements Comparable<Topic> {
 	public int compareTo(Topic temp) {
 		return temp.artsLastHour() - this.artsLastHour();
 	}
+	
+	public double getRel(String str) {
+		return words.get(str).getRel();
+	}
 
 	// Add article only if new
 	public void addArticle(Article article) {

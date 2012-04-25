@@ -49,25 +49,41 @@ public class Parse implements Runnable {
 				LinkedList<String> theTitles = new LinkedList<String>();
 				// while we have a line to read
 				while ((inputLine = in.readLine()) != null) {
+					
+					int startIndex = inputLine.indexOf("<h3 class=\"r\"><a href=\"/url?q=");
+					while(startIndex != -1)
+					{
+						inputLine = inputLine.substring(startIndex + 30);
+						String urlTemp = inputLine.substring(0,inputLine.indexOf("&amp;sa=U&amp;"));
+						urlTemp = URLDecoder.decode(urlTemp, "UTF-8");
+						theURLS.add(urlTemp);
+						inputLine = inputLine.substring(inputLine.indexOf("\">")+2);
+						String titleTemp = inputLine.substring(0,inputLine.indexOf("</a></h3>"));
+						theTitles.add(titleTemp);
+						titleTemp = Jsoup.parse(titleTemp).text();
+						startIndex = inputLine.indexOf("<h3 class=\"r\"><a href=\"/url?q=");
+					}
+					
+					
 					// each interesting line begins with X minute(s) ago</span><br>
 					// apart from a single line that starts with "></span>Shopping</a></li></ul>
-					if (inputLine.indexOf(" ago</span><br>") != -1 ||
-							inputLine.indexOf("></span>Shopping</a></li></ul>") != -1) {
-						int linkPos = inputLine.indexOf("<a href=\"/url?q=") + 16;
-						int titleEndPos = inputLine.lastIndexOf("</a></h3>");
-						if (linkPos == -1 || titleEndPos == -1)
-							break;
-						String titleEnd = inputLine.substring(0, titleEndPos);
-						int titleStart = titleEnd.lastIndexOf("\">") + 2;
-						String title = titleEnd.substring(titleStart);
-						String linkStart = inputLine.substring(linkPos);
-						int endLink = linkStart.indexOf("&amp;");
-						String URL = linkStart.substring(0, endLink);
-						title = Jsoup.parse(title).text();
-						theTitles.add(title);
-						URL = URLDecoder.decode(URL, "UTF-8");
-						theURLS.add(URL);
-					}
+//					if (inputLine.indexOf(" ago</span><br>") != -1 ||
+//							inputLine.indexOf("></span>Shopping</a></li></ul>") != -1) {
+//						int linkPos = inputLine.indexOf("<a href=\"/url?q=") + 16;
+//						int titleEndPos = inputLine.lastIndexOf("</a></h3>");
+//						if (linkPos == -1 || titleEndPos == -1)
+//							break;
+//						String titleEnd = inputLine.substring(0, titleEndPos);
+//						int titleStart = titleEnd.lastIndexOf("\">") + 2;
+//						String title = titleEnd.substring(titleStart);
+//						String linkStart = inputLine.substring(linkPos);
+//						int endLink = linkStart.indexOf("&amp;");
+//						String URL = linkStart.substring(0, endLink);
+//						title = Jsoup.parse(title).text();
+//						theTitles.add(title);
+//						URL = URLDecoder.decode(URL, "UTF-8");
+//						theURLS.add(URL);
+//					}
 				}
 
 				// close input stream
@@ -111,19 +127,22 @@ public class Parse implements Runnable {
 						String[] result = alchemyOutput.split(";");
 						// Add words to list
 						LinkedList<String> newWords = new LinkedList<String>();
+						LinkedList<Double> newRels = new LinkedList<Double>();
 						if (result.length < 6)
 							continue;
-						for (int i = 0; i < result.length; i += 3)
+						for (int i = 0; i < result.length; i += 3){
 							newWords.addLast(result[i]);
+							newRels.addLast(Double.parseDouble(result[i+1]));
+						}
 						boolean isNewTopic = true;
-						int overlap;
+						double overlap;
 						// Check for overlap in existing topics
 						// Current check is if at least 3 words 
 						for (Topic t : topics) {
 							overlap = 0;
 							for (int i = 0; i < newWords.size(); i += 1) {
 								if (t.containsWord(newWords.get(i))) {
-									overlap++;
+									overlap = overlap + newRels.get(i) + t.getRel(newWords.get(i));
 									System.out.println("Word overlap found: " + newWords.get(i));
 								}
 							}
