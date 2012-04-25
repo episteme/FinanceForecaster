@@ -59,8 +59,8 @@ public class Parse implements Runnable {
 						theURLS.add(urlTemp);
 						inputLine = inputLine.substring(inputLine.indexOf("\">")+2);
 						String titleTemp = inputLine.substring(0,inputLine.indexOf("</a></h3>"));
-						theTitles.add(titleTemp);
 						titleTemp = Jsoup.parse(titleTemp).text();
+						theTitles.add(titleTemp);
 						startIndex = inputLine.indexOf("<h3 class=\"r\"><a href=\"/url?q=");
 					}
 					
@@ -116,7 +116,7 @@ public class Parse implements Runnable {
 					AlchemyAPI alchemyObj = AlchemyAPI.GetInstanceFromString(APIkey);
 					AlchemyAPI_KeywordParams params = new AlchemyAPI_KeywordParams();
 					params.setKeywordExtractMode("strict");
-//					params.setMaxRetrieve(10);
+					params.setMaxRetrieve(10);
 					params.setSentiment(true);
 					try {
 						doc = alchemyObj.URLGetRankedKeywords(art.getURL(), params);

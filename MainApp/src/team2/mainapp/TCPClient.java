@@ -6,9 +6,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import android.util.Log;
 
@@ -25,7 +22,7 @@ public class TCPClient {
 
 			Log.d("TCP", "C: Connecting...");
 
-			Socket socket = new Socket("137.205.116.225", 8009);			
+			Socket socket = new Socket("10.0.2.2", 8009);			
 
 			try {
 
