@@ -79,6 +79,7 @@ public class MultipleSocketServer implements Runnable {
 								osw.write(S.getTitle() + ";;\n");
 								osw.write(S.getLink() + ";;\n");
 								osw.write(S.getDate() + ";;\n");
+								osw.write(S.getSentiment() + ";;\n");
 								osw.write(S.top5keyWords() + ";;\n");
 								osw.write("SPECNEWS\n");
 						}

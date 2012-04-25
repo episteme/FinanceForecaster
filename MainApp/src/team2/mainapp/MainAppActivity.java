@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 import team2.mainapp.PullToRefreshListView.OnRefreshListener;
 
+import android.app.ActionBar;
 import android.app.ListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -27,7 +28,7 @@ public class MainAppActivity extends ListActivity {
 	static String sectors;
 	static int incrementing;
 	static boolean started;
-	private LinkedList<String> mListItems;
+	private ArrayList<String[]> mListItems;
 	int ready;
 	/** Called when the activity is first created. */
 
@@ -41,24 +42,24 @@ public class MainAppActivity extends ListActivity {
 		
 		GlobalState gState = (GlobalState) getApplication();
 				
-		gState.setAllTopics(new LinkedList<Sector>());
-		gState.getAllTopics().add(new Sector("oil"));
-		gState.getAllTopics().add(new Sector("currency"));
+		gState.setSectors(new LinkedList<Sector>());
+		gState.getAllSectors().add(new Sector("oil"));
+		gState.getAllSectors().add(new Sector("currency"));
 		
 		Log.d("Debug", "Bye bye");
 		
 		sectors = "";
-		for(Sector sector : gState.getAllTopics())
+		for(Sector sector : gState.getAllSectors())
 		{
 			sectors += sector.getName() + ";";
 		}
 		
 		Log.d("debug",sectors);
 
-		mListItems = new LinkedList<String>();
+		mListItems = new ArrayList<String[]>();
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				R.layout.rowlayout, R.id.labelo, mListItems);
+  		MyArrayAdapter adapter = new MyArrayAdapter(this,
+  				 mListItems);
 
 		setListAdapter(adapter);
 
@@ -139,10 +140,13 @@ public class MainAppActivity extends ListActivity {
 			while (ready == 0) {}
 			GlobalState gState = (GlobalState) getApplication();
 			// Go through the allTopics data structure, pasting title & date
-			for (Sector topicsector : gState.getAllTopics()) {
+			for (Sector topicsector : gState.getAllSectors()) {
 				java.util.Collections.sort(topicsector.getTopicData());
 				for (Topic topic : topicsector.getTopicData()) {
-					String allInfo = topic.getTitle() + "\n@ " + topic.getDate() + "\n " + topic.getArtsLastHour() + "\n" + topic.getWords();
+					String[] allInfo = new String[3];
+					allInfo[0] = topic.getTitle();
+					allInfo[1] = Integer.toString(topic.getArtsLastHour()) + " - " + topic.getDate();
+					allInfo[2] = topic.getWords();
 					mListItems.add(allInfo);
 				}
 			} 
@@ -233,7 +237,7 @@ public class MainAppActivity extends ListActivity {
 				}
 				GlobalState gState = (GlobalState) getApplication();
 				// Add the topic info to the sector info
-				boolean alert = gState.getAllTopics().get(i).addTopic(
+				boolean alert = gState.getAllSectors().get(i).addTopic(
 						new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), URLS, KeyWords, rawData[0]));
 				if (alert) {
 					createNotification(rawData[1], Integer.parseInt(rawData[0])); 
@@ -243,6 +247,42 @@ public class MainAppActivity extends ListActivity {
 			i++;
 			ready = 1;
 		}
+		
+		// Parse Google News
+		// Split sectors
+		String[] newssectors = type[0].split("NEWSTOP\n");
+		GlobalState gState = (GlobalState) getApplication();
+		int j = 0;
+		for (String sector : newssectors)
+		{
+			String[] stories = sector.split("SPECNEWS\n");
+			LinkedList<GoogleStory> tempStories = new LinkedList<GoogleStory>();
+			for (String story : stories)
+			{
+				// Split story in to fields
+				String[] rawData = story.split(";;\n");
+				
+				// Splits the keyWords into individual parts
+				String[] words = rawData[4].split(";\n");
+				
+				ArrayList<KeyWord> keyWords = new ArrayList<KeyWord>();
+				for (String word : words)
+				{
+					// Split each keyword into its word and its sentiment
+					String[] bits = word.split("@");
+					// Put each bit into the list
+					keyWords.add(new KeyWord(bits[0], bits[1]));
+				}
+				tempStories.add(new GoogleStory(
+						Double.parseDouble(rawData[3]), rawData[0], rawData[1], keyWords, rawData[2]));
+				
+			}
+			gState.getAllSectors().get(i).setGoogStories(tempStories);
+			j++;
+		}
+		
+		
+		
 		// Replaces allTopics with parseInf
 		Log.d("debug","New info received");
 		}

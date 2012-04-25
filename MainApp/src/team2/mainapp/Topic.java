@@ -57,29 +57,14 @@ public class Topic implements Comparable<Topic> {
 	}
 	
 	public String getWords() {
-		String result = "";
-		for (KeyWord kw : keyWords) {
-			result += kw.word + " ";
+		if (keyWords.size() == 0) {
+			return "";
+		}
+		String result = keyWords.get(0).getWord();
+		for (int i = 1; i < keyWords.size(); i++) {
+			result += ", " + keyWords.get(i).getWord();
 		}
 		return result;
 	}
 
-}
-
-class KeyWord {
-	String word;
-	double sentiment;
-
-	KeyWord(String w, String s) {
-		word = w;
-		sentiment = Double.parseDouble(s);
-	}
-	
-	public String getWord() {
-		return word;
-	}
-
-	public double getSentiment() {
-		return sentiment;
-	}
 }

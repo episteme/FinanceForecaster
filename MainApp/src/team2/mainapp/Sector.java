@@ -6,11 +6,21 @@ import java.util.LinkedList;
 public class Sector {
 	String name;
 	LinkedList<Topic> topicData;
+	LinkedList<GoogleStory> googStories;
 	
 	Sector(String name)
 	{
 		this.name = name;
+		googStories = new LinkedList<GoogleStory>();
 		topicData = new LinkedList<Topic>();
+	}
+
+	public LinkedList<GoogleStory> getGoogStories() {
+		return googStories;
+	}
+
+	public void setGoogStories(LinkedList<GoogleStory> googStories) {
+		this.googStories = googStories;
 	}
 
 	public String getName() {

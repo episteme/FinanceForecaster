@@ -165,11 +165,9 @@ public class Topic implements Comparable<Topic> {
 		int result = 0;
 		Date hourAgo = new Date(System.currentTimeMillis() - (60 * 60 * 1000));
 		for (int sizeof = articles.size() - 1; sizeof >= 0; sizeof--) {
-			if (articles.get(sizeof).getDate().compareTo(hourAgo) < 0) {
-				// More than an hour old
-				break;
+			if (articles.get(sizeof).getDate().compareTo(hourAgo) >= 0) {
+				result++;
 			}
-			result++;
 		}
 		return result;
 	}
