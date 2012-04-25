@@ -76,16 +76,13 @@ public class MultipleSocketServer implements Runnable {
 							if (S == null) {
 								continue;
 							}
-							if (convertedDate.compareTo(S.getTimestamp()) < 0) {
 								String title = S.getTitle();
 								String returnTitle = title ;
-								returnTitle = returnTitle + " ;@; " + S.getDate() + "\n";
+								returnTitle = returnTitle + " ;;\n " + S.getDate() + ";;\n";
 								osw.write(returnTitle);
-								osw.write("KEYWORDSTART\n");
 								String returnWords = S.top5keyWords();
-								osw.write(returnWords);
-								osw.write("KEYWORDEND\n");
-							}
+								osw.write(returnWords + ";;\n");
+							osw.write("SPECNEWS\n");
 						}
 					}
 				}
