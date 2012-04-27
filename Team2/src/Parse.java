@@ -171,6 +171,7 @@ public class Parse implements Runnable {
 				// Output information on topics
 				for (Topic t : topics) {
 					System.out.println("Topic has " + (t.getArticles().size()) + " articles");
+					System.out.println("Topic has " + t.artsLastHour() + " articles in the last hour");
 					System.out.println(t.getRecentTitle());
 					Iterator<Article> iterator = t.getArticles().iterator();  
 					while (iterator.hasNext()) {

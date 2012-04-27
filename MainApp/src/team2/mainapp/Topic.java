@@ -10,14 +10,16 @@ public class Topic implements Comparable<Topic> {
 	private String date;
 	private int uid;
 	private int artsLastHour;
+	private ArrayList<String> titles;
 	
-	Topic (String title, String date,  int artsLH, ArrayList<String> URLS, ArrayList<KeyWord> keyWords, String uid) {
+	Topic (String title, String date,  int artsLH, ArrayList<String> URLS, ArrayList<KeyWord> keyWords, String uid, ArrayList<String> titles) {
 		this.uid = (int) Integer.parseInt(uid);
 		this.keyWords = keyWords;
 		this.title = title;
 		this.URLS = URLS;
 		this.date = date;
 		this.artsLastHour = artsLH;
+		this.titles = titles;
 	}
 	
 	public int compareTo(Topic temp) {
@@ -46,6 +48,10 @@ public class Topic implements Comparable<Topic> {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public ArrayList<String> getTitles() {
+		return titles;
 	}
 
 	public ArrayList<String> getURLS() {

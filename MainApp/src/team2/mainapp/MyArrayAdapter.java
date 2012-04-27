@@ -30,12 +30,13 @@ public class MyArrayAdapter extends ArrayAdapter<String[]> {
 		TextView textView = (TextView) rowView.findViewById(R.id.labelo);
 		TextView textView2 = (TextView) rowView.findViewById(R.id.labelp);
 		TextView textView3 = (TextView) rowView.findViewById(R.id.labelq);
+		TextView textView4 = (TextView) rowView.findViewById(R.id.uid);
 		Log.d("Debug", Integer.toString(values.size()));
 		Log.d("Debug", values.get(position)[0]);
 		textView.setText(values.get(position)[0]);
 		textView2.setText(values.get(position)[1]);
 		textView3.setText(values.get(position)[2]);
-
+		textView4.setText(values.get(position)[3]);
 
 		return rowView;
 	}

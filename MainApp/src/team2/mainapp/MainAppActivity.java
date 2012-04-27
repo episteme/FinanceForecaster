@@ -20,7 +20,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainAppActivity extends ListActivity {
@@ -78,6 +81,14 @@ public class MainAppActivity extends ListActivity {
 		// Do an initial refresh straight away without user input
 		GetDataTask task = new GetDataTask();
 		task.execute();
+	}
+	
+	public void myClickHandler(View view) {
+		TextView tv = (TextView) view.findViewById(R.id.uid);
+		Toast.makeText(this, tv.getText(), Toast.LENGTH_SHORT).show();
+		Intent myIntent = new Intent(this, SingleTopic.class);
+		myIntent.putExtra("EXTRA_UID", tv.getText());
+		startActivity(myIntent);
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -143,10 +154,11 @@ public class MainAppActivity extends ListActivity {
 			for (Sector topicsector : gState.getAllSectors()) {
 				java.util.Collections.sort(topicsector.getTopicData());
 				for (Topic topic : topicsector.getTopicData()) {
-					String[] allInfo = new String[3];
+					String[] allInfo = new String[4];
 					allInfo[0] = topic.getTitle();
 					allInfo[1] = Integer.toString(topic.getArtsLastHour()) + " - " + topic.getDate();
 					allInfo[2] = topic.getWords();
+					allInfo[3] = Integer.toString(topic.getUid());
 					mListItems.add(allInfo);
 				}
 			} 
@@ -216,7 +228,8 @@ public class MainAppActivity extends ListActivity {
 				
 				// Splits the URLS and keyWords into individual parts
 				String[] links = rawData[4].split(";\n");
-				String[] words = rawData[5].split(";\n");
+				String[] titles = rawData[5].split(";\n");
+				String[] words = rawData[6].split(";\n");
 
 				// Creates an arraylist to hold the URLs
 				ArrayList<String> URLS = new ArrayList<String>();
@@ -224,6 +237,13 @@ public class MainAppActivity extends ListActivity {
 				{
 					// Adds each link to the list
 					URLS.add(link);
+				}
+				
+				ArrayList<String> Titles = new ArrayList<String>();
+				for (String title : titles)
+				{
+					// Adds each link to the list
+					Titles.add(title);
 				}
 
 				// Creates an arraylist to hold the keyWords
@@ -238,7 +258,7 @@ public class MainAppActivity extends ListActivity {
 				GlobalState gState = (GlobalState) getApplication();
 				// Add the topic info to the sector info
 				boolean alert = gState.getAllSectors().get(i).addTopic(
-						new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), URLS, KeyWords, rawData[0]));
+						new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), URLS, KeyWords, rawData[0], Titles));
 				if (alert) {
 					createNotification(rawData[1], Integer.parseInt(rawData[0])); 
 				}

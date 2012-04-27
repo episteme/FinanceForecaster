@@ -103,7 +103,7 @@ public class Topic implements Comparable<Topic> {
 		System.out.print(this.topWords());
 	}
 	
-	// Displays top 5 words
+	// Displays top 10 words
 	public String topWords() {
 		final class WordAndVal implements Comparable<WordAndVal> {
 			private final String _word;
@@ -134,8 +134,8 @@ public class Topic implements Comparable<Topic> {
 	       wavl.add(new WordAndVal(key, val));
 	    }  
 	    Collections.sort(wavl);
-	    int j = 5;
-	    if (wavl.size() < 5)
+	    int j = 10;
+	    if (wavl.size() < 10)
 	    	j = wavl.size();
 	    String rString = "";
 	    for (int i = 1; i <= j; i++) {
@@ -149,21 +149,36 @@ public class Topic implements Comparable<Topic> {
 		System.out.println(this.topLinks());
 	}
 	
-	// Displays last 3 links
+	public void printTopTitles() {
+		System.out.println(this.topTitles());
+	}
+	
+	// Displays last 5 links
 	public String topLinks() {
 		String rString = "";
-		int j = articles.size();
-		if (articles.size() < 3)
+		int j = 5;
+		if (articles.size() < 5)
 			j = articles.size();
 		for (int i = 1; i <= j; i++)
 			rString = rString + articles.get(articles.size() - i).getURL() + ";\n";
 		return rString;
 	}
 	
+	// Displays last 5 links
+	public String topTitles() {
+		String rString = "";
+		int j = 5;
+		if (articles.size() < 5)
+			j = articles.size();
+		for (int i = 1; i <= j; i++)
+			rString = rString + articles.get(articles.size() - i).getTitle() + ";\n";
+		return rString;
+	}
+	
 	// Return the number of articles received in the last hour
 	public int artsLastHour() {
 		int result = 0;
-		Date hourAgo = new Date(System.currentTimeMillis() - (60 * 60 * 1000));
+		Date hourAgo = new Date(System.currentTimeMillis() - (15 * 60 * 1000));
 		for (int sizeof = articles.size() - 1; sizeof >= 0; sizeof--) {
 			if (articles.get(sizeof).getDate().compareTo(hourAgo) >= 0) {
 				result++;

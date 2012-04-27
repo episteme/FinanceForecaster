@@ -94,24 +94,25 @@ public class MultipleSocketServer implements Runnable {
 				for (int i = 0; i < parsers.length; i++) {
 					if (((Parse) parsers[i]).getSector().compareTo(topic) == 0) {
 						Parse theparse = ((Parse) parsers[i]);
-						java.util.Collections.sort(theparse.getTopics());
+						//java.util.Collections.sort(theparse.getTopics());
 						int j = 0;
 						for (Topic T: theparse.getTopics()) {
 							if (T == null)
 								continue;
-							if (convertedDate.compareTo(T.getTimestamp()) < 0) {
+							//if (convertedDate.compareTo(T.getTimestamp()) < 0) {
 								String returnTitle = ((Integer) T.getUid()).toString() + ";;\n";
 								returnTitle += T.getRecentTitle() + ";;\n"; 
 								returnTitle += T.getDate() + ";;\n";
 								returnTitle += T.artsLastHour() + ";;\n";
 								returnTitle += T.topLinks() + ";;\n";
+								returnTitle += T.topTitles()+ ";;\n";
 								returnTitle += T.topWords()+ ";;\n";
 								osw.write(returnTitle);
 								osw.write("SPECTOPS\n");
-							}
-							j++;
-							if(j == 10)
-								break;
+							//}
+							//j++;
+							//if(j == 10)
+							//	break;
 						}
 
 					}
