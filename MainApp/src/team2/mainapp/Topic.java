@@ -62,6 +62,20 @@ public class Topic implements Comparable<Topic> {
 		return keyWords;
 	}
 	
+	public ArrayList<String[]> getTitleUrl() {
+		ArrayList<String[]> titleUrls = new ArrayList<String[]>();
+		for(int i = 0; i < URLS.size(); i++)
+		{
+			if(titles.get(i) != null && URLS.get(i) != null){
+				String[] temp = new String[2];
+				temp[0] = titles.get(i);
+				temp[1] = URLS.get(i);
+				titleUrls.add(temp);
+			}
+		}
+		return titleUrls;
+	}
+	
 	public String getWords() {
 		if (keyWords.size() == 0) {
 			return "";
