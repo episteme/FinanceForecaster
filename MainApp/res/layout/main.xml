@@ -3,7 +3,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center"
-    android:orientation="vertical" >ss
+    android:orientation="vertical" >
+    <android.support.v4.view.ViewPager
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:id="@+id/myfivepanelpager"/>
 
     <TextView
         android:id="@+id/textView1"

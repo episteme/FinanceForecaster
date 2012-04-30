@@ -2,14 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical" >
-
+    
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#FF555555"
+        android:paddingBottom="2dp"
+        android:paddingTop="5dp"
         android:text="@string/keyw"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="12dp"
+        android:translationX="-75dp" />
 
         <View
         android:layout_width="280dp"
@@ -19,12 +25,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-
+
             <ListView
                 android:id="@+id/list1"
                 android:layout_width="122dp"
                 android:layout_height="199dp"
-                android:layout_weight="1" >
+                android:layout_weight="1"
+                android:translationX="15dp" >
+
             </ListView>
 
             <AnalogClock
@@ -40,6 +48,10 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:paddingBottom="2dp"
+        android:translationX="-95dp"
+        android:textColor="#FF555555"
         android:text="@string/articl"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -47,12 +59,13 @@
         android:layout_width="280dp"
         android:layout_height="2dp"
         android:background="#FFCCCCCC" />
-        
+        
         <ListView
             android:id="@+id/list2"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="0.06" >
+            android:layout_weight="0.06"
+            android:translationX="15dp" >
 
             </ListView>
 
