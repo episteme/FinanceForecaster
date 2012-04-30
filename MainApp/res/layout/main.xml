@@ -22,7 +22,7 @@
         android:layout_height="2dp"
         android:background="#FFCCCCCC" />
     
-       <com.viewpagerindicator.TitlePageIndicator
+       <team2.mainapp.TitlePageIndicator
            android:id="@+id/indicator"
            style="@style/Widget.MyTitlepageIndicator"
            android:layout_width="match_parent"

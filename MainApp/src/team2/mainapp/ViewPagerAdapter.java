@@ -15,8 +15,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.viewpagerindicator.TitleProvider;
-
 public class ViewPagerAdapter extends PagerAdapter
 implements TitleProvider
 {

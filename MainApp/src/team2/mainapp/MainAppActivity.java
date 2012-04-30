@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
-import com.viewpagerindicator.TitlePageIndicator;
-
 import team2.mainapp.PullToRefreshListView.OnRefreshListener;
 
 import android.app.ActionBar;
