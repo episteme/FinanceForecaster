@@ -4,8 +4,13 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class SingleTopic extends Activity {
 	@Override
@@ -49,4 +54,12 @@ public class SingleTopic extends Activity {
 
 		
 	}
+	
+	public void titleClickHandler(View view) {
+		TextView tv = (TextView) view.findViewById(R.id.textView2);
+		Uri uriUrl = Uri.parse((String) tv.getText());
+	    Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);  
+	    startActivity(launchBrowser);
+	}
+	
 }
