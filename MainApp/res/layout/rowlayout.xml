@@ -36,6 +36,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@+id/cuid"
-        android:visibility="gone" />
+        android:visibility="gone"
+       />
+    
+     <TextView
+        android:id="@+id/sector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@+id/csector"
+        android:visibility="gone"
+       />
 
 </LinearLayout>

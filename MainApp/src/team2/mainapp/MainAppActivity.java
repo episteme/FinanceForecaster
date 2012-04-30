@@ -85,9 +85,10 @@ public class MainAppActivity extends ListActivity {
 	
 	public void myClickHandler(View view) {
 		TextView tv = (TextView) view.findViewById(R.id.uid);
-		Toast.makeText(this, tv.getText(), Toast.LENGTH_SHORT).show();
+		TextView tv2 = (TextView) view.findViewById(R.id.sector);
 		Intent myIntent = new Intent(this, SingleTopic.class);
 		myIntent.putExtra("EXTRA_UID", tv.getText());
+		myIntent.putExtra("SECTOR", tv2.getText());
 		startActivity(myIntent);
 	}
 	
@@ -154,11 +155,12 @@ public class MainAppActivity extends ListActivity {
 			for (Sector topicsector : gState.getAllSectors()) {
 				java.util.Collections.sort(topicsector.getTopicData());
 				for (Topic topic : topicsector.getTopicData()) {
-					String[] allInfo = new String[4];
+					String[] allInfo = new String[5];
 					allInfo[0] = topic.getTitle();
 					allInfo[1] = Integer.toString(topic.getArtsLastHour()) + " - " + topic.getDate();
 					allInfo[2] = topic.getWords();
 					allInfo[3] = Integer.toString(topic.getUid());
+					allInfo[4] = topicsector.getName();
 					mListItems.add(allInfo);
 				}
 			} 

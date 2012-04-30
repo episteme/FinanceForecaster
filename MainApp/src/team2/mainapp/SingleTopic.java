@@ -19,11 +19,14 @@ public class SingleTopic extends Activity {
 		setContentView(R.layout.singletopic);
 		
 		int uid = Integer.parseInt(getIntent().getStringExtra("EXTRA_UID"));
+		String sectorName = getIntent().getStringExtra("SECTOR");
 		
 		Topic thistopic = null;
 		
 		GlobalState gState = (GlobalState) getApplication();
 		for (Sector sector : gState.getAllSectors()) {
+			if(!sector.getName().equals(sectorName))
+				continue;
 			for (Topic topic : sector.getTopicData()) {
 				if (topic.getUid() == uid) {
 					thistopic = topic;
