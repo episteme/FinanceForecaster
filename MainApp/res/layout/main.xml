@@ -2,36 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:orientation="vertical" >
-    <android.support.v4.view.ViewPager
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:id="@+id/myfivepanelpager"/>
-
-    <TextView
-        android:id="@+id/textView1"
-        android:textColor="#FF555555"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dp"
-        android:paddingTop="5dp"
-        android:text="Breaking News"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="12dp"
-        android:translationX="-95dp" />
+    
+     <TextView
+         android:id="@+id/textView1"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:paddingBottom="2dp"
+         android:paddingTop="5dp"
+         android:text="Breaking News"
+         android:textAppearance="?android:attr/textAppearanceMedium"
+         android:textColor="#FF555555"
+         android:textSize="14dp"
+         android:translationX="-95dp" />
     
     <View
-        android:layout_width="280dp"
+        android:layout_width="wrap_content"
         android:layout_height="2dp"
         android:background="#FFCCCCCC" />
+    
+       <com.viewpagerindicator.TitlePageIndicator
+           android:id="@+id/indicator"
+           style="@style/Widget.MyTitlepageIndicator"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" />
 
-    <team2.mainapp.PullToRefreshListView
-        android:id="@+id/android:list"
-        android:layout_width="270dp"
-        android:layout_height="fill_parent"
-        android:textSize="10dp" >
-
-    </team2.mainapp.PullToRefreshListView>
-
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+   
 </LinearLayout>

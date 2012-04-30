@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style parent="Widget.TitlePageIndicator"
+        name="Widget.MyTitlepageIndicator">
+         <item name="footerColor">#CCCCCC</item>
+        <item name="textColor">#555555</item>
+        <item name="textSize">12dp</item>
+        <item name="selectedColor">#000000</item>
+    </style>
+</resources>

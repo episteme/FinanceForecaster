@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
+import com.viewpagerindicator.TitlePageIndicator;
+
 import team2.mainapp.PullToRefreshListView.OnRefreshListener;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.ListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -16,6 +19,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,12 +30,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainAppActivity extends ListActivity {
+public class MainAppActivity extends Activity {
 	static String s;
 	static String sectors;
 	static int incrementing;
 	static boolean started;
-	private ArrayList<String[]> mListItems;
 	int ready;
 	/** Called when the activity is first created. */
 
@@ -42,6 +45,14 @@ public class MainAppActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		Log.d("debug","Hello");
+		
+		ViewPagerAdapter adapter2 = new ViewPagerAdapter( this );
+	    ViewPager pager =
+	        (ViewPager)findViewById( R.id.viewpager );
+	    TitlePageIndicator indicator =
+	        (TitlePageIndicator)findViewById( R.id.indicator );
+	    pager.setAdapter( adapter2 );
+	    indicator.setViewPager( pager );
 		
 		GlobalState gState = (GlobalState) getApplication();
 				
@@ -59,28 +70,28 @@ public class MainAppActivity extends ListActivity {
 		
 		Log.d("debug",sectors);
 
-		mListItems = new ArrayList<String[]>();
-
-  		MyArrayAdapter adapter = new MyArrayAdapter(this,
-  				 mListItems);
-
-		setListAdapter(adapter);
-
-		// Set a listener to be invoked when the list should be refreshed.
-		((PullToRefreshListView) getListView()).setOnRefreshListener(new OnRefreshListener() {
-			@Override
-			public void onRefresh() {
-				// Do work to refresh the list here.
-				GetDataTask task = new GetDataTask();
-				task.execute();
-			}
-		});
-
-		// Start the process of polling the server
+//		mListItems = new ArrayList<String[]>();
+//
+//  		MyArrayAdapter adapter = new MyArrayAdapter(this,
+//  				 mListItems);
+//
+//		setListAdapter(adapter);
+//
+//		// Set a listener to be invoked when the list should be refreshed.
+//		((PullToRefreshListView) getListView()).setOnRefreshListener(new OnRefreshListener() {
+//			@Override
+//			public void onRefresh() {
+//				// Do work to refresh the list here.
+//				GetDataTask task = new GetDataTask();
+//				task.execute();
+//			}
+//		});
+//
+//		// Start the process of polling the server
 		startProgress();
-		// Do an initial refresh straight away without user input
-		GetDataTask task = new GetDataTask();
-		task.execute();
+//		// Do an initial refresh straight away without user input
+//		GetDataTask task = new GetDataTask();
+//		task.execute();
 	}
 	
 	public void myClickHandler(View view) {
@@ -137,38 +148,6 @@ public class MainAppActivity extends ListActivity {
 		notificationManager.notify(uid, notification);
 	}
 
-	private class GetDataTask extends AsyncTask<Void, Void, Void> {
-		@Override
-		protected Void doInBackground(Void... params) {
-			// Do nothing
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void x) {
-			// Clear current list
-			mListItems.clear();
-			// Wait for data to exist
-			while (ready == 0) {}
-			GlobalState gState = (GlobalState) getApplication();
-			// Go through the allTopics data structure, pasting title & date
-			for (Sector topicsector : gState.getAllSectors()) {
-				java.util.Collections.sort(topicsector.getTopicData());
-				for (Topic topic : topicsector.getTopicData()) {
-					String[] allInfo = new String[5];
-					allInfo[0] = topic.getTitle();
-					allInfo[1] = Integer.toString(topic.getArtsLastHour()) + " - " + topic.getDate();
-					allInfo[2] = topic.getWords();
-					allInfo[3] = Integer.toString(topic.getUid());
-					allInfo[4] = topicsector.getName();
-					mListItems.add(allInfo);
-				}
-			} 
-			
-			// Complete the refresh
-			((PullToRefreshListView) getListView()).onRefreshComplete();
-		}
-	}
 
 	public void startProgress() {
 		// Do something long
