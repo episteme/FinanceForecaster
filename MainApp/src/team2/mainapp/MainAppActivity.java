@@ -297,7 +297,7 @@ public class MainAppActivity extends ListActivity {
 						Double.parseDouble(rawData[3]), rawData[0], rawData[1], keyWords, rawData[2]));
 				
 			}
-			gState.getAllSectors().get(i).setGoogStories(tempStories);
+			gState.getAllSectors().get(j).setGoogStories(tempStories);
 			j++;
 		}
 		
