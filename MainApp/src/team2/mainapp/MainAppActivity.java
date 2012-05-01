@@ -53,6 +53,7 @@ public class MainAppActivity extends Activity {
 	    indicator.setViewPager( pager );
 		
 		GlobalState gState = (GlobalState) getApplication();
+		gState.setReady(false);
 				
 		gState.setSectors(new LinkedList<Sector>());
 		gState.getAllSectors().add(new Sector("oil"));
@@ -113,6 +114,7 @@ public class MainAppActivity extends Activity {
 			Toast.makeText(this, "Menu Item 1 selected", Toast.LENGTH_SHORT)
 					.show();
 			Intent myIntent = new Intent(this, GoogleNews.class);
+			myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			startActivity(myIntent);
 			break;
 		case R.id.menuitem2:
@@ -280,7 +282,7 @@ public class MainAppActivity extends Activity {
 			j++;
 		}
 		
-		
+		gState.setReady(true);
 		
 		// Replaces allTopics with parseInf
 		Log.d("debug","New info received");

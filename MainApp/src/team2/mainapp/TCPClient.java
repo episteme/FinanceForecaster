@@ -22,7 +22,7 @@ public class TCPClient {
 
 			Log.d("TCP", "C: Connecting...");
 
-			Socket socket = new Socket("137.205.116.225", 8009);			
+			Socket socket = new Socket("10.0.2.2", 8009);			
 
 			try {
 

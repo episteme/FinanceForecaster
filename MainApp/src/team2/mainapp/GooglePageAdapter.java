@@ -12,7 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 
-public class ViewPagerAdapter extends PagerAdapter
+public class GooglePageAdapter extends PagerAdapter
 implements TitleProvider
 {
 	ArrayList<ArrayList<String[]>> mListItems;
@@ -23,7 +23,7 @@ implements TitleProvider
 
 	private final Context context;
 
-	public ViewPagerAdapter( Context context )
+	public GooglePageAdapter( Context context )
 	{
 		this.context = context;
 		mListItems = new ArrayList<ArrayList<String[]>>();
@@ -54,35 +54,25 @@ implements TitleProvider
 		
 		mListItems.add(new ArrayList<String[]>());
 
-		MyArrayAdapter adapter = new MyArrayAdapter(context,
+		GoogleArrayAdapter adapter = new GoogleArrayAdapter(context,
 				mListItems.get(position));
 
 		v.setAdapter(adapter);
-
-		//		String[] aa = new String[5];
-		//		aa[0] = "hello";
-		//		aa[1] = "ddxc";
-		//		aa[2] = "ddr4";
-		//		aa[3] = "31415";
-		//		aa[4] = "dsd";
-		//
-		//		mListItems[position].add(aa);
-
-		// Set a listener to be invoked when the list should be refreshed.
 		
 		((PullToRefreshListView) v).setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
 				// Do work to refresh the list here.
-				GetDataTask task = new GetDataTask();
+				GetDataTask2 task = new GetDataTask2();
 				task.execute();
 			}
 		});
 		vl.add(v);
+
 		return v;
 	}
-
-	private class GetDataTask extends AsyncTask<Void, Void, Void> {
+	
+	private class GetDataTask2 extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... params) {
 			// Do nothing
@@ -93,21 +83,20 @@ implements TitleProvider
 		protected void onPostExecute(Void x) {
 			Log.d("debug",category);
 			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
+			while(gState.getReady() != true)
+			{}
 			for(ArrayList<String[]> list : mListItems)
 				list.clear();
 			int i = 0;
-			while(gState.getReady() != true)
-			{}
 			// Go through the allTopics data structure, pasting title & date
 			for (Sector topicsector : gState.getAllSectors()) {
-				java.util.Collections.sort(topicsector.getTopicData());
-				for (Topic topic : topicsector.getTopicData()) {
+				for (GoogleStory googStory : topicsector.getGoogStories()) {
 					String[] allInfo = new String[5];
-					allInfo[0] = topic.getTitle();
-					allInfo[1] = Integer.toString(topic.getArtsLastHour()) + " - " + topic.getDate();
-					allInfo[2] = topic.getWords();
-					allInfo[3] = Integer.toString(topic.getUid());
-					allInfo[4] = topicsector.getName();
+					allInfo[0] = googStory.getTitle();
+					allInfo[1] = googStory.getTimestamp();
+					allInfo[2] = googStory.printKeyWords();
+					allInfo[3] = Double.toString(googStory.getSentiment());
+					allInfo[4] = googStory.getLink();
 					mListItems.get(i).add(allInfo);
 				}
 				// Complete the refresh

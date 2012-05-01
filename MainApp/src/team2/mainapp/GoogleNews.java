@@ -1,11 +1,17 @@
 	package team2.mainapp;
 
+
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class GoogleNews extends Activity {
@@ -14,6 +20,13 @@ public class GoogleNews extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.google);
 		
+		GooglePageAdapter adapter2 = new GooglePageAdapter( this );
+	    ViewPager pager =
+	        (ViewPager)findViewById( R.id.viewpager );
+	    TitlePageIndicator indicator =
+	        (TitlePageIndicator)findViewById( R.id.indicator );
+	    pager.setAdapter( adapter2 );
+	    indicator.setViewPager( pager );
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -28,7 +41,8 @@ public class GoogleNews extends Activity {
 			Toast.makeText(this, "Menu Item 1 selected", Toast.LENGTH_SHORT)
 					.show();
 			Intent myIntent = new Intent(this, MainAppActivity.class);
-			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			startActivity(myIntent);
 		
 			break;
@@ -42,6 +56,15 @@ public class GoogleNews extends Activity {
 		}
 
 		return true;
+	}
+	
+	public void myClickHandler(View view) {
+		TextView tv = (TextView) view.findViewById(R.id.labelr);
+		Log.d("uri", (String) tv.getText());
+
+		Uri uriUrl = Uri.parse((String) tv.getText());
+	    Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);  
+	    startActivity(launchBrowser);
 	}
 	
 }

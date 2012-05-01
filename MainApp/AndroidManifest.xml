@@ -23,7 +23,9 @@
         </activity>
         <activity android:name=".SingleTopic" 
             android:theme="@android:style/Theme.Holo.Light" />
-        <activity android:name=".GoogleNews"></activity>
+        <activity android:name=".GoogleNews"           
+            android:theme="@android:style/Theme.Holo.Light" />
+
     </application>
 
 </manifest>

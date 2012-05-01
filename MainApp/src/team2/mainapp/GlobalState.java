@@ -7,6 +7,7 @@ import android.app.Application;
 public class GlobalState extends Application {
 	
 	static LinkedList<Sector> allSectors;
+	static boolean ready;
 
 	public LinkedList<Sector> getAllSectors() {
 		return allSectors;
@@ -16,6 +17,11 @@ public class GlobalState extends Application {
 		GlobalState.allSectors = allTopics;
 	}
 	
+	public void setReady(boolean r){
+		ready = r;
+	}
 	
-
+	public boolean getReady(){
+		return ready;
+	}
 }

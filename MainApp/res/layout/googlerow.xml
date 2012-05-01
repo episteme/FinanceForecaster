@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:onClick="myClickHandler"
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp" >
+    
+    <TextView
+        android:id="@+id/labelo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:text="@+id/label"
+        android:textColor="#FF000000"
+        android:textSize="12dp" >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/labelp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@+id/label2"
+        android:textSize="9dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/labelq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:text="@+id/label3"
+        android:textSize="9dp" />
+    
+    <TextView
+        android:id="@+id/labelr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:text="@+id/label4"
+        android:textSize="9dp" 
+        android:visibility="gone"
+     />
+    
+    
+
+</LinearLayout>
