@@ -7,12 +7,14 @@ public class Sector {
 	String name;
 	LinkedList<Topic> topicData;
 	LinkedList<GoogleStory> googStories;
+	int threshold;
 	
 	Sector(String name)
 	{
 		this.name = name;
 		googStories = new LinkedList<GoogleStory>();
 		topicData = new LinkedList<Topic>();
+		threshold = 100;
 	}
 
 	public LinkedList<GoogleStory> getGoogStories() {
@@ -46,10 +48,18 @@ public class Sector {
 	    }
 	    if (!repeat)
 	    	topicData.add(topic);
-	    if(topic.getArtsLastHour() >= 3)
+	    if(topic.getArtsLastHour() >= (105-threshold) && threshold != 0)
 	    	return true;
 	    else
 	    	return false;
+	}
+
+	public int getThreshold() {
+		return threshold;
+	}
+
+	public void setThreshold(int progress) {
+		threshold = progress;
 	}
 	
 	

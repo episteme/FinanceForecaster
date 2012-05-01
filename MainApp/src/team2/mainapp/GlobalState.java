@@ -8,6 +8,7 @@ public class GlobalState extends Application {
 	
 	static LinkedList<Sector> allSectors;
 	static boolean ready;
+	static boolean on;
 
 	public LinkedList<Sector> getAllSectors() {
 		return allSectors;
@@ -23,5 +24,13 @@ public class GlobalState extends Application {
 	
 	public boolean getReady(){
 		return ready;
+	}
+
+	public boolean isOn() {
+		return on;
+	}
+
+	public void setOn(boolean o) {
+		on = o;
 	}
 }

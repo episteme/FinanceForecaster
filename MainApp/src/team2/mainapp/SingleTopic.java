@@ -7,6 +7,9 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -63,6 +66,24 @@ public class SingleTopic extends Activity {
 		Uri uriUrl = Uri.parse((String) tv.getText());
 	    Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);  
 	    startActivity(launchBrowser);
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.prefmenu, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menuitem1:
+			finish();
+			break;
+		default:
+			break;
+		}
+
+		return true;
 	}
 	
 }

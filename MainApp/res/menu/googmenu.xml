@@ -4,7 +4,7 @@
     <item
         android:id="@+id/menuitem1"
         android:showAsAction="ifRoom"
-        android:title="Snapshot">
+        android:title="Breaking">
     </item>
     <item
         android:id="@+id/menuitem2"

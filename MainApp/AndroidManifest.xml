@@ -25,6 +25,9 @@
             android:theme="@android:style/Theme.Holo.Light" />
         <activity android:name=".GoogleNews"           
             android:theme="@android:style/Theme.Holo.Light" />
+                <activity android:name=".Preferences"           
+            android:theme="@android:style/Theme.Holo.Light" />
+        
 
     </application>
 

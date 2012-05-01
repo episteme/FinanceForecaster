@@ -4,12 +4,7 @@
     <item
         android:id="@+id/menuitem1"
         android:showAsAction="ifRoom"
-        android:title="Snapshot">
-    </item>
-    <item
-        android:id="@+id/menuitem2"
-        android:showAsAction="ifRoom"
-        android:title="Prefs">
+        android:title="Done">
     </item>
 
 </menu>
