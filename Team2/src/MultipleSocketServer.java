@@ -99,7 +99,12 @@ public class MultipleSocketServer implements Runnable {
 						for (Topic T: theparse.getTopics()) {
 							if (T == null)
 								continue;
-							//if (convertedDate.compareTo(T.getTimestamp()) < 0) {
+							if (!(convertedDate.compareTo(T.getTimestamp()) < 0)) {
+								String returnTitle = ((Integer) T.getUid()).toString() + ";;\n";
+								returnTitle += T.artsLastHour() + ";;\n";
+								osw.write(returnTitle);
+								osw.write("SPECTOPS\n");
+							}else{
 								String returnTitle = ((Integer) T.getUid()).toString() + ";;\n";
 								returnTitle += T.getRecentTitle() + ";;\n"; 
 								returnTitle += T.getDate() + ";;\n";
@@ -109,10 +114,7 @@ public class MultipleSocketServer implements Runnable {
 								returnTitle += T.topWords()+ ";;\n";
 								osw.write(returnTitle);
 								osw.write("SPECTOPS\n");
-							//}
-							//j++;
-							//if(j == 10)
-							//	break;
+						}
 						}
 
 					}

@@ -179,6 +179,7 @@ public class MainAppActivity extends Activity {
 
 	protected void parseInput(String s2) {
 		try {
+			GlobalState gState = (GlobalState) getApplication();
 			// Read in flag which splits between feedReader and Parse infos
 			String[] type = s2.split("SPLITINFO\n");
 
@@ -195,7 +196,11 @@ public class MainAppActivity extends Activity {
 					// Splits the topic data into parts
 					String[] rawData = topic.split(";;\n");
 
-					if (rawData.length < 5)
+					if(rawData.length == 2)
+					{
+						gState.getAllSectors().get(i).updateTopic(Integer.parseInt(rawData[0]), Integer.parseInt(rawData[1]));
+					}
+					else if (rawData.length < 5)
 						break;
 
 					// Splits the URLS and keyWords into individual parts
@@ -227,7 +232,6 @@ public class MainAppActivity extends Activity {
 						// Put each bit into the list
 						KeyWords.add(new KeyWord(bits[0], bits[1]));
 					}
-					GlobalState gState = (GlobalState) getApplication();
 					// Add the topic info to the sector info
 					boolean alert = gState.getAllSectors().get(i).addTopic(
 							new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), URLS, KeyWords, rawData[0], Titles));
@@ -243,7 +247,6 @@ public class MainAppActivity extends Activity {
 			// Parse Google News
 			// Split sectors
 			String[] newssectors = type[0].split("NEWSTOP\n");
-			GlobalState gState = (GlobalState) getApplication();
 			int j = 0;
 			for (String sector : newssectors)
 			{

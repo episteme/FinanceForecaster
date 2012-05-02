@@ -63,6 +63,16 @@ public class Sector {
 	public void setThreshold(int progress) {
 		threshold = progress;
 	}
+
+	public void updateTopic(int parseInt, int parseInt2) {
+		Iterator<Topic> iterator = topicData.iterator();
+	    while (iterator.hasNext()) {
+	    	Topic tempTopic = iterator.next();
+	       if (tempTopic.getUid() == parseInt) {
+	    	   tempTopic.setArtsLastHour(parseInt2);
+	       }
+	    }		
+	}
 	
 	
 }
