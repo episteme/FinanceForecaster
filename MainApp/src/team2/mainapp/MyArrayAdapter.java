@@ -3,6 +3,7 @@ package team2.mainapp;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,16 +13,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MyArrayAdapter extends ArrayAdapter<String[]> {
-	
+
 	private final Context context;
 	private final ArrayList<String[]> values;
-	
+
 	public MyArrayAdapter(Context context, ArrayList<String[]> values) {
 		super(context, R.layout.rowlayout, values);
 		this.context = context;
 		this.values = values;
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context
@@ -39,9 +40,15 @@ public class MyArrayAdapter extends ArrayAdapter<String[]> {
 		textView3.setText(values.get(position)[2]);
 		textView4.setText(values.get(position)[3]);
 		textView5.setText(values.get(position)[4]);
+		switch(Integer.parseInt(values.get(position)[5])){
+			case -1:
+				textView.setTextColor(Color.rgb(255,0,0));break;
+			case 1:
+				textView.setTextColor(Color.rgb(255,155,0));break;
+		}
 		return rowView;
 	}
-	
-	
+
+
 
 }

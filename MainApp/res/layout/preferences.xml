@@ -31,8 +31,25 @@
         android:checked="true"
         android:text="ToggleButton"
         android:textOff="Updates Disabled"
-        android:textOn="Updates Enabled" />
+        android:textOn="Updates Enabled"
+        android:paddingBottom="5dp"
+         />
+    
+       <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Data update frequency"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+         />
 
+    <SeekBar
+        android:id="@+id/seekBar3"
+        android:layout_width="248dp"
+        android:layout_height="wrap_content"
+        android:max="59"
+        android:paddingBottom="10dp" />
+    
     <View
         android:layout_width="wrap_content"
         android:layout_height="2dp"
@@ -43,7 +60,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Oil threshold"
+        android:text="Oil sensitivity"
         android:textAppearance="?android:attr/textAppearanceMedium"
          />
 
@@ -58,7 +75,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Currency threshold"
+        android:text="Currency sensitivity"
         android:textAppearance="?android:attr/textAppearanceMedium"
         />
 

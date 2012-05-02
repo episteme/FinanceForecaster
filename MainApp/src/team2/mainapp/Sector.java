@@ -40,8 +40,10 @@ public class Sector {
 	    while (iterator.hasNext()) {
 	    	Topic tempTopic = iterator.next();
 	       if (topic.getUid() == tempTopic.getUid()) {
+	    	   int tempState = tempTopic.getState();
 	    	   topicData.remove(tempTopic);
 	    	   topicData.add(topic);
+	    	   topic.setState(tempState);
 	    	   repeat = true;
 	    	   break;
 	       }

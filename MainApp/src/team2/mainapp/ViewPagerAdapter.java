@@ -58,17 +58,6 @@ implements TitleProvider
 				mListItems.get(position));
 
 		v.setAdapter(adapter);
-
-		//		String[] aa = new String[5];
-		//		aa[0] = "hello";
-		//		aa[1] = "ddxc";
-		//		aa[2] = "ddr4";
-		//		aa[3] = "31415";
-		//		aa[4] = "dsd";
-		//
-		//		mListItems[position].add(aa);
-
-		// Set a listener to be invoked when the list should be refreshed.
 		
 		((PullToRefreshListView) v).setOnRefreshListener(new OnRefreshListener() {
 			@Override
@@ -82,7 +71,7 @@ implements TitleProvider
 		return v;
 	}
 
-	private class GetDataTask extends AsyncTask<Void, Void, Void> {
+	public class GetDataTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... params) {
 			// Do nothing
@@ -91,7 +80,6 @@ implements TitleProvider
 
 		@Override
 		protected void onPostExecute(Void x) {
-			Log.d("debug",category);
 			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
 			for(ArrayList<String[]> list : mListItems)
 				list.clear();
@@ -101,17 +89,26 @@ implements TitleProvider
 			// Go through the allTopics data structure, pasting title & date
 			for (Sector topicsector : gState.getAllSectors()) {
 				java.util.Collections.sort(topicsector.getTopicData());
+				int j = 0;
 				for (Topic topic : topicsector.getTopicData()) {
-					String[] allInfo = new String[5];
+					if(topic.getArtsLastHour() == 0)
+						break;
+					String[] allInfo = new String[6];
 					allInfo[0] = topic.getTitle();
 					allInfo[1] = Integer.toString(topic.getArtsLastHour()) + " - " + topic.getDate();
 					allInfo[2] = topic.getWords();
 					allInfo[3] = Integer.toString(topic.getUid());
 					allInfo[4] = topicsector.getName();
+					allInfo[5] = Integer.toString(topic.getState());
 					mListItems.get(i).add(allInfo);
+					if(j == 10)
+						break;
+					j++;
 				}
 				// Complete the refresh
 				((PullToRefreshListView) vl.get(i)).onRefreshComplete();
+				if(i > 10)
+					break;
 				i++;
 			}
 

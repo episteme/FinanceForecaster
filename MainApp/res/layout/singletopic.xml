@@ -4,16 +4,16 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
-    
+
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#FF555555"
         android:paddingBottom="2dp"
         android:paddingTop="5dp"
         android:text="@string/keyw"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FF555555"
         android:textSize="12dp"
         android:translationX="-75dp" />
 
@@ -43,6 +43,33 @@
                 android:dial="@drawable/psyduck2" />
 
         </LinearLayout>
+        
+          <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/none"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="None" />
+
+            <RadioButton
+                android:id="@+id/hide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hide" />
+
+            <RadioButton
+                android:id="@+id/star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Star" />
+
+     </RadioGroup>
 
     <TextView
         android:id="@+id/textView2"
@@ -59,12 +86,11 @@
         android:layout_width="280dp"
         android:layout_height="2dp"
         android:background="#FFCCCCCC" />
-        
+        
         <ListView
             android:id="@+id/list2"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.06"
+            android:layout_height="match_parent"
             android:translationX="15dp" >
 
             </ListView>

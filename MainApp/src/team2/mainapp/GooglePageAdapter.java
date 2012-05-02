@@ -72,7 +72,7 @@ implements TitleProvider
 		return v;
 	}
 	
-	private class GetDataTask2 extends AsyncTask<Void, Void, Void> {
+	public class GetDataTask2 extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... params) {
 			// Do nothing
@@ -81,7 +81,6 @@ implements TitleProvider
 
 		@Override
 		protected void onPostExecute(Void x) {
-			Log.d("debug",category);
 			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
 			while(gState.getReady() != true)
 			{}
@@ -101,7 +100,7 @@ implements TitleProvider
 				}
 				// Complete the refresh
 				((PullToRefreshListView) vl.get(i)).onRefreshComplete();
-				i++;
+			i++;
 			}
 
 

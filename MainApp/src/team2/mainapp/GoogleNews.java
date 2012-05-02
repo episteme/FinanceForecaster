@@ -1,6 +1,8 @@
 	package team2.mainapp;
 
 
+import team2.mainapp.GooglePageAdapter.GetDataTask2;
+import team2.mainapp.ViewPagerAdapter.GetDataTask;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,18 +17,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class GoogleNews extends Activity {
+	static GooglePageAdapter adapter2;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.google);
 		
-		GooglePageAdapter adapter2 = new GooglePageAdapter( this );
+		adapter2 = new GooglePageAdapter( this );
 	    ViewPager pager =
 	        (ViewPager)findViewById( R.id.viewpager );
 	    TitlePageIndicator indicator =
 	        (TitlePageIndicator)findViewById( R.id.indicator );
 	    pager.setAdapter( adapter2 );
 	    indicator.setViewPager( pager );
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		GetDataTask2 task = adapter2.new GetDataTask2();
+		task.execute();
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -38,8 +48,6 @@ public class GoogleNews extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menuitem1:
-			Toast.makeText(this, "Menu Item 1 selected", Toast.LENGTH_SHORT)
-					.show();
 			Intent myIntent = new Intent(this, MainAppActivity.class);
 //			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -47,10 +55,10 @@ public class GoogleNews extends Activity {
 		
 			break;
 		case R.id.menuitem2:
-			Toast.makeText(this, "Menu item 2 selected", Toast.LENGTH_SHORT)
-					.show();
+			Intent myIntent2 = new Intent(this, Preferences.class);
+			myIntent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(myIntent2);
 			break;
-
 		default:
 			break;
 		}

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.LinkedList;
 
 import team2.mainapp.PullToRefreshListView.OnRefreshListener;
+import team2.mainapp.ViewPagerAdapter.GetDataTask;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -33,6 +34,7 @@ public class MainAppActivity extends Activity {
 	static String sectors;
 	static int incrementing;
 	static boolean started;
+	static ViewPagerAdapter adapter2;
 	int ready;
 	/** Called when the activity is first created. */
 
@@ -42,56 +44,38 @@ public class MainAppActivity extends Activity {
 		ready = 0;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		Log.d("debug","Hello");
 
-		ViewPagerAdapter adapter2 = new ViewPagerAdapter( this );
+		adapter2 = new ViewPagerAdapter( this );
 		ViewPager pager =
 				(ViewPager)findViewById( R.id.viewpager );
 		TitlePageIndicator indicator =
 				(TitlePageIndicator)findViewById( R.id.indicator );
 		pager.setAdapter( adapter2 );
 		indicator.setViewPager( pager );
-
+				
 		GlobalState gState = (GlobalState) getApplication();
 		gState.setReady(false);
 		gState.setOn(true);
+		gState.setFrequency(0);
 
 		gState.setSectors(new LinkedList<Sector>());
 		gState.getAllSectors().add(new Sector("oil"));
 		gState.getAllSectors().add(new Sector("currency"));
-
-		Log.d("Debug", "Bye bye");
 
 		sectors = "";
 		for(Sector sector : gState.getAllSectors())
 		{
 			sectors += sector.getName() + ";";
 		}
-
-		Log.d("debug",sectors);
-
-		//		mListItems = new ArrayList<String[]>();
-		//
-		//  		MyArrayAdapter adapter = new MyArrayAdapter(this,
-		//  				 mListItems);
-		//
-		//		setListAdapter(adapter);
-		//
-		//		// Set a listener to be invoked when the list should be refreshed.
-		//		((PullToRefreshListView) getListView()).setOnRefreshListener(new OnRefreshListener() {
-		//			@Override
-		//			public void onRefresh() {
-		//				// Do work to refresh the list here.
-		//				GetDataTask task = new GetDataTask();
-		//				task.execute();
-		//			}
-		//		});
-		//
-		//		// Start the process of polling the server
+		
 		startProgress();
-		//		// Do an initial refresh straight away without user input
-		//		GetDataTask task = new GetDataTask();
-		//		task.execute();
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		GetDataTask task = adapter2.new GetDataTask();
+		task.execute();
 	}
 
 	public void myClickHandler(View view) {
@@ -112,15 +96,11 @@ public class MainAppActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menuitem1:
-			Toast.makeText(this, "Menu Item 1 selected", Toast.LENGTH_SHORT)
-			.show();
 			Intent myIntent = new Intent(this, GoogleNews.class);
 			myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			startActivity(myIntent);
 			break;
 		case R.id.menuitem2:
-			Toast.makeText(this, "Menu Item 1 selected", Toast.LENGTH_SHORT)
-			.show();
 			Intent myIntent2 = new Intent(this, Preferences.class);
 			myIntent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			startActivity(myIntent2);
@@ -133,7 +113,7 @@ public class MainAppActivity extends Activity {
 		return true;
 	}
 
-	public void createNotification(String title, int uid) {
+	public void createNotification(String title, ArrayList<KeyWord> keyWords, String uid, String sector) {
 		Log.d("Debug", "Creating Notification");
 		NotificationManager notificationManager = (NotificationManager) 
 				getSystemService(NOTIFICATION_SERVICE);
@@ -141,15 +121,21 @@ public class MainAppActivity extends Activity {
 		Notification.Builder not = new Notification.Builder(this);
 		not.setSmallIcon(R.drawable.psyduck2);
 		not.setContentTitle(title);
-		not.setContentText("Blah");
+		String result = keyWords.get(0).getWord();
+		for (int i = 1; i < keyWords.size(); i++) {
+			result += ", " + keyWords.get(i).getWord();
+		}
+		not.setContentText(result);
 		Intent intent = new Intent(this, SingleTopic.class);
+		intent.putExtra("EXTRA_UID",uid);
+		intent.putExtra("SECTOR", sector);
 		PendingIntent activity = PendingIntent.getActivity(this, 0, intent, 0);
 		not.setContentIntent(activity);
 		// Hide the notification after its selected
 		not.setAutoCancel(true);
 		Notification notification = not.getNotification();
 		Log.d("Debug", "Sending Notification");
-		notificationManager.notify(uid, notification);
+		notificationManager.notify(Integer.parseInt(uid), notification);
 	}
 
 
@@ -181,7 +167,7 @@ public class MainAppActivity extends Activity {
 							query = sectors + ";" + dateFormat.format(dateType);
 
 						}
-						Thread.sleep(60000);
+						Thread.sleep((gState.getFrequency()+1)*60000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -246,7 +232,7 @@ public class MainAppActivity extends Activity {
 					boolean alert = gState.getAllSectors().get(i).addTopic(
 							new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), URLS, KeyWords, rawData[0], Titles));
 					if (alert) {
-						createNotification(rawData[1], Integer.parseInt(rawData[0])); 
+						createNotification(rawData[1],KeyWords,rawData[0],gState.getAllSectors().get(i).getName()); 
 					}
 				}
 				// Add the sectorInfo to the parseInfo

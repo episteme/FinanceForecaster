@@ -9,6 +9,15 @@ public class GlobalState extends Application {
 	static LinkedList<Sector> allSectors;
 	static boolean ready;
 	static boolean on;
+	int frequency;
+
+	public int getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(int frequency) {
+		this.frequency = frequency;
+	}
 
 	public LinkedList<Sector> getAllSectors() {
 		return allSectors;

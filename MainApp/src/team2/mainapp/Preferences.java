@@ -15,6 +15,7 @@ import android.widget.ToggleButton;
 public class Preferences extends Activity {
 	SeekBar sb1;
 	SeekBar sb2;
+	SeekBar sb3;
 	ToggleButton tb;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -23,12 +24,14 @@ public class Preferences extends Activity {
 		
 	    sb1 = (SeekBar)findViewById( R.id.seekBar1 );
 	    sb2 = (SeekBar) findViewById( R.id.seekBar2 );
+	    sb3 = (SeekBar) findViewById( R.id.seekBar3);
 	    tb = (ToggleButton) findViewById( R.id.toggleButton1 );
 
 		GlobalState gState = (GlobalState) getApplication();
 		
 		sb1.setProgress(gState.getAllSectors().get(0).getThreshold());
 		sb2.setProgress(gState.getAllSectors().get(1).getThreshold());
+		sb3.setProgress(gState.getFrequency());
 		tb.setChecked(gState.isOn());
 	}
 
@@ -44,6 +47,7 @@ public class Preferences extends Activity {
 			GlobalState gState = (GlobalState) getApplication();
 			gState.getAllSectors().get(0).setThreshold(sb1.getProgress());
 			gState.getAllSectors().get(1).setThreshold(sb2.getProgress());
+			gState.setFrequency(sb3.getProgress());
 			if(tb.getText().equals("Updates Enabled"))
 				gState.setOn(true);
 			else
