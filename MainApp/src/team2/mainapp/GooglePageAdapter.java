@@ -51,14 +51,14 @@ implements TitleProvider
 			Log.d("superduper",category);
 		category = titles[ position ];
 		Log.d("dupersuper",category);
-		
+
 		mListItems.add(new ArrayList<String[]>());
 
 		GoogleArrayAdapter adapter = new GoogleArrayAdapter(context,
 				mListItems.get(position));
 
 		v.setAdapter(adapter);
-		
+
 		((PullToRefreshListView) v).setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
@@ -71,7 +71,7 @@ implements TitleProvider
 
 		return v;
 	}
-	
+
 	public class GetDataTask2 extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... params) {
@@ -83,7 +83,13 @@ implements TitleProvider
 		protected void onPostExecute(Void x) {
 			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
 			while(gState.getReady() != true)
-			{}
+			{
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 			for(ArrayList<String[]> list : mListItems)
 				list.clear();
 			int i = 0;
@@ -100,7 +106,7 @@ implements TitleProvider
 				}
 				// Complete the refresh
 				((PullToRefreshListView) vl.get(i)).onRefreshComplete();
-			i++;
+				i++;
 			}
 
 

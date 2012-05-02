@@ -85,7 +85,13 @@ implements TitleProvider
 				list.clear();
 			int i = 0;
 			while(gState.getReady() != true)
-			{}
+			{
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 			// Go through the allTopics data structure, pasting title & date
 			for (Sector topicsector : gState.getAllSectors()) {
 				java.util.Collections.sort(topicsector.getTopicData());
@@ -101,7 +107,7 @@ implements TitleProvider
 					allInfo[4] = topicsector.getName();
 					allInfo[5] = Integer.toString(topic.getState());
 					mListItems.get(i).add(allInfo);
-					if(j == 10)
+					if(j == 9)
 						break;
 					j++;
 				}
