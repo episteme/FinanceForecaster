@@ -15,6 +15,7 @@ import com.alchemyapi.api.AlchemyAPI_KeywordParams;
 public class Parse implements Runnable {
 
 	private Document doc; // Stores the response from Alchemy
+	private Document sentdoc;
 	private LinkedList<Topic> topics = new LinkedList<Topic>();
 	private String sector;
 	private String urlCache;
@@ -63,27 +64,6 @@ public class Parse implements Runnable {
 						theTitles.add(titleTemp);
 						startIndex = inputLine.indexOf("<h3 class=\"r\"><a href=\"/url?q=");
 					}
-					
-					
-					// each interesting line begins with X minute(s) ago</span><br>
-					// apart from a single line that starts with "></span>Shopping</a></li></ul>
-//					if (inputLine.indexOf(" ago</span><br>") != -1 ||
-//							inputLine.indexOf("></span>Shopping</a></li></ul>") != -1) {
-//						int linkPos = inputLine.indexOf("<a href=\"/url?q=") + 16;
-//						int titleEndPos = inputLine.lastIndexOf("</a></h3>");
-//						if (linkPos == -1 || titleEndPos == -1)
-//							break;
-//						String titleEnd = inputLine.substring(0, titleEndPos);
-//						int titleStart = titleEnd.lastIndexOf("\">") + 2;
-//						String title = titleEnd.substring(titleStart);
-//						String linkStart = inputLine.substring(linkPos);
-//						int endLink = linkStart.indexOf("&amp;");
-//						String URL = linkStart.substring(0, endLink);
-//						title = Jsoup.parse(title).text();
-//						theTitles.add(title);
-//						URL = URLDecoder.decode(URL, "UTF-8");
-//						theURLS.add(URL);
-//					}
 				}
 
 				// close input stream
@@ -120,11 +100,19 @@ public class Parse implements Runnable {
 					params.setSentiment(true);
 					try {
 						doc = alchemyObj.URLGetRankedKeywords(art.getURL(), params);
+						sentdoc = alchemyObj.URLGetTextSentiment(art.getURL());
+						
+						
+						
 						// Convert output to String
 						String alchemyOutput = NewsAnalyst.getStringFromDocument(doc);
+				        String alchemyOutputSent = NewsAnalyst.getStringFromDocument(sentdoc);
 						alchemyOutput = NewsAnalyst.removeKeywordXML(alchemyOutput);
 						alchemyOutput = Jsoup.parse(alchemyOutput).text();
 						String[] result = alchemyOutput.split(";");
+				        alchemyOutputSent = alchemyOutputSent.substring(alchemyOutputSent.indexOf("<score>"));
+				        alchemyOutputSent = alchemyOutputSent.substring(7,alchemyOutputSent.lastIndexOf("</score>"));
+				        double sentiment = Double.parseDouble(alchemyOutputSent);
 						// Add words to list
 						LinkedList<String> newWords = new LinkedList<String>();
 						LinkedList<Double> newRels = new LinkedList<Double>();
@@ -146,17 +134,18 @@ public class Parse implements Runnable {
 									System.out.println("Word overlap found: " + newWords.get(i));
 								}
 							}
-							if (overlap >= 3) {
+							if (overlap >= Math.round((t.getWords().size()/3))) {
 								isNewTopic = false;
-								t.addArticle(art);
+								t.addArticle(art,sentiment);
 								// initial word merging, adds together
 								for (int i = 0; i < result.length; i += 3)
 									t.addWord(result[i], Double.parseDouble(result[i+1]), Double.parseDouble(result[i+2]));
+								t.addSentiment(sentiment);
 								System.out.println("Topic overlap found");
 							}
 						}
 						if (isNewTopic) {
-							Topic nextTopic = new Topic(art,uid);
+							Topic nextTopic = new Topic(art,uid,sentiment);
 							uid++;
 							for (int i = 0; i < result.length; i += 3)
 								nextTopic.addWord(result[i], Double.parseDouble(result[i+1]), Double.parseDouble(result[i+2]));

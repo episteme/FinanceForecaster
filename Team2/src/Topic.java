@@ -19,26 +19,16 @@ public class Topic implements Comparable<Topic> {
 	private Date timestamp;
 	private String recentTitle;
 	private int uid;
-	
-	
-	// Constructor, begins list with first article
-	public Topic(HashMap<String, WordInfo> words, Article article) {
-		this.words = words;
-		this.articles = new LinkedList<Article>();
-		this.articles.push(article);
-		this.numWords = 1;
-		this.timestamp = new Date();
-		this.recentTitle = article.getTitle();
-		this.uid = -1;
-	}
+	double sentiment;
 
-	public Topic(Article article, int uid) {
+	public Topic(Article article, int uid, double sentiment2) {
 		this.articles = new LinkedList<Article>();
 		this.articles.push(article);
 		this.numWords = 0;
 		this.timestamp = new Date();
 		this.recentTitle = article.getTitle();
 		this.uid = uid;
+		this.sentiment = sentiment2;
 	}
 	
 	public int compareTo(Topic temp) {
@@ -48,9 +38,18 @@ public class Topic implements Comparable<Topic> {
 	public double getRel(String str) {
 		return words.get(str).getRel();
 	}
+	
+	public void addSentiment(double sentiment2)
+	{
+		this.sentiment = (this.sentiment + sentiment2) / 2;
+	}
+
+	public double getSentiment() {
+		return sentiment;
+	}
 
 	// Add article only if new
-	public void addArticle(Article article) {
+	public void addArticle(Article article, double sentiment2) {
 	    Iterator<Article> iterator = articles.iterator();
 	    boolean repeat = false;
 	    while (iterator.hasNext()) {
@@ -60,8 +59,10 @@ public class Topic implements Comparable<Topic> {
 	    	   break;
 	       }
 	    }
-	    if (!repeat)
+	    if (!repeat){
 	    	articles.push(article);
+	    	this.sentiment = (this.sentiment*(articles.size()-1) + sentiment2)/(articles.size()-1);
+	    }
 	    timestamp = new Date();
 	    recentTitle = article.getTitle();
 	}
@@ -71,13 +72,13 @@ public class Topic implements Comparable<Topic> {
 			words = new HashMap<String, WordInfo>();
 		if (words.containsKey(s)) {
 			WordInfo currentInfo = words.get(s);
-			currentInfo.setRel((currentInfo.getRel() + d) / 2.0);
-			currentInfo.setSent((currentInfo.getSent() + sent) / 2.0);
+			currentInfo.setRel((currentInfo.getRel()*(articles.size()-1) + d) / articles.size());
+			currentInfo.setSent(sent);
 			words.remove(s);
 			words.put(s, currentInfo);
 		}
 		else
-			words.put(s, new WordInfo(d, sent));
+			words.put(s, new WordInfo(d/articles.size(), sent));
 		numWords++;
 	}
 
@@ -178,7 +179,7 @@ public class Topic implements Comparable<Topic> {
 	// Return the number of articles received in the last hour
 	public int artsLastHour() {
 		int result = 0;
-		Date hourAgo = new Date(System.currentTimeMillis() - (15 * 60 * 1000));
+		Date hourAgo = new Date(System.currentTimeMillis() - (60 * 60 * 1000));
 		for (int sizeof = articles.size() - 1; sizeof >= 0; sizeof--) {
 			if (articles.get(sizeof).getDate().compareTo(hourAgo) >= 0) {
 				result++;

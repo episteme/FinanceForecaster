@@ -40,7 +40,7 @@ public class MainAppActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		started = true;
+		started = false;
 		ready = 0;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
@@ -68,14 +68,20 @@ public class MainAppActivity extends Activity {
 			sectors += sector.getName() + ";";
 		}
 		
-		startProgress();
+		if(!gState.getReady())
+			startProgress();
 	}
 	
 	@Override
 	public void onResume(){
 		super.onResume();
-		GetDataTask task = adapter2.new GetDataTask();
-		task.execute();
+		if(started){
+			GetDataTask task = adapter2.new GetDataTask();
+			task.execute();
+		}
+		else{
+			started = true;
+		}
 	}
 
 	public void myClickHandler(View view) {
@@ -129,7 +135,7 @@ public class MainAppActivity extends Activity {
 		Intent intent = new Intent(this, SingleTopic.class);
 		intent.putExtra("EXTRA_UID",uid);
 		intent.putExtra("SECTOR", sector);
-		PendingIntent activity = PendingIntent.getActivity(this, 0, intent, 0);
+		PendingIntent activity = PendingIntent.getActivity(this, Integer.parseInt(uid), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		not.setContentIntent(activity);
 		// Hide the notification after its selected
 		not.setAutoCancel(true);
@@ -200,7 +206,7 @@ public class MainAppActivity extends Activity {
 					{
 						gState.getAllSectors().get(i).updateTopic(Integer.parseInt(rawData[0]), Integer.parseInt(rawData[1]));
 					}
-					else if (rawData.length < 5)
+					else if (rawData.length < 7)
 						break;
 
 					// Splits the URLS and keyWords into individual parts
@@ -234,7 +240,7 @@ public class MainAppActivity extends Activity {
 					}
 					// Add the topic info to the sector info
 					boolean alert = gState.getAllSectors().get(i).addTopic(
-							new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), URLS, KeyWords, rawData[0], Titles));
+							new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), URLS, KeyWords, rawData[0], Titles, Double.parseDouble(rawData[7])));
 					if (alert) {
 						createNotification(rawData[1],KeyWords,rawData[0],gState.getAllSectors().get(i).getName()); 
 					}

@@ -21,26 +21,24 @@
         android:layout_width="280dp"
         android:layout_height="2dp"
         android:background="#FFCCCCCC" />
-
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-
+
             <ListView
                 android:id="@+id/list1"
                 android:layout_width="122dp"
-                android:layout_height="199dp"
-                android:layout_weight="1"
+                android:layout_height="148dp"
+                android:layout_weight="0.60"
                 android:translationX="15dp" >
-
             </ListView>
-
-            <AnalogClock
-                android:id="@+id/analogClock1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.65"
-                android:dial="@drawable/psyduck2" />
+
+            <team2.mainapp.Gauge
+                android:id="@+id/gauge1"
+                android:layout_width="150dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center_vertical" />
 
         </LinearLayout>
         

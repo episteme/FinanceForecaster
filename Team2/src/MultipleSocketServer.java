@@ -112,6 +112,7 @@ public class MultipleSocketServer implements Runnable {
 								returnTitle += T.topLinks() + ";;\n";
 								returnTitle += T.topTitles()+ ";;\n";
 								returnTitle += T.topWords()+ ";;\n";
+								returnTitle += T.getSentiment()+ ";;\n";
 								osw.write(returnTitle);
 								osw.write("SPECTOPS\n");
 						}
