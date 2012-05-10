@@ -1,33 +1,16 @@
 package team2.mainapp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-
-import team2.mainapp.PullToRefreshListView.OnRefreshListener;
+import team2.mainapp.GooglePageAdapter.GetDataTask2;
 import team2.mainapp.ViewPagerAdapter.GetDataTask;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.app.ListActivity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainAppActivity extends Activity {
 	static String s;
@@ -50,10 +33,6 @@ public class MainAppActivity extends Activity {
 				(TitlePageIndicator)findViewById( R.id.indicator );
 		pager.setAdapter( adapter2 );
 		indicator.setViewPager( pager );
-				
-		GlobalState gState = (GlobalState) getApplication();
-
-		
 	}
 	
 	@Override

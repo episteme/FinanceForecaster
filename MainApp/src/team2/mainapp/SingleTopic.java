@@ -19,12 +19,12 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 public class SingleTopic extends Activity {
 
-	RadioButton rb1;
-	RadioButton rb2;
-	RadioButton rb3;
+	ToggleButton hide;
+	ToggleButton star;
 	Gauge ac;
 	int uid;
 	String sectorName;
@@ -42,11 +42,6 @@ public class SingleTopic extends Activity {
 
 		Topic thistopic = null;
 
-		rb1 = (RadioButton) findViewById(R.id.none);
-		rb2 = (RadioButton) findViewById(R.id.hide);
-		rb3 = (RadioButton) findViewById(R.id.star);
-		ac = (Gauge) findViewById(R.id.gauge1);
-
 		GlobalState gState = (GlobalState) getApplication();
 		for (Sector sector : gState.getAllSectors()) {
 			if(!sector.getName().equals(sectorName))
@@ -58,11 +53,16 @@ public class SingleTopic extends Activity {
 				}
 			}
 		}
+		
+		hide = (ToggleButton) findViewById(R.id.toggleButton1);
+		star = (ToggleButton) findViewById(R.id.toggleButton2);
+		ac = (Gauge) findViewById(R.id.gauge1);
+
 
 		switch(thistopic.getState()){
-			case -1: rb2.setChecked(true);break;
-			case 0: rb1.setChecked(true);break;
-			case 1: rb3.setChecked(true);break;
+			case -1: star.setChecked(false);hide.setChecked(true);break;
+			case 0: star.setChecked(false);hide.setChecked(false);break;
+			case 1: star.setChecked(true);hide.setChecked(false);break;
 		}
 		
 		double sent = thistopic.getSentiment();
@@ -98,6 +98,21 @@ public class SingleTopic extends Activity {
 
 
 	}
+	
+	public void myClickHandler(View view) {
+		switch(view.getId()){
+			case R.id.toggleButton1:
+				if(hide.isChecked())
+					star.setChecked(false);
+				break;
+			case R.id.toggleButton2:
+				if(star.isChecked())
+					hide.setChecked(false);
+				break;
+		}
+		Log.d("Starhide",Boolean.toString(star.isChecked()));
+		Log.d("Starhide",Boolean.toString(hide.isChecked()));
+	}
 
 	public void titleClickHandler(View view) {
 		TextView tv = (TextView) view.findViewById(R.id.textView2);
@@ -113,6 +128,8 @@ public class SingleTopic extends Activity {
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.d("Starhide",Boolean.toString(star.isChecked()));
+		Log.d("Starhide",Boolean.toString(hide.isChecked()));
 		GlobalState gState = (GlobalState) getApplication();
 		switch (item.getItemId()) {
 		case R.id.menuitem1:
@@ -121,12 +138,12 @@ public class SingleTopic extends Activity {
 					continue;
 				for (Topic topic : sector.getTopicData()) {
 					if (topic.getUid() == uid) {
-						if(rb1.isChecked())
-							topic.setState(0);
-						else if(rb2.isChecked())
-							topic.setState(-1);
-						else if(rb3.isChecked())
+						if(star.isChecked())
 							topic.setState(1);
+						else if(hide.isChecked())
+							topic.setState(-1);
+						else
+							topic.setState(0);
 						break;
 					}
 				}
