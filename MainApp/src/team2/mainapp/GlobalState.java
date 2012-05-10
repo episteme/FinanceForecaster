@@ -3,6 +3,8 @@ package team2.mainapp;
 import java.util.LinkedList;
 
 import android.app.Application;
+import android.content.Intent;
+import android.util.Log;
 
 public class GlobalState extends Application {
 	
@@ -10,6 +12,20 @@ public class GlobalState extends Application {
 	static boolean ready;
 	static boolean on;
 	int frequency;
+	
+	public void onCreate() {
+		Log.d("Starting","Application");
+		Intent intent = new Intent(this, Background.class);
+		startService(intent);
+		
+		this.setReady(false);
+		this.setOn(true);
+		this.setFrequency(0);
+
+		this.setSectors(new LinkedList<Sector>());
+		this.getAllSectors().add(new Sector("oil"));
+		this.getAllSectors().add(new Sector("currency"));
+	}
 
 	public int getFrequency() {
 		return frequency;

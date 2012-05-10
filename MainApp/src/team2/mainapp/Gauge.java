@@ -343,7 +343,7 @@ public final class Gauge extends View {
 		float scale = (float) getWidth();		
 		canvas.save(Canvas.MATRIX_SAVE_FLAG);
 		canvas.scale(scale, scale);
-
+ 
 		drawLogo(canvas);
 		drawHand(canvas);
 		
