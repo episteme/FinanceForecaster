@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,11 +41,20 @@ public class MyArrayAdapter extends ArrayAdapter<String[]> {
 		textView3.setText(values.get(position)[2]);
 		textView4.setText(values.get(position)[3]);
 		textView5.setText(values.get(position)[4]);
+		
+//		Double sentiment = Double.parseDouble(values.get(position)[6]);
+//		Double green = ((sentiment + 1) / 2.0) * 255;
+//		Double red = 255.0 - green;
+//		Integer igreen = (int) Math.round(green);
+//		Integer ired = (int) Math.round(red);
+//		
+//		rowView.setBackgroundColor(Color.rgb(ired, igreen, 0));
+		
 		switch(Integer.parseInt(values.get(position)[5])){
 			case -1:
-				textView.setTextColor(Color.rgb(255,0,0));break;
+				rowView.setBackgroundColor(Color.rgb(255,50,50));break;
 			case 1:
-				textView.setTextColor(Color.rgb(255,155,0));break;
+				rowView.setBackgroundColor(Color.rgb(235,235,235));break;
 		}
 		return rowView;
 	}

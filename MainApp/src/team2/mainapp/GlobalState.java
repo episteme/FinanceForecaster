@@ -1,5 +1,6 @@
 package team2.mainapp;
 
+import java.util.Date;
 import java.util.LinkedList;
 
 import android.app.Application;
@@ -12,6 +13,7 @@ public class GlobalState extends Application {
 	static boolean ready;
 	static boolean on;
 	int frequency;
+	static Date lastUpdated;
 	
 	public void onCreate() {
 		Log.d("Starting","Application");
@@ -57,5 +59,13 @@ public class GlobalState extends Application {
 
 	public void setOn(boolean o) {
 		on = o;
+	}
+
+	public Date getLastUpdated() {
+		return lastUpdated;
+	}
+
+	public void setUpdated(Date date) {
+		lastUpdated = date;
 	}
 }

@@ -56,8 +56,8 @@ public final class Gauge extends View {
 	private Bitmap background; // holds the cached static part
 	
 	// scale configuration
-	private static final int totalNicks = 200;
-	private static final float degreesPerNick = 360.0f / totalNicks;	
+	private static final int totalNicks = 400;
+	private static final float degreesPerNick = 300.0f / totalNicks;	
 	private static final int centerDegree = 0; // the one in the top center (12 o'clock)
 	private static final int minDegrees = -100;
 	private static final int maxDegrees = 100;
@@ -279,42 +279,54 @@ public final class Gauge extends View {
 
 	private void drawScale(Canvas canvas) {
 		canvas.drawOval(scaleRect, scalePaint);
+		
+		canvas.rotate(210, 0.5f, 0.5f);
 
 		canvas.save(Canvas.MATRIX_SAVE_FLAG);
 		for (int i = 0; i < totalNicks; ++i) {
 			float y1 = scaleRect.top;
-			float y2 = y1 - 0.020f;
+			float y2 = y1 - 0.075f;
 			
+			double tempi = i;
+			double tempNicks = totalNicks;
+			
+			Double green = (tempi/tempNicks) * 255;
+			Double red = (1 - (tempi/tempNicks)) * 255;
+			Integer igreen = (int) Math.round(green);
+			Integer ired = (int) Math.round(red);
+									
+			
+			scalePaint.setColor(Color.rgb(ired, igreen, 0));
 			canvas.drawLine(0.5f, y1, 0.5f, y2, scalePaint);
 			
 			canvas.rotate(degreesPerNick, 0.5f, 0.5f);
 		}
-		canvas.restore();		
+		canvas.restore();	
 	}
 	
 	private float degreeToAngle(float degree) {
 		return (degree - centerDegree) / 2.0f * degreesPerNick;
 	}
 
-	private void drawLogo(Canvas canvas) {
-		canvas.save(Canvas.MATRIX_SAVE_FLAG);
-		canvas.translate(0.5f - logo.getWidth() * logoScale / 2.0f, 
-						 0.5f - logo.getHeight() * logoScale / 2.0f);
-
-		int color = 0x00000000;
-		float position = getRelativeTemperaturePosition();
-		if (position < 0) {
-			color |= (int) ((0xf0) * -position) << 16; // red
-		} else {
-			color |= ((int) ((0xf0) * position)) << 8; // green			
-		}
-//		Log.d(TAG, "*** " + Integer.toHexString(color));
-		LightingColorFilter logoFilter = new LightingColorFilter(0xffffffff, color);
-		logoPaint.setColorFilter(logoFilter);
-		
-		canvas.drawBitmap(logo, logoMatrix, logoPaint);
-		canvas.restore();		
-	}
+//	private void drawLogo(Canvas canvas) {
+//		canvas.save(Canvas.MATRIX_SAVE_FLAG);
+//		canvas.translate(0.5f - logo.getWidth() * logoScale / 2.0f, 
+//						 0.5f - logo.getHeight() * logoScale / 2.0f);
+//
+//		int color = 0x00000000;
+//		float position = getRelativeTemperaturePosition();
+//		if (position < 0) {
+//			color |= (int) ((0xf0) * -position) << 16; // red
+//		} else {
+//			color |= ((int) ((0xf0) * position)) << 8; // green			
+//		}
+////		Log.d(TAG, "*** " + Integer.toHexString(color));
+//		LightingColorFilter logoFilter = new LightingColorFilter(0xffffffff, color);
+//		logoPaint.setColorFilter(logoFilter);
+//		
+//		canvas.drawBitmap(logo, logoMatrix, logoPaint);
+//		canvas.restore();		
+//	}
 
 	private void drawHand(Canvas canvas) {
 		if (handInitialized) {
@@ -344,7 +356,7 @@ public final class Gauge extends View {
 		canvas.save(Canvas.MATRIX_SAVE_FLAG);
 		canvas.scale(scale, scale);
  
-		drawLogo(canvas);
+//		drawLogo(canvas);
 		drawHand(canvas);
 		
 		canvas.restore();

@@ -1,6 +1,10 @@
 package team2.mainapp;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import team2.mainapp.PullToRefreshListView.OnRefreshListener;
 
 import android.app.Activity;
@@ -75,14 +79,8 @@ implements TitleProvider
 	public class GetDataTask2 extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... params) {
-			// Do nothing
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void x) {
 			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
-			while(gState.getReady() != true)
+			while(gState.getReady() != true || mListItems.size() == 0)
 			{
 				try {
 					Thread.sleep(1000);
@@ -90,6 +88,12 @@ implements TitleProvider
 					e.printStackTrace();
 				}
 			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void x) {
+			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
 			for(ArrayList<String[]> list : mListItems)
 				list.clear();
 			int i = 0;
@@ -106,6 +110,8 @@ implements TitleProvider
 				}
 				// Complete the refresh
 				((PullToRefreshListView) vl.get(i)).onRefreshComplete();
+//				DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+//				((PullToRefreshListView) vl.get(i)).setLastUpdated(dateFormat.format(new Date()));
 				i++;
 			}
 

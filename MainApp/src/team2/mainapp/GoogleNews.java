@@ -36,14 +36,9 @@ public class GoogleNews extends Activity {
 
 	@Override
 	public void onResume(){
-		super.onResume();
-		if(started){
+			super.onResume();
 			GetDataTask2 task = adapter2.new GetDataTask2();
 			task.execute();
-		}
-		else{
-			started = true;
-		}
 	}
 
 

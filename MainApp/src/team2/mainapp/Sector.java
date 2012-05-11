@@ -64,12 +64,13 @@ public class Sector {
 		threshold = progress;
 	}
 
-	public void updateTopic(int parseInt, int parseInt2) {
+	public void updateTopic(int parseInt, int parseInt2, int i) {
 		Iterator<Topic> iterator = topicData.iterator();
 	    while (iterator.hasNext()) {
 	    	Topic tempTopic = iterator.next();
 	       if (tempTopic.getUid() == parseInt) {
 	    	   tempTopic.setArtsLastHour(parseInt2);
+	    	   tempTopic.setArts(i);
 	       }
 	    }		
 	}

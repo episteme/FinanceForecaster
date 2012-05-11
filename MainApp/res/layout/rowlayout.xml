@@ -27,11 +27,11 @@
 
     <TextView
         android:id="@+id/labelq"
-        android:layout_width="wrap_content"
+        android:layout_width="1000dp"
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
         android:text="@+id/label3"
-        android:textSize="9dp" />
+        android:textSize="8dp" />
     
     <TextView
         android:id="@+id/uid"

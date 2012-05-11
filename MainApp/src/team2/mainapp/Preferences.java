@@ -60,4 +60,12 @@ public class Preferences extends Activity {
 
 		return true;
 	}
+	
+	public void resetHandler(View view) {
+		GlobalState gState = (GlobalState) getApplication();
+		for(Sector sector : gState.getAllSectors())
+			for(Topic topic : sector.getTopicData())
+				if(topic.getState() == -1)
+					topic.setState(0);
+	}
 }

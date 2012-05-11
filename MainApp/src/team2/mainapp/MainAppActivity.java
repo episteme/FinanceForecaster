@@ -38,13 +38,8 @@ public class MainAppActivity extends Activity {
 	@Override
 	public void onResume(){
 		super.onResume();
-		if(started){
 			GetDataTask task = adapter2.new GetDataTask();
 			task.execute();
-		}
-		else{
-			started = true;
-		}
 	}
 
 	public void myClickHandler(View view) {

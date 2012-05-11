@@ -1,7 +1,13 @@
 package team2.mainapp;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import android.graphics.Color;
+import android.util.Log;
 
 public class Topic implements Comparable<Topic> {
 	private String title;
@@ -13,17 +19,19 @@ public class Topic implements Comparable<Topic> {
 	private ArrayList<String> titles;
 	int state;
 	private double sentiment;
+	private int arts;
 	
-	Topic (String title, String date,  int artsLH, ArrayList<String> URLS, ArrayList<KeyWord> keyWords, String uid, ArrayList<String> titles, double sentiment2) {
+	Topic (String title, String date,  int artsLH, ArrayList<String> URLS, ArrayList<KeyWord> keyWords, String uid, ArrayList<String> titles, double sentiment2, String rawData) {
 		this.uid = (int) Integer.parseInt(uid);
 		this.keyWords = keyWords;
-		this.title = title;
+		this.title = title.replace("?","");
 		this.URLS = URLS;
 		this.date = date;
 		this.artsLastHour = artsLH;
 		this.titles = titles;
 		this.sentiment = sentiment2;
 		state = 0;
+		this.arts = Integer.parseInt(rawData);
 	}
 	
 	public double getSentiment() {
@@ -56,7 +64,19 @@ public class Topic implements Comparable<Topic> {
 	}
 
 	public String getDate() {
-		return date;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/d HH:mm:ss");
+		Date temp;
+		try {
+			temp = dateFormat.parse(date);
+		} catch (ParseException e) {
+			return "some time in the past";
+		}
+		dateFormat = new SimpleDateFormat("hh:mma");
+		String result = dateFormat.format(temp);
+		dateFormat = new SimpleDateFormat("EEEE");
+		result += " on " + dateFormat.format(temp);
+
+		return result;
 	}
 
 	public void setDate(String date) {
@@ -93,10 +113,19 @@ public class Topic implements Comparable<Topic> {
 		if (keyWords.size() == 0) {
 			return "";
 		}
+		
+		int num;
+		
+		if(keyWords.size() < 5)
+			num = keyWords.size();
+		else
+			num = 5;
+
 		String result = keyWords.get(0).getWord();
-		for (int i = 1; i < keyWords.size(); i++) {
+		for (int i = 1; i < num; i++) {
 			result += ", " + keyWords.get(i).getWord();
 		}
+		Log.d("herro",result);
 		return result;
 	}
 
@@ -106,5 +135,13 @@ public class Topic implements Comparable<Topic> {
 	
 	public int getState() {
 		return state;
+	}
+
+	public void setArts(int i) {
+		this.arts = i;
+	}
+
+	public int getArts() {
+		return arts;	
 	}
 }

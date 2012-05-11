@@ -151,7 +151,7 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
     public void setLastUpdated(CharSequence lastUpdated) {
         if (lastUpdated != null) {
             mRefreshViewLastUpdated.setVisibility(View.VISIBLE);
-            mRefreshViewLastUpdated.setText(lastUpdated);
+            mRefreshViewLastUpdated.setText("Last refreshed @ " + lastUpdated);
         } else {
             mRefreshViewLastUpdated.setVisibility(View.GONE);
         }

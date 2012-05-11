@@ -102,6 +102,7 @@ public class MultipleSocketServer implements Runnable {
 							if (!(convertedDate.compareTo(T.getTimestamp()) < 0)) {
 								String returnTitle = ((Integer) T.getUid()).toString() + ";;\n";
 								returnTitle += T.artsLastHour() + ";;\n";
+								returnTitle += T.getArticles().size() + ";;\n";
 								osw.write(returnTitle);
 								osw.write("SPECTOPS\n");
 							}else{
@@ -113,6 +114,7 @@ public class MultipleSocketServer implements Runnable {
 								returnTitle += T.topTitles()+ ";;\n";
 								returnTitle += T.topWords()+ ";;\n";
 								returnTitle += T.getSentiment()+ ";;\n";
+								returnTitle += T.getArticles().size() + ";;\n";
 								osw.write(returnTitle);
 								osw.write("SPECTOPS\n");
 						}

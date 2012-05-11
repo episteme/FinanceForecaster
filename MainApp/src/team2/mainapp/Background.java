@@ -79,6 +79,7 @@ public class Background extends Service {
 				String query = sectors + ";" + date;
 				for (int i = 0; i >= 0; i++) {
 					try {
+						
 						GlobalState gState = (GlobalState) getApplication();
 						if(gState.isOn()){
 							// Get new information from remote server
@@ -96,7 +97,14 @@ public class Background extends Service {
 							query = sectors + ";" + dateFormat.format(dateType);
 
 						}
-						Thread.sleep((gState.getFrequency()+1)*60000);
+						
+						int waited = 0;
+						while(waited <= gState.getFrequency()){
+							waited++;
+							Thread.sleep(60000);
+						}
+						
+						
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -125,11 +133,11 @@ public class Background extends Service {
 					// Splits the topic data into parts
 					String[] rawData = topic.split(";;\n");
 
-					if(rawData.length == 2)
+					if(rawData.length == 3)
 					{
-						gState.getAllSectors().get(i).updateTopic(Integer.parseInt(rawData[0]), Integer.parseInt(rawData[1]));
+						gState.getAllSectors().get(i).updateTopic(Integer.parseInt(rawData[0]), Integer.parseInt(rawData[1]), Integer.parseInt(rawData[2]));
 					}
-					else if (rawData.length < 7)
+					else if (rawData.length < 8)
 						break;
 
 					// Splits the URLS and keyWords into individual parts
@@ -163,7 +171,7 @@ public class Background extends Service {
 					}
 					// Add the topic info to the sector info
 					boolean alert = gState.getAllSectors().get(i).addTopic(
-							new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), URLS, KeyWords, rawData[0], Titles, Double.parseDouble(rawData[7])));
+							new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), URLS, KeyWords, rawData[0], Titles, Double.parseDouble(rawData[7]),rawData[8]));
 					if (alert) {
 						createNotification(rawData[1],KeyWords,rawData[0],gState.getAllSectors().get(i).getName()); 
 					}
@@ -205,6 +213,7 @@ public class Background extends Service {
 			}
 
 			gState.setReady(true);
+			gState.setUpdated(new Date());
 
 			// Replaces allTopics with parseInf
 			Log.d("debug","New info received");

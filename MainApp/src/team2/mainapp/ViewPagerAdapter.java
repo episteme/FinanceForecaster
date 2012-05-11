@@ -1,6 +1,10 @@
 package team2.mainapp;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import team2.mainapp.PullToRefreshListView.OnRefreshListener;
 
 import android.app.Activity;
@@ -74,7 +78,15 @@ implements TitleProvider
 	public class GetDataTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... params) {
-			// Do nothing
+			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
+			while(gState.getReady() != true || mListItems.size() == 0)
+			{
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 			return null;
 		}
 
@@ -84,14 +96,7 @@ implements TitleProvider
 			for(ArrayList<String[]> list : mListItems)
 				list.clear();
 			int i = 0;
-			while(gState.getReady() != true)
-			{
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
+		
 			// Go through the allTopics data structure, pasting title & date
 			for (Sector topicsector : gState.getAllSectors()) {
 				java.util.Collections.sort(topicsector.getTopicData());
@@ -99,13 +104,17 @@ implements TitleProvider
 				for (Topic topic : topicsector.getTopicData()) {
 					if(topic.getArtsLastHour() == 0)
 						break;
-					String[] allInfo = new String[6];
+					String[] allInfo = new String[7];
 					allInfo[0] = topic.getTitle();
-					allInfo[1] = Integer.toString(topic.getArtsLastHour()) + " - " + topic.getDate();
+					if(topic.getArts() != 1)
+						allInfo[1] = "Aggregated from " + Integer.toString(topic.getArts()) + " sources since " + topic.getDate();
+					else
+						allInfo[1] = "Aggregated from " + Integer.toString(topic.getArts()) + " source since " + topic.getDate();
 					allInfo[2] = topic.getWords();
 					allInfo[3] = Integer.toString(topic.getUid());
 					allInfo[4] = topicsector.getName();
 					allInfo[5] = Integer.toString(topic.getState());
+					allInfo[6] = Double.toString(topic.getSentiment());
 					mListItems.get(i).add(allInfo);
 					if(j == 9)
 						break;
@@ -113,6 +122,8 @@ implements TitleProvider
 				}
 				// Complete the refresh
 				((PullToRefreshListView) vl.get(i)).onRefreshComplete();
+//				DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+//				((PullToRefreshListView) vl.get(i)).setLastUpdated(dateFormat.format(new Date()));
 				if(i > 10)
 					break;
 				i++;

@@ -53,9 +53,10 @@ public class Topic implements Comparable<Topic> {
 	    Iterator<Article> iterator = articles.iterator();
 	    boolean repeat = false;
 	    while (iterator.hasNext()) {
-	       if (article.getURL().compareTo(iterator.next().getURL()) == 0) {
+	    	Article nextArticle = iterator.next();
+	       if (article.getURL().compareTo(nextArticle.getURL()) == 0 || article.getTitle().compareTo(nextArticle.getTitle()) == 0) {
 	    	   repeat = true;
-	    	   System.out.println("Repeat URL");
+	    	   System.out.println("Repeat article");
 	    	   break;
 	       }
 	    }
@@ -63,7 +64,6 @@ public class Topic implements Comparable<Topic> {
 	    	articles.push(article);
 	    	this.sentiment = (this.sentiment*(articles.size()-1) + sentiment2)/(articles.size()-1);
 	    }
-	    timestamp = new Date();
 	    recentTitle = article.getTitle();
 	}
 

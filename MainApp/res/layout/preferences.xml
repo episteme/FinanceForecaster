@@ -3,6 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:background="#FFCCCCCC"
+        android:paddingBottom="10dp" />
 
     <TextView
         android:id="@+id/textView1"
@@ -84,5 +90,18 @@
         android:layout_width="252dp"
         android:layout_height="wrap_content"
         android:max="100" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:background="#FFCCCCCC"
+        android:paddingBottom="10dp" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="resetHandler"
+        android:text="Reset Hidden Articles" />
 
 </LinearLayout>
