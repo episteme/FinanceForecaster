@@ -102,8 +102,6 @@ public class Parse implements Runnable {
 						doc = alchemyObj.URLGetRankedKeywords(art.getURL(), params);
 						sentdoc = alchemyObj.URLGetTextSentiment(art.getURL());
 						
-						
-						
 						// Convert output to String
 						String alchemyOutput = NewsAnalyst.getStringFromDocument(doc);
 				        String alchemyOutputSent = NewsAnalyst.getStringFromDocument(sentdoc);
