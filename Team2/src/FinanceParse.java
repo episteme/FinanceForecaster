@@ -34,6 +34,7 @@ public class FinanceParse {
 			Element e = (Element) nList.item(i);
 			
 			if (getTagValue("type", e).equals("Company")) {
+				
 				String[] s = new String[3];
 				NodeList neList = e.getElementsByTagName("sentiment");
 				Element e2 = (Element) neList.item(0);
@@ -47,9 +48,12 @@ public class FinanceParse {
 				if (neList2.getLength() == 0)
 					continue;
 				Element e3 = (Element) neList2.item(0);
+				
 				s[0] = getTagValue("name", e3);
 				s[2] = getTagValue("relevance", e);
+				
 				retList.add(s);
+				
 				boolean found = false;
 				for (int k = 0; k < cList.size(); k++) {
 					if (cList.get(k).getName().equals(s[0])) {
@@ -58,7 +62,7 @@ public class FinanceParse {
 					}
 				}
 				if (!found) {
-					Company c = new Company(s[0], s[1]);
+					Company c = new Company(s[0], s[1], s[2]);
 					cList.add(c);
 				}
 			}			

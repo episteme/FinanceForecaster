@@ -10,9 +10,9 @@ public class MultipleSocketServer implements Runnable {
 	private Socket connection;
 	public static void main(String[] args) {
 		feeds[0] = new FeedReader("oil");
-		feeds[1] = new FeedReader("currency");
+		feeds[1] = new FeedReader("technology");
 		parsers[0] = new Parse("oil");
-		parsers[1] = new Parse("currency");
+		parsers[1] = new Parse("technology");
 
 		Thread oilt = new Thread(feeds[0]);
 		oilt.start();

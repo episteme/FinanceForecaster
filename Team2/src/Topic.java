@@ -20,8 +20,12 @@ public class Topic implements Comparable<Topic> {
 	private String recentTitle;
 	private int uid;
 	double sentiment;
+	ArrayList<CompanyLink> companies;
+	Article first;
+	int count;
 
-	public Topic(Article article, int uid, double sentiment2) {
+	public Topic(Article article, int uid, double sentiment2, ArrayList<CompanyLink> companies) {
+		first = article;
 		this.articles = new LinkedList<Article>();
 		this.articles.push(article);
 		this.numWords = 0;
@@ -29,8 +33,28 @@ public class Topic implements Comparable<Topic> {
 		this.recentTitle = article.getTitle();
 		this.uid = uid;
 		this.sentiment = sentiment2;
+		this.companies = companies;
+		count = 1;
 	}
 	
+	private void mergeCompanies(ArrayList<CompanyLink> comps) {
+		ArrayList<CompanyLink> tempList = new ArrayList<CompanyLink>();
+		for(CompanyLink comp1 : companies)
+		{
+			for(CompanyLink comp2 : comps)
+			{
+				if(comp1.getCompany().equals(comp2.getCompany())){
+					comp1.merge(comp2);
+				}
+				else
+				{
+					tempList.add(comp2);
+				}
+			}
+		}
+		companies.addAll(tempList);
+	}
+
 	public int compareTo(Topic temp) {
 		return temp.artsLastHour() - this.artsLastHour();
 	}
@@ -49,7 +73,7 @@ public class Topic implements Comparable<Topic> {
 	}
 
 	// Add article only if new
-	public void addArticle(Article article, double sentiment2) {
+	public void addArticle(Article article, double sentiment2, ArrayList<CompanyLink> comps) {
 	    Iterator<Article> iterator = articles.iterator();
 	    boolean repeat = false;
 	    while (iterator.hasNext()) {
@@ -63,6 +87,8 @@ public class Topic implements Comparable<Topic> {
 	    if (!repeat){
 	    	articles.push(article);
 	    	this.sentiment = (this.sentiment*(articles.size()-1) + sentiment2)/(articles.size()-1);
+			mergeCompanies(comps);
+			count++;
 	    }
 	    recentTitle = article.getTitle();
 	}
@@ -72,8 +98,8 @@ public class Topic implements Comparable<Topic> {
 			words = new HashMap<String, WordInfo>();
 		if (words.containsKey(s)) {
 			WordInfo currentInfo = words.get(s);
-			currentInfo.setRel((currentInfo.getRel()*(articles.size()-1) + d) / articles.size());
-			currentInfo.setSent(sent);
+			currentInfo.setRel(currentInfo.getRel() + d);
+			currentInfo.setSent((currentInfo.getSent()*(articles.size()-1) + d) / articles.size());
 			words.remove(s);
 			words.put(s, currentInfo);
 		}
@@ -183,6 +209,9 @@ public class Topic implements Comparable<Topic> {
 		for (int sizeof = articles.size() - 1; sizeof >= 0; sizeof--) {
 			if (articles.get(sizeof).getDate().compareTo(hourAgo) >= 0) {
 				result++;
+			}else{
+				articles.remove(sizeof);
+				sizeof--;
 			}
 		}
 		return result;
@@ -211,6 +240,19 @@ public class Topic implements Comparable<Topic> {
 
 	public HashMap<String, WordInfo> getWords() {
 		return words;
+	}
+	
+	public void mergeTopic(Topic toMerge){
+		// Ideally, have a merge topic function
+		// complex, ugly code needed
+	}
+
+	public Article getFirst() {
+		return first;
+	}
+
+	public int getCount() {
+		return count;
 	}
 	
 }

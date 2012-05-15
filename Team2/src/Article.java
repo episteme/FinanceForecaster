@@ -8,11 +8,23 @@ public class Article {
 	private String URL;
 	private Date date;
 	private String title;
+	private String description;
+	private String source;
 	
-	public Article(String URL, String title, Date date) {
+	public String getDescription() {
+		return description;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public Article(String URL, String title, Date date, String string, String string2) {
 		this.URL = URL;
 		this.date = date;
 		this.title = title;
+		this.source = string;
+		this.description = string2;
 	}
 
 	public String getTitle() {

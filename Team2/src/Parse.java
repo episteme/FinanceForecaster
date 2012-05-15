@@ -1,6 +1,7 @@
 import java.net.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -8,18 +9,24 @@ import java.io.*;
 
 import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.alchemyapi.api.AlchemyAPI;
 import com.alchemyapi.api.AlchemyAPI_KeywordParams;
+import com.alchemyapi.api.AlchemyAPI_NamedEntityParams;
 
 public class Parse implements Runnable {
 
 	private Document doc; // Stores the response from Alchemy
 	private Document sentdoc;
 	private LinkedList<Topic> topics = new LinkedList<Topic>();
+	private CompanyList cList = new CompanyList();
 	private String sector;
 	private String urlCache;
 	private int uid;
+	private String APIkey = "fbde73712800960605177cdcf8cc5ade6ebd15a5";
 
 
 	Parse(String sector) {
@@ -32,7 +39,7 @@ public class Parse implements Runnable {
 		while (true) {
 			try {
 				System.out.println("Starting search");
-				URL newsURL = new URL("http://www.google.com/search?q=" + sector + "&tbm=nws&tbs=sbd:1");
+				URL newsURL = new URL("http://www.google.com/search?q=" + sector + "&tbm=nws&tbs=sbd:1,nsd:1");
 				URLConnection uc = newsURL.openConnection();
 				// Need to pretend we are a browser so that google responds
 				uc.setRequestProperty
@@ -48,9 +55,11 @@ public class Parse implements Runnable {
 				// URL appears between <a href="/url?q= and &amp;
 				LinkedList<String> theURLS = new LinkedList<String>();
 				LinkedList<String> theTitles = new LinkedList<String>();
+				LinkedList<String> theSources = new LinkedList<String>();
+				LinkedList<String> theDescrips = new LinkedList<String>();
 				// while we have a line to read
 				while ((inputLine = in.readLine()) != null) {
-					
+
 					int startIndex = inputLine.indexOf("<h3 class=\"r\"><a href=\"/url?q=");
 					while(startIndex != -1)
 					{
@@ -62,6 +71,17 @@ public class Parse implements Runnable {
 						String titleTemp = inputLine.substring(0,inputLine.indexOf("</a></h3>"));
 						titleTemp = Jsoup.parse(titleTemp).text();
 						theTitles.add(titleTemp);
+						inputLine = inputLine.substring(inputLine.indexOf("<span class=\"f\">")+16);
+						String sourceTemp = inputLine.substring(0,inputLine.indexOf("-")-1);
+						theSources.add(sourceTemp);
+						inputLine = inputLine.substring(inputLine.indexOf("<div>")+5);
+//						System.out.println(inputLine);
+//						String descripTemp = "";
+//						if(inputLine.indexOf("<b>...</b>") != -1)
+//							descripTemp = inputLine.substring(0,inputLine.indexOf("<b>...</b>")-1);
+//						else
+							String descripTemp =  inputLine.substring(0,inputLine.indexOf("</div>")-1);
+						theDescrips.add(descripTemp);
 						startIndex = inputLine.indexOf("<h3 class=\"r\"><a href=\"/url?q=");
 					}
 				}
@@ -73,10 +93,10 @@ public class Parse implements Runnable {
 				// Is there a guarantee that these match up?
 				LinkedList<Article> articles = new LinkedList<Article>();
 				for (int i = 0; i < theURLS.size(); i++){
-					articles.add(new Article(theURLS.get(i),theTitles.get(i),new Date()));
+					articles.add(new Article(theURLS.get(i),theTitles.get(i),new Date(),theSources.get(i),theDescrips.get(i)));
 				}
 
-				
+
 				boolean urlCheck = false;
 				LinkedList<Article> newArticles = new LinkedList<Article>();
 				if (articles.size() > 0) {
@@ -87,8 +107,6 @@ public class Parse implements Runnable {
 							newArticles.add(art);
 					}
 				}
-
-				String APIkey = "fbde73712800960605177cdcf8cc5ade6ebd15a5";
 
 				for (Article art : newArticles) {
 					//System.out.println(art.getURL());
@@ -101,40 +119,51 @@ public class Parse implements Runnable {
 					try {
 						doc = alchemyObj.URLGetRankedKeywords(art.getURL(), params);
 						sentdoc = alchemyObj.URLGetTextSentiment(art.getURL());
-						
+
 						// Convert output to String
 						String alchemyOutput = NewsAnalyst.getStringFromDocument(doc);
-				        String alchemyOutputSent = NewsAnalyst.getStringFromDocument(sentdoc);
+						String alchemyOutputSent = NewsAnalyst.getStringFromDocument(sentdoc);
 						alchemyOutput = NewsAnalyst.removeKeywordXML(alchemyOutput);
 						alchemyOutput = Jsoup.parse(alchemyOutput).text();
 						String[] result = alchemyOutput.split(";");
-				        alchemyOutputSent = alchemyOutputSent.substring(alchemyOutputSent.indexOf("<score>"));
-				        alchemyOutputSent = alchemyOutputSent.substring(7,alchemyOutputSent.lastIndexOf("</score>"));
-				        double sentiment = Double.parseDouble(alchemyOutputSent);
+						double sentiment = 0;
+						if(alchemyOutputSent.indexOf("<score>") != -1){
+							alchemyOutputSent = alchemyOutputSent.substring(alchemyOutputSent.indexOf("<score>"));
+							alchemyOutputSent = alchemyOutputSent.substring(7,alchemyOutputSent.lastIndexOf("</score>"));
+							sentiment = Double.parseDouble(alchemyOutputSent);
+						}
+
 						// Add words to list
 						LinkedList<String> newWords = new LinkedList<String>();
 						LinkedList<Double> newRels = new LinkedList<Double>();
+
 						if (result.length < 6)
 							continue;
+
 						for (int i = 0; i < result.length; i += 3){
 							newWords.addLast(result[i]);
 							newRels.addLast(Double.parseDouble(result[i+1]));
 						}
+
+						ArrayList<CompanyLink> companies = financeParse(art.getURL());
+
 						boolean isNewTopic = true;
 						double overlap;
+
 						// Check for overlap in existing topics
 						// Current check is if at least 3 words 
 						for (Topic t : topics) {
 							overlap = 0;
 							for (int i = 0; i < newWords.size(); i += 1) {
 								if (t.containsWord(newWords.get(i))) {
-									overlap = overlap + newRels.get(i) + t.getRel(newWords.get(i));
+									overlap = overlap + newRels.get(i);
 									System.out.println("Word overlap found: " + newWords.get(i));
 								}
 							}
+
 							if (overlap >= Math.round((t.getWords().size()/3))) {
 								isNewTopic = false;
-								t.addArticle(art,sentiment);
+								t.addArticle(art,sentiment,companies);
 								// initial word merging, adds together
 								for (int i = 0; i < result.length; i += 3)
 									t.addWord(result[i], Double.parseDouble(result[i+1]), Double.parseDouble(result[i+2]));
@@ -142,8 +171,9 @@ public class Parse implements Runnable {
 								System.out.println("Topic overlap found");
 							}
 						}
+
 						if (isNewTopic) {
-							Topic nextTopic = new Topic(art,uid,sentiment);
+							Topic nextTopic = new Topic(art,uid,sentiment,companies);
 							uid++;
 							for (int i = 0; i < result.length; i += 3)
 								nextTopic.addWord(result[i], Double.parseDouble(result[i+1]), Double.parseDouble(result[i+2]));
@@ -151,12 +181,16 @@ public class Parse implements Runnable {
 							topics.add(nextTopic);
 						}
 					} catch (Exception e) {
-						e.printStackTrace();
+//						e.printStackTrace();
 						System.out.println("URL parsed incorrectly");
 					}
 				}
+				for(Company c : cList){
+					c.updatePrice();
+				}
 				// Output information on topics
 				for (Topic t : topics) {
+
 					System.out.println("Topic has " + (t.getArticles().size()) + " articles");
 					System.out.println("Topic has " + t.artsLastHour() + " articles in the last hour");
 					System.out.println(t.getRecentTitle());
@@ -170,6 +204,15 @@ public class Parse implements Runnable {
 					// Comment this out to test printTopWords
 					// t.printWordData();
 					t.printTopWords();
+					if(t.companies.size() != 0)
+						System.out.println("Companies Mentioned: ");
+					for(CompanyLink cl : t.companies)
+					{
+						Company current = cList.findCompany(cl.getCompany());
+						System.out.println("Company: " + current.getName());
+						if(current.isTraded())
+							System.out.println("Stock: " + current.getStockPrice() + " : " + current.getStockChange());
+					}
 				}
 				if (articles.size() != 0)
 					urlCache = articles.get(0).getURL();
@@ -182,6 +225,70 @@ public class Parse implements Runnable {
 		}
 	}
 
+	public ArrayList<CompanyLink> financeParse(String URL) throws Exception {
+
+		AlchemyAPI alchemyObj = AlchemyAPI.GetInstanceFromString(APIkey);
+		AlchemyAPI_NamedEntityParams entityParams = new AlchemyAPI_NamedEntityParams();
+		entityParams.setSentiment(true);
+		entityParams.setDisambiguate(true);
+		entityParams.setMaxRetrieve(10);
+		Document doc = alchemyObj.URLGetRankedNamedEntities(URL, entityParams);
+
+		NodeList nList = doc.getElementsByTagName("entity");
+
+		ArrayList<CompanyLink> retList = new ArrayList<CompanyLink>();
+
+		for (int i = 0; i < nList.getLength(); i++) {
+			Element e = (Element) nList.item(i);
+
+			if (getTagValue("type", e).equals("Company")) {
+
+				String[] s = new String[3];
+				NodeList neList = e.getElementsByTagName("sentiment");
+				Element e2 = (Element) neList.item(0);
+				String type = getTagValue("type", e2);
+				if (type.equals("neutral"))
+					s[1] = "0.0";
+				else
+					s[1] = getTagValue("score", e2);
+
+				NodeList neList2 = e.getElementsByTagName("disambiguated");
+				if (neList2.getLength() == 0)
+					continue;
+				Element e3 = (Element) neList2.item(0);
+
+				s[0] = getTagValue("name", e3);
+				s[2] = getTagValue("relevance", e);
+
+				boolean found = false;
+				for (int k = 0; k < cList.size(); k++) {
+					if (cList.get(k).getName().equals(s[0])) {
+						cList.get(k).update(s[1]);
+						found = true;
+						System.out.println("Updated old company: " + s[0]);
+					}
+				}
+				if (!found) {
+					Company c = new Company(s[0], s[1], s[2]);
+					cList.add(c);
+					System.out.println("Found new company: " + s[0]);
+				}
+
+
+				retList.add(new CompanyLink(s[0],Double.parseDouble(s[1]),Double.parseDouble(s[2])));
+			}			
+		}
+		return retList;
+	}
+
+	private static String getTagValue(String sTag, Element eElement) {
+		NodeList nlList = eElement.getElementsByTagName(sTag).item(0).getChildNodes();
+
+		Node nValue = (Node) nlList.item(0);
+
+		return nValue.getNodeValue();
+	}
+
 	public LinkedList<Topic> getTopics() {
 		return topics;
 	}
@@ -189,4 +296,59 @@ public class Parse implements Runnable {
 	public String getSector() {
 		return sector;
 	}
+}
+
+class CompanyLink {
+	String name;
+	Double sentiment;
+	Double relevance;
+	int num;
+
+	CompanyLink (String n, Double s, Double r)
+	{
+		name = n;
+		sentiment = s;
+		relevance = r;
+		num = 1;
+	}
+
+	public String getCompany() {
+		return name;
+	}
+
+	public Double getSentiment() {
+		return sentiment;
+	}
+
+	public Double getRelevance() {
+		return relevance;
+	}
+
+	public void merge(CompanyLink comp2) {
+		num++;
+		relevance += comp2.getRelevance();
+		sentiment = ((sentiment * (num-1)) + comp2.getSentiment())/num;
+	}
+
+}
+
+class CompanyList extends LinkedList<Company> {
+
+	private static final long serialVersionUID = -2879891466110522574L;
+
+	CompanyList ()
+	{
+		super();
+	}
+	
+	Company findCompany(String name) {
+		Company found = null;
+		for(Company comp : this)
+		{
+			if(comp.getName().equals(name))
+				return comp;
+		}
+		return found;
+	}
+	
 }
