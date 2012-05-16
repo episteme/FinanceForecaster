@@ -7,6 +7,7 @@ public class Sector {
 	String name;
 	LinkedList<Topic> topicData;
 	LinkedList<GoogleStory> googStories;
+	LinkedList<Company> compData;
 	int threshold;
 	
 	Sector(String name)
@@ -64,15 +65,18 @@ public class Sector {
 		threshold = progress;
 	}
 
-	public void updateTopic(int parseInt, int parseInt2, int i) {
+	public void updateTopic(int parseInt, int parseInt2) {
 		Iterator<Topic> iterator = topicData.iterator();
 	    while (iterator.hasNext()) {
 	    	Topic tempTopic = iterator.next();
 	       if (tempTopic.getUid() == parseInt) {
 	    	   tempTopic.setArtsLastHour(parseInt2);
-	    	   tempTopic.setArts(i);
 	       }
 	    }		
+	}
+
+	public void setCompanies(LinkedList<Company> tempComps) {
+		compData = tempComps;
 	}
 	
 	

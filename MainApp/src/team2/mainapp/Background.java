@@ -17,21 +17,21 @@ import android.os.Looper;
 import android.util.Log;
 
 public class Background extends Service {
-	
+
 	private final IBinder mBinder = new Binder();
 	private String sectors;
-	
+
 	@Override
 	public void onCreate() {
 		Log.d("Starting","Service");
 		GlobalState gState = (GlobalState) getApplication();
-		
+
 		sectors = "";
 		for(Sector sector : gState.getAllSectors())
 		{
 			sectors += sector.getName() + ";";
 		}
-		
+
 		startProgress();
 	}
 
@@ -79,7 +79,7 @@ public class Background extends Service {
 				String query = sectors + ";" + date;
 				for (int i = 0; i >= 0; i++) {
 					try {
-						
+
 						GlobalState gState = (GlobalState) getApplication();
 						if(gState.isOn()){
 							// Get new information from remote server
@@ -97,14 +97,14 @@ public class Background extends Service {
 							query = sectors + ";" + dateFormat.format(dateType);
 
 						}
-						
+
 						int waited = 0;
 						while(waited <= gState.getFrequency()){
 							waited++;
 							Thread.sleep(60000);
 						}
-						
-						
+
+
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -133,9 +133,9 @@ public class Background extends Service {
 					// Splits the topic data into parts
 					String[] rawData = topic.split(";;\n");
 
-					if(rawData.length == 3)
+					if(rawData.length == 2)
 					{
-						gState.getAllSectors().get(i).updateTopic(Integer.parseInt(rawData[0]), Integer.parseInt(rawData[1]), Integer.parseInt(rawData[2]));
+						gState.getAllSectors().get(i).updateTopic(Integer.parseInt(rawData[0]), Integer.parseInt(rawData[1]));
 					}
 					else if (rawData.length < 8)
 						break;
@@ -144,6 +144,7 @@ public class Background extends Service {
 					String[] links = rawData[4].split(";\n");
 					String[] titles = rawData[5].split(";\n");
 					String[] words = rawData[6].split(";\n");
+					String[] companies = rawData[9].split(";\n");
 
 					// Creates an arraylist to hold the URLs
 					ArrayList<String> URLS = new ArrayList<String>();
@@ -169,6 +170,14 @@ public class Background extends Service {
 						// Put each bit into the list
 						KeyWords.add(new KeyWord(bits[0], bits[1]));
 					}
+
+					ArrayList<CompanyLink> companyLinks = new ArrayList<CompanyLink>();
+					for(String comp : companies)
+					{
+						String[] bits = comp.split("@");
+						companyLinks.add(new CompanyLink(bits[0],bits[1],bits[2]));
+					}
+
 					// Add the topic info to the sector info
 					boolean alert = gState.getAllSectors().get(i).addTopic(
 							new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), URLS, KeyWords, rawData[0], Titles, Double.parseDouble(rawData[7]),rawData[8]));
@@ -178,6 +187,26 @@ public class Background extends Service {
 				}
 				// Add the sectorInfo to the parseInfo
 				i++;
+			}
+
+			// Parse Company Data
+			// Split sectors
+			String[] compsectors = type[0].split("COMPSTOP\n");
+			int k = 0;
+			for (String sector : compsectors)
+			{
+				String[] companies = sector.split("SPECCOMP\n");
+				LinkedList<Company> tempComps = new LinkedList<Company>();
+				for (String company : companies)
+				{
+					// Split story in to fields
+					String[] rawData = company.split(";;\n");
+					
+					tempComps.add(new Company(rawData[0], rawData[1], rawData[2], rawData[3], rawData[4], rawData[5], rawData[6]));
+
+				}
+				gState.getAllSectors().get(k).setCompanies(tempComps);
+				k++;
 			}
 
 			// Parse Google News

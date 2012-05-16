@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 
 import android.graphics.Color;
 import android.util.Log;
@@ -143,5 +144,32 @@ public class Topic implements Comparable<Topic> {
 
 	public int getArts() {
 		return arts;	
+	}
+}
+
+class CompanyLink {
+	String name;
+	Double sentiment;
+	Double relevance;
+	int num;
+
+	CompanyLink (String n, String s, String r)
+	{
+		name = n;
+		sentiment = Double.parseDouble(s);
+		relevance = Double.parseDouble(r);
+		num = 1;
+	}
+
+	public String getCompany() {
+		return name;
+	}
+
+	public Double getSentiment() {
+		return sentiment;
+	}
+
+	public Double getRelevance() {
+		return relevance;
 	}
 }

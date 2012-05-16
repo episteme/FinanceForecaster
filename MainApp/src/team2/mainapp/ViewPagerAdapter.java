@@ -40,7 +40,7 @@ implements TitleProvider
 		return titles[ position ];
 	}
 
-	@Override
+	@Override 
 	public int getCount()
 	{
 		return titles.length;

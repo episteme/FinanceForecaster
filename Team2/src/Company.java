@@ -25,6 +25,14 @@ public class Company {
 		traded = false;
 	}
 
+	public double getSentiment() {
+		return sentiment;
+	}
+
+	public double getRelevance() {
+		return relevance;
+	}
+
 	public void update(String s) {
 		articles++;
 		double doubarts = (double) articles;
@@ -134,6 +142,10 @@ public class Company {
 				this.URLfound = true;
 			}
 		}
+	}
+
+	public int getArticles() {
+		return articles;
 	}
 
 	public String strSent() {

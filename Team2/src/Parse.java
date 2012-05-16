@@ -296,40 +296,10 @@ public class Parse implements Runnable {
 	public String getSector() {
 		return sector;
 	}
-}
 
-class CompanyLink {
-	String name;
-	Double sentiment;
-	Double relevance;
-	int num;
-
-	CompanyLink (String n, Double s, Double r)
-	{
-		name = n;
-		sentiment = s;
-		relevance = r;
-		num = 1;
+	public CompanyList getCompanies() {
+		return cList;
 	}
-
-	public String getCompany() {
-		return name;
-	}
-
-	public Double getSentiment() {
-		return sentiment;
-	}
-
-	public Double getRelevance() {
-		return relevance;
-	}
-
-	public void merge(CompanyLink comp2) {
-		num++;
-		relevance += comp2.getRelevance();
-		sentiment = ((sentiment * (num-1)) + comp2.getSentiment())/num;
-	}
-
 }
 
 class CompanyList extends LinkedList<Company> {
@@ -350,5 +320,4 @@ class CompanyList extends LinkedList<Company> {
 		}
 		return found;
 	}
-	
 }
