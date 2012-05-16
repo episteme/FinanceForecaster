@@ -15,6 +15,7 @@ public class Sector {
 		this.name = name;
 		googStories = new LinkedList<GoogleStory>();
 		topicData = new LinkedList<Topic>();
+		compData = new LinkedList<Company>();
 		threshold = 100;
 	}
 

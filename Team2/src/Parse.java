@@ -161,7 +161,7 @@ public class Parse implements Runnable {
 								}
 							}
 
-							if (overlap >= Math.round((t.getWords().size()/3))) {
+							if (overlap >= Math.round((t.getWords().size()/6))) {
 								isNewTopic = false;
 								t.addArticle(art,sentiment,companies);
 								// initial word merging, adds together

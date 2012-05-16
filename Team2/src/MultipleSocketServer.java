@@ -87,6 +87,7 @@ public class MultipleSocketServer implements Runnable {
 				}
 				osw.write("NEWSTOP\n");
 			}
+			
 			osw.write("SPLITINFO\n");
 
 			// Send topics - Parse
@@ -123,6 +124,9 @@ public class MultipleSocketServer implements Runnable {
 				}
 				osw.write("TOPSTOP\n");
 			}
+			
+			osw.write("SPLITINFO\n");
+
 
 			// Send companies - Parse
 			for (String topic : topicArr) {

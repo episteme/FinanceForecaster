@@ -21,8 +21,9 @@ public class Topic implements Comparable<Topic> {
 	int state;
 	private double sentiment;
 	private int arts;
+	private ArrayList<CompanyLink> companyLinks;
 	
-	Topic (String title, String date,  int artsLH, ArrayList<String> URLS, ArrayList<KeyWord> keyWords, String uid, ArrayList<String> titles, double sentiment2, String rawData) {
+	Topic (String title, String date,  int artsLH, ArrayList<String> URLS, ArrayList<KeyWord> keyWords, String uid, ArrayList<String> titles, double sentiment2, String rawData, ArrayList<CompanyLink> companyLinks) {
 		this.uid = (int) Integer.parseInt(uid);
 		this.keyWords = keyWords;
 		this.title = title.replace("?","");
@@ -33,6 +34,7 @@ public class Topic implements Comparable<Topic> {
 		this.sentiment = sentiment2;
 		state = 0;
 		this.arts = Integer.parseInt(rawData);
+		this.companyLinks = companyLinks;
 	}
 	
 	public double getSentiment() {

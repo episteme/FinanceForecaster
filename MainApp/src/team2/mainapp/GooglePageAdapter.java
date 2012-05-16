@@ -23,7 +23,7 @@ implements TitleProvider
 	PullToRefreshListView v;
 	String category;
 	ArrayList<PullToRefreshListView> vl;
-	private static String[] titles = new String[] {"Oil", "Currency" };
+	private static String[] titles = new String[] {"Oil", "Technology" };
 
 	private final Context context;
 

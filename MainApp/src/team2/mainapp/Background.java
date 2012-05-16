@@ -91,7 +91,7 @@ public class Background extends Service {
 							parseInput(s);
 
 							// Reset date to current
-							Log.d("Debug2", s);
+//							Log.d("Debug2", s);
 							// Turns date into string
 							DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/d HH:mm:ss");
 							query = sectors + ";" + dateFormat.format(dateType);
@@ -122,7 +122,8 @@ public class Background extends Service {
 
 			// Read in flag which splits between each sector in the Parse information
 			String[] topicsectors = type[1].split("TOPSTOP\n");
-			Log.d("debug",type[1]);
+//			Log.d("topicdata",type[1]);
+//			Log.d("datatypes",Integer.toString(type.length));
 			int i = 0;
 			for (String sector : topicsectors)
 			{
@@ -133,18 +134,20 @@ public class Background extends Service {
 					// Splits the topic data into parts
 					String[] rawData = topic.split(";;\n");
 
+//					Log.d("datalength",Integer.toString(rawData.length));
+					
 					if(rawData.length == 2)
 					{
 						gState.getAllSectors().get(i).updateTopic(Integer.parseInt(rawData[0]), Integer.parseInt(rawData[1]));
+						continue;
 					}
-					else if (rawData.length < 8)
-						break;
+					else if (rawData.length < 9)
+						continue;
 
 					// Splits the URLS and keyWords into individual parts
 					String[] links = rawData[4].split(";\n");
 					String[] titles = rawData[5].split(";\n");
 					String[] words = rawData[6].split(";\n");
-					String[] companies = rawData[9].split(";\n");
 
 					// Creates an arraylist to hold the URLs
 					ArrayList<String> URLS = new ArrayList<String>();
@@ -172,15 +175,19 @@ public class Background extends Service {
 					}
 
 					ArrayList<CompanyLink> companyLinks = new ArrayList<CompanyLink>();
-					for(String comp : companies)
-					{
-						String[] bits = comp.split("@");
-						companyLinks.add(new CompanyLink(bits[0],bits[1],bits[2]));
+					if(rawData.length == 10){
+						String[] companies = rawData[9].split(";\n");
+						
+						for(String comp : companies)
+						{
+							String[] bits = comp.split("@");
+							companyLinks.add(new CompanyLink(bits[0],bits[1],bits[2]));
+						}
 					}
 
 					// Add the topic info to the sector info
 					boolean alert = gState.getAllSectors().get(i).addTopic(
-							new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), URLS, KeyWords, rawData[0], Titles, Double.parseDouble(rawData[7]),rawData[8]));
+							new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), URLS, KeyWords, rawData[0], Titles, Double.parseDouble(rawData[7]),rawData[8],companyLinks));
 					if (alert) {
 						createNotification(rawData[1],KeyWords,rawData[0],gState.getAllSectors().get(i).getName()); 
 					}
@@ -188,10 +195,11 @@ public class Background extends Service {
 				// Add the sectorInfo to the parseInfo
 				i++;
 			}
-
+			
+//			Log.d("compdata",type[2]);
 			// Parse Company Data
 			// Split sectors
-			String[] compsectors = type[0].split("COMPSTOP\n");
+			String[] compsectors = type[2].split("COMPSTOP\n");
 			int k = 0;
 			for (String sector : compsectors)
 			{
@@ -201,14 +209,15 @@ public class Background extends Service {
 				{
 					// Split story in to fields
 					String[] rawData = company.split(";;\n");
-					
-					tempComps.add(new Company(rawData[0], rawData[1], rawData[2], rawData[3], rawData[4], rawData[5], rawData[6]));
-
+					Log.d("newcompany",rawData[0]);
+					tempComps.add(
+							new Company(rawData[0], rawData[1], rawData[2], rawData[3], rawData[4], rawData[5], rawData[6]));
 				}
 				gState.getAllSectors().get(k).setCompanies(tempComps);
 				k++;
 			}
 
+//			Log.d("newsdata",type[0]);
 			// Parse Google News
 			// Split sectors
 			String[] newssectors = type[0].split("NEWSTOP\n");
@@ -249,7 +258,7 @@ public class Background extends Service {
 		}
 		catch (Exception e){
 			e.printStackTrace();
-			Log.d("Debug",e.toString());
+			Log.d("parseerror",e.toString());
 		}
 	}
 

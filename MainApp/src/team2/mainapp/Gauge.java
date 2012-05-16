@@ -308,25 +308,25 @@ public final class Gauge extends View {
 		return (degree - centerDegree) / 2.0f * degreesPerNick;
 	}
 
-//	private void drawLogo(Canvas canvas) {
-//		canvas.save(Canvas.MATRIX_SAVE_FLAG);
-//		canvas.translate(0.5f - logo.getWidth() * logoScale / 2.0f, 
-//						 0.5f - logo.getHeight() * logoScale / 2.0f);
-//
-//		int color = 0x00000000;
-//		float position = getRelativeTemperaturePosition();
-//		if (position < 0) {
-//			color |= (int) ((0xf0) * -position) << 16; // red
-//		} else {
-//			color |= ((int) ((0xf0) * position)) << 8; // green			
-//		}
-////		Log.d(TAG, "*** " + Integer.toHexString(color));
-//		LightingColorFilter logoFilter = new LightingColorFilter(0xffffffff, color);
-//		logoPaint.setColorFilter(logoFilter);
-//		
-//		canvas.drawBitmap(logo, logoMatrix, logoPaint);
-//		canvas.restore();		
-//	}
+	private void drawLogo(Canvas canvas) {
+		canvas.save(Canvas.MATRIX_SAVE_FLAG);
+		canvas.translate(0.5f - logo.getWidth() * logoScale / 2.0f, 
+						 0.5f - logo.getHeight() * logoScale / 2.0f);
+
+		int color = 0x00000000;
+		float position = getRelativeTemperaturePosition();
+		if (position < 0) {
+			color |= (int) ((0xf0) * -position) << 16; // red
+		} else {
+			color |= ((int) ((0xf0) * position)) << 8; // green			
+		}
+//		Log.d(TAG, "*** " + Integer.toHexString(color));
+		LightingColorFilter logoFilter = new LightingColorFilter(0xffffffff, color);
+		logoPaint.setColorFilter(logoFilter);
+		
+		canvas.drawBitmap(logo, logoMatrix, logoPaint);
+		canvas.restore();		
+	}
 
 	private void drawHand(Canvas canvas) {
 		if (handInitialized) {
@@ -335,6 +335,7 @@ public final class Gauge extends View {
 			canvas.rotate(handAngle, 0.5f, 0.5f);
 			canvas.drawPath(handPath, handPaint);
 			canvas.restore();
+			Log.d("circle!","CIRCLE!");
 			
 			canvas.drawCircle(0.5f, 0.5f, 0.01f, handScrewPaint);
 		}
@@ -356,7 +357,7 @@ public final class Gauge extends View {
 		canvas.save(Canvas.MATRIX_SAVE_FLAG);
 		canvas.scale(scale, scale);
  
-//		drawLogo(canvas);
+		drawLogo(canvas);
 		drawHand(canvas);
 		
 		canvas.restore();
@@ -381,8 +382,8 @@ public final class Gauge extends View {
 		
 		background = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
 		Canvas backgroundCanvas = new Canvas(background);
-		float scale = (float) getWidth();		
-		backgroundCanvas.scale(scale, scale);
+		float scale = getWidth();
+		backgroundCanvas.scale(scale, scale );
 		
 		drawRim(backgroundCanvas);
 		drawFace(backgroundCanvas);
