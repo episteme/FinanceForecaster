@@ -100,38 +100,36 @@ public class Company {
 				int importantLine = 0;
 
 				while ((inputLine = in.readLine()) != null) {
+
 					switch (importantLine) {
-					case 1 : stockPrice = Double.parseDouble(inputLine.substring(inputLine.indexOf("\">")+2,inputLine.indexOf("</span>")).replace(",",""));
-					importantLine=2;
+					case 1 : stockPrice = Double.parseDouble(
+							inputLine.substring(inputLine.indexOf("\">")+2,inputLine.indexOf("</span>")).replace(",",""));
+							importantLine=2;
 					break;
-					case 2 : importantLine=3; break;
-					case 3 : importantLine=4; break;
-					case 4 : stockChange = Double.parseDouble(inputLine.substring(inputLine.indexOf("_c\">")+4,inputLine.indexOf("</span>")).replace(",",""));
-					importantLine=5;
-					traded=true;
-					break;
-					case 5 : importantLine=6; break;
-					case 6 : importantLine=7; break;
-					case 7 : importantLine=8; break;
-					case 8 : importantLine=9; break;
-					case 9 : 
-						if(inputLine.indexOf("<div>Pre-market") != -1)
-						{
-							stockPrice = Double.parseDouble(inputLine.substring(inputLine.indexOf("_el\">")+5,inputLine.indexOf("</span>")).replace(",",""));
-							importantLine = 10;
-						}
-						else
-							importantLine = 11;
-						break;
-					case 10 : stockChange = Double.parseDouble(inputLine.substring(inputLine.indexOf("\">")+2,inputLine.indexOf("</span>")).replace(","," ")); 
-					importantLine = 11; 
-					break;
-					case 11 : break;
+					case 2 : inputLine = in.readLine(); inputLine = in.readLine();
+							stockChange = Double.parseDouble(
+							inputLine.substring(inputLine.indexOf("_c\">")+4,inputLine.indexOf("</span>")).replace(",",""));
+							importantLine=3;
+							traded=true;
+							break;
+					case 3 : inputLine = in.readLine(); inputLine = in.readLine(); inputLine = in.readLine(); inputLine = in.readLine();
+							if(inputLine.indexOf("<div>Pre-market") != -1)
+							{
+								stockPrice = Double.parseDouble(inputLine.substring(inputLine.indexOf("_el\">")+5,inputLine.indexOf("</span>")).replace(",",""));
+								importantLine = 4;
+							}
+							else
+								importantLine = 5;
+							break;
+					case 4 : stockChange = Double.parseDouble(inputLine.substring(inputLine.indexOf("\">")+2,inputLine.indexOf("</span>")).replace(","," ")); 
+							importantLine = 5; 
+							break;
 					default : if (inputLine.contains("<span class=\"pr\">"))
-						importantLine = 1;
-					break;
+							importantLine = 1;
+							break;
 					}
-					if (importantLine == 11)
+					
+					if (importantLine == 4)
 						break;		
 				}
 
