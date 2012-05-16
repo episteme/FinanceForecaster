@@ -39,7 +39,7 @@ public class Parse implements Runnable {
 		while (true) {
 			try {
 				System.out.println("Starting search");
-				URL newsURL = new URL("http://www.google.com/search?q=" + sector + "&tbm=nws&tbs=sbd:1,nsd:1");
+				URL newsURL = new URL("http://www.google.com/search?q=" + sector + "&num=100&tbm=nws&tbs=sbd:1,nsd:1");
 				URLConnection uc = newsURL.openConnection();
 				// Need to pretend we are a browser so that google responds
 				uc.setRequestProperty
@@ -92,7 +92,7 @@ public class Parse implements Runnable {
 				// Create a list of articles and titles
 				// Is there a guarantee that these match up?
 				LinkedList<Article> articles = new LinkedList<Article>();
-				for (int i = 0; i < theURLS.size(); i++){
+				for (int i = 0; i < theURLS.size(); i++) {
 					System.out.println(theTitles.get(i));
 					articles.add(new Article(theURLS.get(i),theTitles.get(i),new Date(),theSources.get(i),theDescrips.get(i)));
 				}
@@ -128,7 +128,7 @@ public class Parse implements Runnable {
 						alchemyOutput = Jsoup.parse(alchemyOutput).text();
 						String[] result = alchemyOutput.split(";");
 						double sentiment = 0;
-						if(alchemyOutputSent.indexOf("<score>") != -1){
+						if(alchemyOutputSent.indexOf("<score>") != -1) {
 							alchemyOutputSent = alchemyOutputSent.substring(alchemyOutputSent.indexOf("<score>"));
 							alchemyOutputSent = alchemyOutputSent.substring(7,alchemyOutputSent.lastIndexOf("</score>"));
 							sentiment = Double.parseDouble(alchemyOutputSent);
@@ -141,7 +141,7 @@ public class Parse implements Runnable {
 						if (result.length < 6)
 							continue;
 
-						for (int i = 0; i < result.length; i += 3){
+						for (int i = 0; i < result.length; i += 3) {
 							newWords.addLast(result[i]);
 							newRels.addLast(Double.parseDouble(result[i+1]));
 						}
@@ -158,7 +158,6 @@ public class Parse implements Runnable {
 							for (int i = 0; i < newWords.size(); i += 1) {
 								if (t.containsWord(newWords.get(i))) {
 									overlap = overlap + newRels.get(i);
-									System.out.println("Word overlap found: " + newWords.get(i));
 								}
 							}
 
@@ -186,7 +185,7 @@ public class Parse implements Runnable {
 						System.out.println("URL parsed incorrectly");
 					}
 				}
-				for(Company c : cList){
+				for(Company c : cList) {
 					c.updatePrice();
 				}
 				// Output information on topics
@@ -219,7 +218,7 @@ public class Parse implements Runnable {
 					urlCache = articles.get(0).getURL();
 				System.out.println("Waiting before rerunning");
 				Thread.sleep(16000);
-			} catch (Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println(e);
 			}

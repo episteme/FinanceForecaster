@@ -5,7 +5,9 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 
 import android.util.Log;
 
@@ -22,7 +24,9 @@ public class TCPClient {
 
 			Log.d("TCP", "C: Connecting...");
 
-			Socket socket = new Socket("10.0.2.2", 8009);			
+			SocketAddress socketaddr = new InetSocketAddress("10.0.2.2", 8009);	
+			Socket socket = new Socket();
+			socket.connect(socketaddr,5000);
 
 			try {
 

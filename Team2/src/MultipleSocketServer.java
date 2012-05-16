@@ -166,7 +166,7 @@ public class MultipleSocketServer implements Runnable {
 			try {
 				connection.close();
 			}
-			catch (IOException e){}
+			catch (IOException e) {}
 		}
 	}
 }
