@@ -93,6 +93,7 @@ public class Parse implements Runnable {
 				// Is there a guarantee that these match up?
 				LinkedList<Article> articles = new LinkedList<Article>();
 				for (int i = 0; i < theURLS.size(); i++){
+					System.out.println(theTitles.get(i));
 					articles.add(new Article(theURLS.get(i),theTitles.get(i),new Date(),theSources.get(i),theDescrips.get(i)));
 				}
 

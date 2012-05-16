@@ -88,6 +88,7 @@ public class Topic implements Comparable<Topic> {
 	    	articles.push(article);
 	    	this.sentiment = (this.sentiment*(articles.size()-1) + sentiment2)/(articles.size()-1);
 			mergeCompanies(comps);
+			timestamp = new Date();
 			count++;
 	    }
 	    recentTitle = article.getTitle();
@@ -209,9 +210,6 @@ public class Topic implements Comparable<Topic> {
 		for (int sizeof = articles.size() - 1; sizeof >= 0; sizeof--) {
 			if (articles.get(sizeof).getDate().compareTo(hourAgo) >= 0) {
 				result++;
-			}else{
-				articles.remove(sizeof);
-				sizeof--;
 			}
 		}
 		return result;
