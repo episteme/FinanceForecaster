@@ -76,6 +76,10 @@ public class Sector {
 	    }		
 	}
 
+	public LinkedList<Company> getCompData() {
+		return compData;
+	}
+
 	public void setCompanies(LinkedList<Company> tempComps) {
 		compData = tempComps;
 	}

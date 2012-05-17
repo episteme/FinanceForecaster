@@ -1,5 +1,4 @@
 package team2.mainapp;
-import team2.mainapp.GooglePageAdapter.GetDataTask2;
 import team2.mainapp.ViewPagerAdapter.GetDataTask;
 
 import android.app.Activity;

@@ -19,7 +19,7 @@ import android.view.View;
 public class ViewPagerAdapter extends PagerAdapter
 implements TitleProvider
 {
-	ArrayList<ArrayList<String[]>> mListItems;
+	ArrayList<ArrayList<Topic>> mListItems;
 	PullToRefreshListView v;
 	String category;
 	ArrayList<PullToRefreshListView> vl;
@@ -30,7 +30,7 @@ implements TitleProvider
 	public ViewPagerAdapter( Context context )
 	{
 		this.context = context;
-		mListItems = new ArrayList<ArrayList<String[]>>();
+		mListItems = new ArrayList<ArrayList<Topic>>();
 		vl = new ArrayList<PullToRefreshListView>();
 	}
 
@@ -56,9 +56,9 @@ implements TitleProvider
 		category = titles[ position ];
 		Log.d("dupersuper",category);
 		
-		mListItems.add(new ArrayList<String[]>());
+		mListItems.add(new ArrayList<Topic>());
 
-		MyArrayAdapter adapter = new MyArrayAdapter(context,
+		TopicListAdapter adapter = new TopicListAdapter(context,
 				mListItems.get(position));
 
 		v.setAdapter(adapter);
@@ -93,7 +93,7 @@ implements TitleProvider
 		@Override
 		protected void onPostExecute(Void x) {
 			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
-			for(ArrayList<String[]> list : mListItems)
+			for(ArrayList<Topic> list : mListItems)
 				list.clear();
 			int i = 0;
 		
@@ -104,18 +104,7 @@ implements TitleProvider
 				for (Topic topic : topicsector.getTopicData()) {
 					if(topic.getArtsLastHour() == 0)
 						break;
-					String[] allInfo = new String[7];
-					allInfo[0] = topic.getTitle();
-					if(topic.getArts() != 1)
-						allInfo[1] = "Aggregated from " + Integer.toString(topic.getArts()) + " sources since " + topic.getDate();
-					else
-						allInfo[1] = "Aggregated from " + Integer.toString(topic.getArts()) + " source since " + topic.getDate();
-					allInfo[2] = topic.getWords();
-					allInfo[3] = Integer.toString(topic.getUid());
-					allInfo[4] = topicsector.getName();
-					allInfo[5] = Integer.toString(topic.getState());
-					allInfo[6] = Double.toString(topic.getSentiment());
-					mListItems.get(i).add(allInfo);
+					mListItems.get(i).add(topic);
 					if(j == 9)
 						break;
 					j++;

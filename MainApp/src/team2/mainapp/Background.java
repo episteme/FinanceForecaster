@@ -181,7 +181,8 @@ public class Background extends Service {
 
 					// Add the topic info to the sector info
 					boolean alert = gState.getAllSectors().get(i).addTopic(
-							new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), arts, KeyWords, rawData[0], Double.parseDouble(rawData[6]),rawData[7],companyLinks));
+							new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), arts, KeyWords, rawData[0], 
+									Double.parseDouble(rawData[6]),rawData[7],companyLinks,gState.getAllSectors().get(i).getName()));
 					if (alert) {
 						createNotification(rawData[1],KeyWords,rawData[0],gState.getAllSectors().get(i).getName()); 
 					}

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,17 +12,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MyArrayAdapter extends ArrayAdapter<String[]> {
-
+public class TopicListAdapter extends ArrayAdapter<Topic> {
+	
 	private final Context context;
-	private final ArrayList<String[]> values;
-
-	public MyArrayAdapter(Context context, ArrayList<String[]> values) {
-		super(context, R.layout.rowlayout, values);
+	private final ArrayList<Topic> values;
+	
+	public TopicListAdapter(Context context, ArrayList<Topic> values) {
+		super(context, R.layout.topiclayout, values);
 		this.context = context;
 		this.values = values;
 	}
-
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context
@@ -34,23 +33,21 @@ public class MyArrayAdapter extends ArrayAdapter<String[]> {
 		TextView textView3 = (TextView) rowView.findViewById(R.id.labelq);
 		TextView textView4 = (TextView) rowView.findViewById(R.id.uid);
 		TextView textView5 = (TextView) rowView.findViewById(R.id.sector);
+		
+		
 		Log.d("Debug", Integer.toString(values.size()));
-		Log.d("Debug", values.get(position)[0]);
-		textView.setText(values.get(position)[0]);
-		textView2.setText(values.get(position)[1]);
-		textView3.setText(values.get(position)[2]);
-		textView4.setText(values.get(position)[3]);
-		textView5.setText(values.get(position)[4]);
+		Log.d("Debug", values.get(position).getTitle());
+		textView.setText(values.get(position).getTitle());
+		String s = "Aggregated from " + values.get(position).getArts() + " source";
+		if((values.get(position).getArts() != 1))
+			s += "s";
+		s += " since " + values.get(position).getDate();
+		textView2.setText(s);
+		textView3.setText(values.get(position).getWords());
+		textView4.setText(Integer.toString(values.get(position).getUid()));
+		textView5.setText(values.get(position).getSector());
 		
-//		Double sentiment = Double.parseDouble(values.get(position)[6]);
-//		Double green = ((sentiment + 1) / 2.0) * 255;
-//		Double red = 255.0 - green;
-//		Integer igreen = (int) Math.round(green);
-//		Integer ired = (int) Math.round(red);
-//		
-//		rowView.setBackgroundColor(Color.rgb(ired, igreen, 0));
-		
-		switch(Integer.parseInt(values.get(position)[5])){
+		switch(values.get(position).getState()){
 			case -1:
 				rowView.setBackgroundColor(Color.rgb(255,50,50));break;
 			case 1:
@@ -58,7 +55,7 @@ public class MyArrayAdapter extends ArrayAdapter<String[]> {
 		}
 		return rowView;
 	}
-
-
+	
+	
 
 }
