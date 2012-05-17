@@ -12,29 +12,27 @@ import android.util.Log;
 
 public class Topic implements Comparable<Topic> {
 	private String title;
-	private ArrayList<String> URLS;
 	private ArrayList<KeyWord> keyWords;
 	private String date;
 	private int uid;
 	private int artsLastHour;
-	private ArrayList<String> titles;
 	int state;
 	private double sentiment;
 	private int arts;
 	private ArrayList<CompanyLink> companyLinks;
+	private ArrayList<Article> articles;
 	
-	Topic (String title, String date,  int artsLH, ArrayList<String> URLS, ArrayList<KeyWord> keyWords, String uid, ArrayList<String> titles, double sentiment2, String rawData, ArrayList<CompanyLink> companyLinks) {
+	Topic (String title, String date,  int artsLH, ArrayList<Article> arts, ArrayList<KeyWord> keyWords, String uid, double sentiment2, String rawData, ArrayList<CompanyLink> companyLinks) {
 		this.uid = (int) Integer.parseInt(uid);
 		this.keyWords = keyWords;
 		this.title = title.replace("?","");
-		this.URLS = URLS;
 		this.date = date;
 		this.artsLastHour = artsLH;
-		this.titles = titles;
 		this.sentiment = sentiment2;
 		state = 0;
 		this.arts = Integer.parseInt(rawData);
 		this.companyLinks = companyLinks;
+		this.articles = arts;
 	}
 	
 	public double getSentiment() {
@@ -86,30 +84,28 @@ public class Topic implements Comparable<Topic> {
 		this.date = date;
 	}
 
-	public ArrayList<String> getTitles() {
-		return titles;
-	}
-
-	public ArrayList<String> getURLS() {
-		return URLS;
+	public ArrayList<Article> getArticles() {
+		return articles;
 	}
 
 	public ArrayList<KeyWord> getKeyWords() {
 		return keyWords;
 	}
 	
-	public ArrayList<String[]> getTitleUrl() {
-		ArrayList<String[]> titleUrls = new ArrayList<String[]>();
-		for(int i = 0; i < URLS.size(); i++)
+	public ArrayList<String[]> getArticle() {
+		ArrayList<String[]> arts = new ArrayList<String[]>();
+		for(int i = 0; i < articles.size(); i++)
 		{
-			if(titles.get(i) != null && URLS.get(i) != null){
-				String[] temp = new String[2];
-				temp[0] = titles.get(i);
-				temp[1] = URLS.get(i);
-				titleUrls.add(temp);
+			if(articles.get(i) != null){
+				String[] temp = new String[4];
+				temp[0] = articles.get(i).getTitle();
+				temp[1] = articles.get(i).getURL();
+				temp[2] = articles.get(i).getSource();
+				temp[3] = articles.get(i).getDescription();
+				arts.add(temp);
 			}
 		}
-		return titleUrls;
+		return arts;
 	}
 	
 	public String getWords() {

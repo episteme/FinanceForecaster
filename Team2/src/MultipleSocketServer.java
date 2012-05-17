@@ -109,8 +109,7 @@ public class MultipleSocketServer implements Runnable {
 								returnTitle += T.getRecentTitle() + ";;\n"; 
 								returnTitle += T.getDate() + ";;\n";
 								returnTitle += T.artsLastHour() + ";;\n";
-								returnTitle += T.topLinks() + ";;\n";
-								returnTitle += T.topTitles()+ ";;\n";
+								returnTitle += T.topArticles() + ";;\n";
 								returnTitle += T.topWords()+ ";;\n";
 								returnTitle += T.getSentiment()+ ";;\n";
 								returnTitle += T.getCount() + ";;\n";

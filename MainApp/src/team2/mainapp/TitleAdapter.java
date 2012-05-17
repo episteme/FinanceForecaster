@@ -32,8 +32,10 @@ public class TitleAdapter extends ArrayAdapter<String[]> {
 		View rowView = inflater.inflate(R.layout.titlelist, parent, false);
 		TextView textView1 = (TextView) rowView.findViewById(R.id.textView1);
 		TextView textView2 = (TextView) rowView.findViewById(R.id.textView2);
+		TextView textView3 = (TextView) rowView.findViewById(R.id.textView3);
 		textView1.setText(values.get(position)[0]);
 		textView2.setText(values.get(position)[1]);
+		textView3.setText(values.get(position)[2]);
 		
 		return rowView;
 	}

@@ -24,7 +24,7 @@ public class TCPClient {
 
 			Log.d("TCP", "C: Connecting...");
 
-			SocketAddress socketaddr = new InetSocketAddress("10.0.2.2", 8009);	
+			SocketAddress socketaddr = new InetSocketAddress("10.131.156.65", 8009);
 			Socket socket = new Socket();
 			socket.connect(socketaddr,5000);
 

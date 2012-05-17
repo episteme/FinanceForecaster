@@ -97,15 +97,12 @@ public class Parse implements Runnable {
 					articles.add(new Article(theURLS.get(i),theTitles.get(i),new Date(),theSources.get(i),theDescrips.get(i)));
 				}
 
-
-				boolean urlCheck = false;
 				LinkedList<Article> newArticles = new LinkedList<Article>();
 				if (articles.size() > 0) {
 					for (Article art : articles) {
 						if (art.getURL().equals(urlCache))
-							urlCheck = true;
-						if (!urlCheck)
-							newArticles.add(art);
+							break;
+						newArticles.add(art);
 					}
 				}
 
@@ -157,11 +154,11 @@ public class Parse implements Runnable {
 							overlap = 0;
 							for (int i = 0; i < newWords.size(); i += 1) {
 								if (t.containsWord(newWords.get(i))) {
-									overlap = overlap + newRels.get(i);
+									overlap = overlap + (newRels.get(i) * t.getRel(newWords.get(i)));
 								}
 							}
 
-							if (overlap >= Math.round((t.getWords().size()/6))) {
+							if (overlap >= Math.round((t.getWords().size()/3))) {
 								isNewTopic = false;
 								t.addArticle(art,sentiment,companies);
 								// initial word merging, adds together
@@ -270,6 +267,7 @@ public class Parse implements Runnable {
 				}
 				if (!found) {
 					Company c = new Company(s[0], s[1], s[2]);
+					c.updatePrice();
 					cList.add(c);
 					System.out.println("Found new company: " + s[0]);
 				}

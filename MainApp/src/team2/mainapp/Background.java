@@ -141,27 +141,21 @@ public class Background extends Service {
 						gState.getAllSectors().get(i).updateTopic(Integer.parseInt(rawData[0]), Integer.parseInt(rawData[1]));
 						continue;
 					}
-					else if (rawData.length < 9)
+					else if (rawData.length < 8)
 						continue;
 
 					// Splits the URLS and keyWords into individual parts
-					String[] links = rawData[4].split(";\n");
-					String[] titles = rawData[5].split(";\n");
-					String[] words = rawData[6].split(";\n");
+					String[] articles = rawData[4].split(";\n");
+					String[] words = rawData[5].split(";\n");
 
 					// Creates an arraylist to hold the URLs
-					ArrayList<String> URLS = new ArrayList<String>();
-					for (String link : links)
+					ArrayList<Article> arts = new ArrayList<Article>();
+					for (String article : articles)
 					{
-						// Adds each link to the list
-						URLS.add(link);
-					}
-
-					ArrayList<String> Titles = new ArrayList<String>();
-					for (String title : titles)
-					{
-						// Adds each link to the list
-						Titles.add(title);
+						// Split each keyword into its word and its sentiment
+						String[] bits = article.split("@");
+						// Put each bit into the list
+						arts.add(new Article(bits[0],bits[1],bits[2],bits[3]));
 					}
 
 					// Creates an arraylist to hold the keyWords
@@ -176,7 +170,7 @@ public class Background extends Service {
 
 					ArrayList<CompanyLink> companyLinks = new ArrayList<CompanyLink>();
 					if(rawData.length == 10){
-						String[] companies = rawData[9].split(";\n");
+						String[] companies = rawData[8].split(";\n");
 						
 						for(String comp : companies)
 						{
@@ -187,7 +181,7 @@ public class Background extends Service {
 
 					// Add the topic info to the sector info
 					boolean alert = gState.getAllSectors().get(i).addTopic(
-							new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), URLS, KeyWords, rawData[0], Titles, Double.parseDouble(rawData[7]),rawData[8],companyLinks));
+							new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), arts, KeyWords, rawData[0], Double.parseDouble(rawData[6]),rawData[7],companyLinks));
 					if (alert) {
 						createNotification(rawData[1],KeyWords,rawData[0],gState.getAllSectors().get(i).getName()); 
 					}

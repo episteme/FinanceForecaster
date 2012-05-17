@@ -94,9 +94,7 @@ public class SingleTopic extends Activity {
 
 		listView2.setAdapter(adapter2);
 
-		nListItems.addAll(thistopic.getTitleUrl());
-
-
+		nListItems.addAll(thistopic.getArticle());
 	}
 	
 	public void myClickHandler(View view) {

@@ -174,32 +174,21 @@ public class Topic implements Comparable<Topic> {
 	}
 	
 	public void printTopLinks() {
-		System.out.println(this.topLinks());
-	}
-	
-	public void printTopTitles() {
-		System.out.println(this.topTitles());
+		System.out.println(this.topArticles());
 	}
 	
 	// Displays last 5 links
-	public String topLinks() {
+	public String topArticles() {
 		String rString = "";
 		int j = 5;
 		if (articles.size() < 5)
 			j = articles.size();
 		for (int i = 1; i <= j; i++)
-			rString = rString + articles.get(articles.size() - i).getURL() + ";\n";
-		return rString;
-	}
-	
-	// Displays last 5 links
-	public String topTitles() {
-		String rString = "";
-		int j = 5;
-		if (articles.size() < 5)
-			j = articles.size();
-		for (int i = 1; i <= j; i++)
-			rString = rString + articles.get(articles.size() - i).getTitle() + ";\n";
+			rString = rString + articles.get(articles.size() - i).getURL() + 
+			"@" + articles.get(articles.size() - i).getTitle() +
+			"@" + articles.get(articles.size() - i).getSource() +
+			"@" + articles.get(articles.size() - i).getDescription() +
+			";\n";
 		return rString;
 	}
 	
