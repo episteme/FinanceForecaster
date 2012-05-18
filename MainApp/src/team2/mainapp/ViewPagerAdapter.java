@@ -105,16 +105,12 @@ implements TitleProvider
 					if(topic.getArtsLastHour() == 0)
 						break;
 					mListItems.get(i).add(topic);
-					if(j == 9)
-						break;
 					j++;
 				}
 				// Complete the refresh
 				((PullToRefreshListView) vl.get(i)).onRefreshComplete();
 //				DateFormat dateFormat = new SimpleDateFormat("HH:mm");
 //				((PullToRefreshListView) vl.get(i)).setLastUpdated(dateFormat.format(new Date()));
-				if(i > 10)
-					break;
 				i++;
 			}
 

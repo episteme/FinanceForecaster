@@ -3,8 +3,8 @@
     <style parent="Widget.TitlePageIndicator"
         name="Widget.MyTitlepageIndicator">
          <item name="footerColor">#CCCCCC</item>
-        <item name="textColor">#555555</item>
+        <item name="textColor">#999999</item>
         <item name="textSize">12dp</item>
-        <item name="selectedColor">#000000</item>
+        <item name="selectedColor">#CCCCCC</item>
     </style>
 </resources>

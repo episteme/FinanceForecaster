@@ -42,13 +42,28 @@ public class Homepage extends Activity {
 			task.execute();
 	}
 
-	public void myClickHandler(View view) {
+	public void topicClickHandler(View view) {
 		TextView tv = (TextView) view.findViewById(R.id.uid);
 		TextView tv2 = (TextView) view.findViewById(R.id.sector);
 		Intent myIntent = new Intent(this, SingleTopic.class);
 		myIntent.putExtra("EXTRA_UID", tv.getText());
 		myIntent.putExtra("SECTOR", tv2.getText());
 		startActivity(myIntent);
+	}
+	
+	public void buttonClickHandler(View view) {
+		switch(view.getId()){
+		case R.id.button1:
+			Intent myIntent = new Intent(this, MainAppActivity.class);
+			myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(myIntent);
+			break;
+		case R.id.button2:
+			Intent myIntent2 = new Intent(this, MainAppActivity.class);
+			myIntent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(myIntent2);
+			break;
+		}
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {

@@ -27,7 +27,7 @@ public class TopicListAdapter extends ArrayAdapter<Topic> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
+		View rowView = inflater.inflate(R.layout.topiclayout, parent, false);
 		TextView textView = (TextView) rowView.findViewById(R.id.labelo);
 		TextView textView2 = (TextView) rowView.findViewById(R.id.labelp);
 		TextView textView3 = (TextView) rowView.findViewById(R.id.labelq);

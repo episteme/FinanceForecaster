@@ -41,7 +41,7 @@ public class MainAppActivity extends Activity {
 			task.execute();
 	}
 
-	public void myClickHandler(View view) {
+	public void topicClickHandler(View view) {
 		TextView tv = (TextView) view.findViewById(R.id.uid);
 		TextView tv2 = (TextView) view.findViewById(R.id.sector);
 		Intent myIntent = new Intent(this, SingleTopic.class);

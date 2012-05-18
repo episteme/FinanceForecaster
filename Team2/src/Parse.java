@@ -63,17 +63,15 @@ public class Parse implements Runnable {
 					int startIndex = inputLine.indexOf("<h3 class=\"r\"><a href=\"/url?q=");
 					while(startIndex != -1)
 					{
+						try{
 						inputLine = inputLine.substring(startIndex + 30);
 						String urlTemp = inputLine.substring(0,inputLine.indexOf("&amp;sa=U&amp;"));
 						urlTemp = URLDecoder.decode(urlTemp, "UTF-8");
-						theURLS.add(urlTemp);
 						inputLine = inputLine.substring(inputLine.indexOf("\">")+2);
 						String titleTemp = inputLine.substring(0,inputLine.indexOf("</a></h3>"));
 						titleTemp = Jsoup.parse(titleTemp).text();
-						theTitles.add(titleTemp);
 						inputLine = inputLine.substring(inputLine.indexOf("<span class=\"f\">")+16);
 						String sourceTemp = inputLine.substring(0,inputLine.indexOf("-")-1);
-						theSources.add(sourceTemp);
 						inputLine = inputLine.substring(inputLine.indexOf("<div>")+5);
 //						System.out.println(inputLine);
 //						String descripTemp = "";
@@ -81,8 +79,16 @@ public class Parse implements Runnable {
 //							descripTemp = inputLine.substring(0,inputLine.indexOf("<b>...</b>")-1);
 //						else
 							String descripTemp =  inputLine.substring(0,inputLine.indexOf("</div>")-1);
+						theURLS.add(urlTemp);
+						theTitles.add(titleTemp);
+						theSources.add(sourceTemp);
 						theDescrips.add(descripTemp);
 						startIndex = inputLine.indexOf("<h3 class=\"r\"><a href=\"/url?q=");
+						}
+						catch(Exception e)
+						{
+							startIndex = inputLine.indexOf("<h3 class=\"r\"><a href=\"/url?q=");
+						}
 					}
 				}
 
