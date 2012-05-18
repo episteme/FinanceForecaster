@@ -251,6 +251,16 @@ public class Topic implements Comparable<Topic> {
 		return ret;
 	}
 	
+	public double totalRel() {
+		double total = 0.0;
+		Iterator<WordInfo> iterator = words.values().iterator();
+	    while (iterator.hasNext()) {  
+	       WordInfo wi = iterator.next();
+	       total += wi.getRel();
+	    }
+	    return total;
+	}
+	
 }
 
 class CompanyLink {

@@ -163,10 +163,11 @@ public class Parse implements Runnable {
 									overlap = overlap + (newRels.get(i) * t.getRel(newWords.get(i)));
 								}
 							}
-
-							if (overlap >= Math.round((t.getWords().size()/3))) {
+							// overlap is sum of (topic relevance * art relevance)
+							if (overlap >= Math.round((t.totalRel()/3))) {
+								// if overlap is >  numwords / 3
 								isNewTopic = false;
-								t.addArticle(art,sentiment,companies);
+								t.addArticle(art, sentiment, companies);
 								// initial word merging, adds together
 								for (int i = 0; i < result.length; i += 3)
 									t.addWord(result[i], Double.parseDouble(result[i+1]), Double.parseDouble(result[i+2]));
@@ -188,7 +189,7 @@ public class Parse implements Runnable {
 						System.out.println("URL parsed incorrectly");
 					}
 				}
-				for(Company c : cList) {
+				for (Company c : cList) {
 					c.updatePrice();
 				}
 				// Output information on topics
