@@ -136,12 +136,19 @@ public class SingleTopic extends Activity {
 					continue;
 				for (Topic topic : sector.getTopicData()) {
 					if (topic.getUid() == uid) {
-						if(star.isChecked())
+						if(star.isChecked()){
 							topic.setState(1);
-						else if(hide.isChecked())
+							gState.getOptions().setState(uid, sectorName, 1);
+						}
+						else if(hide.isChecked()){
 							topic.setState(-1);
-						else
+							gState.getOptions().setState(uid, sectorName, -1);
+
+						}
+						else{
 							topic.setState(0);
+							gState.getOptions().setState(uid, sectorName, 0);
+						}
 						break;
 					}
 				}

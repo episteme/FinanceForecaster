@@ -91,7 +91,7 @@ public class Background extends Service {
 							parseInput(s);
 
 							// Reset date to current
-//							Log.d("Debug2", s);
+							//							Log.d("Debug2", s);
 							// Turns date into string
 							DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/d HH:mm:ss");
 							query = sectors + ";" + dateFormat.format(dateType);
@@ -120,15 +120,14 @@ public class Background extends Service {
 			// Read in flag which splits between feedReader and Parse infos
 			String[] type = s2.split("SPLITINFO\n");
 
-			LinkedList<Topic> tempTopics = new LinkedList<Topic>();
-			
 			// Read in flag which splits between each sector in the Parse information
 			String[] topicsectors = type[1].split("TOPSTOP\n");
-//			Log.d("topicdata",type[1]);
-//			Log.d("datatypes",Integer.toString(type.length));
+			//			Log.d("topicdata",type[1]);
+			//			Log.d("datatypes",Integer.toString(type.length));
 			int i = 0;
 			for (String sector : topicsectors)
 			{
+				LinkedList<Topic> tempTopics = new LinkedList<Topic>();
 				// Read in flag which splits between each topic in the sector
 				String[] topics = sector.split("SPECTOPS\n");
 				for (String topic : topics)
@@ -136,8 +135,8 @@ public class Background extends Service {
 					// Splits the topic data into parts
 					String[] rawData = topic.split(";;\n");
 
-//					Log.d("datalength",Integer.toString(rawData.length));
-					
+					//					Log.d("datalength",Integer.toString(rawData.length));
+
 					if(rawData.length == 2)
 					{
 						gState.getAllSectors().get(i).updateTopic(Integer.parseInt(rawData[0]), Integer.parseInt(rawData[1]));
@@ -173,7 +172,7 @@ public class Background extends Service {
 					ArrayList<CompanyLink> companyLinks = new ArrayList<CompanyLink>();
 					if(rawData.length == 10){
 						String[] companies = rawData[8].split(";\n");
-						
+
 						for(String comp : companies)
 						{
 							String[] bits = comp.split("@");
@@ -181,22 +180,25 @@ public class Background extends Service {
 						}
 					}
 
+					Topic newTopic = new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), arts, KeyWords, rawData[0], 
+							Double.parseDouble(rawData[6]),rawData[7],companyLinks,gState.getAllSectors().get(i).getName());
+
 					// Add the topic info to the sector info
-					boolean alert = tempTopics.add(
-							new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), arts, KeyWords, rawData[0], 
-									Double.parseDouble(rawData[6]),rawData[7],companyLinks,gState.getAllSectors().get(i).getName()));
-					if (alert) {
+					int tempState = gState.getOptions().getState(newTopic.getUid(), newTopic.getSector());
+					newTopic.setState(tempState);
+					tempTopics.add(newTopic);
+					if(newTopic.getArtsLastHour() >= gState.getAllSectors().get(i).getThreshold())
 						createNotification(rawData[1],KeyWords,rawData[0],gState.getAllSectors().get(i).getName()); 
-					}
+
 				}
 				// Add the sectorInfo to the parseInfo
 				gState.getAllSectors().get(i).setTopicData(tempTopics);
 				i++;
 			}
-			
-			
-			
-//			Log.d("compdata",type[2]);
+
+
+
+			//			Log.d("compdata",type[2]);
 			// Parse Company Data
 			// Split sectors
 			String[] compsectors = type[2].split("COMPSTOP\n");
@@ -218,7 +220,7 @@ public class Background extends Service {
 				k++;
 			}
 
-//			Log.d("newsdata",type[0]);
+						Log.d("newsdata",type[0]);
 			// Parse Google News
 			// Split sectors
 			String[] newssectors = type[0].split("NEWSTOP\n");

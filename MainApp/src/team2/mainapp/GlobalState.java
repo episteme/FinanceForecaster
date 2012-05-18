@@ -8,19 +8,20 @@ import android.content.Intent;
 import android.util.Log;
 
 public class GlobalState extends Application {
-	
+
 	static LinkedList<Sector> allSectors;
+	static OptionList options;
 	static boolean ready;
 	static boolean on;
 	int frequency;
 	static Date lastUpdated;
 	static int position;
-	
+
 	public void onCreate() {
 		Log.d("Starting","Application");
 		Intent intent = new Intent(this, Background.class);
 		startService(intent);
-		
+
 		this.setReady(false);
 		this.setOn(true);
 		this.setFrequency(0);
@@ -29,6 +30,11 @@ public class GlobalState extends Application {
 		this.setSectors(new LinkedList<Sector>());
 		this.getAllSectors().add(new Sector("oil"));
 		this.getAllSectors().add(new Sector("technology"));
+		options = new OptionList();
+	}
+
+	public OptionList getOptions() {
+		return options;
 	}
 
 	public int getFrequency() {
@@ -46,11 +52,11 @@ public class GlobalState extends Application {
 	public void setSectors(LinkedList<Sector> allTopics) {
 		GlobalState.allSectors = allTopics;
 	}
-	
+
 	public void setReady(boolean r){
 		ready = r;
 	}
-	
+
 	public int getPosition() {
 		return position;
 	}
@@ -78,4 +84,42 @@ public class GlobalState extends Application {
 	public void setUpdated(Date date) {
 		lastUpdated = date;
 	}
+}
+
+class OptionList extends LinkedList<Option>
+{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -354907508809963100L;
+
+	OptionList(){
+		super();
+	}
+
+	public Integer getState(int uid, String sector)
+	{
+		for(Option option : this)
+		{
+			if(option.getUid() == uid && option.getSector().equals(sector))
+				return option.getState();
+		}
+		return 0;
+	}
+
+	public void setState(int uid, String sector, int state)
+	{
+		for(Option option : this)
+		{
+			if(option.getUid() == uid && option.getSector().equals(sector) && state != 0){
+				option.setState(state);
+				break;
+			}
+			else if(option.getUid() == uid && option.getSector().equals(sector)){
+				this.remove(option);
+				break;
+			}
+		}
+	}
+
 }

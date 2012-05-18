@@ -95,17 +95,12 @@ public class MultipleSocketServer implements Runnable {
 				for (int i = 0; i < parsers.length; i++) {
 					if (((Parse) parsers[i]).getSector().compareTo(topic) == 0) {
 						Parse theparse = ((Parse) parsers[i]);
-						//java.util.Collections.sort(theparse.getTopics());
+						java.util.Collections.sort(theparse.getTopics());
 						int j = 0;
-						for (Topic T: theparse.getTopics()) {
+						LinkedList<Topic> topicz = (LinkedList<Topic>) theparse.getTopics().clone();
+						for (Topic T: topicz) {
 							if (T == null)
 								continue;
-							if (!(convertedDate.compareTo(T.getTimestamp()) < 0)) {
-								String returnTitle = ((Integer) T.getUid()).toString() + ";;\n";
-								returnTitle += T.artsLastHour() + ";;\n";
-								osw.write(returnTitle);
-								osw.write("SPECTOPS\n");
-							} else {
 								String returnTitle = ((Integer) T.getUid()).toString() + ";;\n";
 								returnTitle += T.getRecentTitle() + ";;\n"; 
 								returnTitle += T.getDate() + ";;\n";
@@ -117,7 +112,6 @@ public class MultipleSocketServer implements Runnable {
 								returnTitle += T.sendCompanyList() + ";;\n";
 								osw.write(returnTitle);
 								osw.write("SPECTOPS\n");
-							}
 							j++;
 							if (j > 20) {
 								break;
