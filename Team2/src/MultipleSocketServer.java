@@ -91,13 +91,12 @@ public class MultipleSocketServer implements Runnable {
 			osw.write("SPLITINFO\n");
 
 			// Send topics - Parse
-			int j = -1;
 			for (String topic : topicArr) {
-				j++;
 				for (int i = 0; i < parsers.length; i++) {
 					if (((Parse) parsers[i]).getSector().compareTo(topic) == 0) {
 						Parse theparse = ((Parse) parsers[i]);
 						//java.util.Collections.sort(theparse.getTopics());
+						int j = 0;
 						for (Topic T: theparse.getTopics()) {
 							if (T == null)
 								continue;
@@ -106,7 +105,7 @@ public class MultipleSocketServer implements Runnable {
 								returnTitle += T.artsLastHour() + ";;\n";
 								osw.write(returnTitle);
 								osw.write("SPECTOPS\n");
-							}else{
+							} else {
 								String returnTitle = ((Integer) T.getUid()).toString() + ";;\n";
 								returnTitle += T.getRecentTitle() + ";;\n"; 
 								returnTitle += T.getDate() + ";;\n";
@@ -119,14 +118,16 @@ public class MultipleSocketServer implements Runnable {
 								osw.write(returnTitle);
 								osw.write("SPECTOPS\n");
 							}
+							j++;
+							if (j > 20) {
+								break;
+							}
 						}
 
 					}
 				}
 				osw.write("TOPSTOP\n");
-				if (j > 10) {
-					break;
-				}
+
 			}
 			
 			osw.write("SPLITINFO\n");
