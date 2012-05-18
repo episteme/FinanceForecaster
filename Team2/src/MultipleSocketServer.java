@@ -91,7 +91,9 @@ public class MultipleSocketServer implements Runnable {
 			osw.write("SPLITINFO\n");
 
 			// Send topics - Parse
+			int j = -1;
 			for (String topic : topicArr) {
+				j++;
 				for (int i = 0; i < parsers.length; i++) {
 					if (((Parse) parsers[i]).getSector().compareTo(topic) == 0) {
 						Parse theparse = ((Parse) parsers[i]);
@@ -122,6 +124,9 @@ public class MultipleSocketServer implements Runnable {
 					}
 				}
 				osw.write("TOPSTOP\n");
+				if (j > 10) {
+					break;
+				}
 			}
 			
 			osw.write("SPLITINFO\n");

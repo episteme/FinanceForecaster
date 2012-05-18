@@ -63,7 +63,7 @@ public class Parse implements Runnable {
 					int startIndex = inputLine.indexOf("<h3 class=\"r\"><a href=\"/url?q=");
 					while(startIndex != -1)
 					{
-						try{
+						try {
 						inputLine = inputLine.substring(startIndex + 30);
 						String urlTemp = inputLine.substring(0,inputLine.indexOf("&amp;sa=U&amp;"));
 						urlTemp = URLDecoder.decode(urlTemp, "UTF-8");
@@ -156,7 +156,15 @@ public class Parse implements Runnable {
 
 						// Check for overlap in existing topics
 						// Current check is if at least 3 words 
+						topicloop:
 						for (Topic t : topics) {
+							// check for unique sources
+							for (Article a : t.getArticles()) {
+								if (a.getSource().equals(art.getSource())) {
+									break topicloop;
+								}
+							}
+							
 							overlap = 0;
 							for (int i = 0; i < newWords.size(); i += 1) {
 								if (t.containsWord(newWords.get(i))) {
@@ -272,7 +280,7 @@ public class Parse implements Runnable {
 						System.out.println("Updated old company: " + s[0]);
 					}
 				}
-				if (!found) {
+				if (!found && !s[0].toLowerCase().equals("facebook") && !s[0].toLowerCase().equals("google") && !s[0].toLowerCase().equals("twitter")) {
 					Company c = new Company(s[0], s[1], s[2]);
 					c.updatePrice();
 					cList.add(c);
