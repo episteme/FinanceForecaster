@@ -120,6 +120,8 @@ public class Background extends Service {
 			// Read in flag which splits between feedReader and Parse infos
 			String[] type = s2.split("SPLITINFO\n");
 
+			LinkedList<Topic> tempTopics = new LinkedList<Topic>();
+			
 			// Read in flag which splits between each sector in the Parse information
 			String[] topicsectors = type[1].split("TOPSTOP\n");
 //			Log.d("topicdata",type[1]);
@@ -180,7 +182,7 @@ public class Background extends Service {
 					}
 
 					// Add the topic info to the sector info
-					boolean alert = gState.getAllSectors().get(i).addTopic(
+					boolean alert = tempTopics.add(
 							new Topic(rawData[1], rawData[2], Integer.parseInt(rawData[3]), arts, KeyWords, rawData[0], 
 									Double.parseDouble(rawData[6]),rawData[7],companyLinks,gState.getAllSectors().get(i).getName()));
 					if (alert) {
@@ -188,8 +190,11 @@ public class Background extends Service {
 					}
 				}
 				// Add the sectorInfo to the parseInfo
+				gState.getAllSectors().get(i).setTopicData(tempTopics);
 				i++;
 			}
+			
+			
 			
 //			Log.d("compdata",type[2]);
 			// Parse Company Data

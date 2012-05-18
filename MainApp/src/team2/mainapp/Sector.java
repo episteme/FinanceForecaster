@@ -1,5 +1,6 @@
 package team2.mainapp;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -82,6 +83,10 @@ public class Sector {
 
 	public void setCompanies(LinkedList<Company> tempComps) {
 		compData = tempComps;
+	}
+	
+	public void setTopicData(LinkedList<Topic> tempTopics) {
+		topicData = tempTopics;
 	}
 	
 	
