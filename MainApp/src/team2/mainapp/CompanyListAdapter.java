@@ -27,8 +27,24 @@ public class CompanyListAdapter extends ArrayAdapter<Company> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View rowView = inflater.inflate(R.layout.keywordlist, parent, false);
-
+		View rowView = inflater.inflate(R.layout.companylayout, parent, false);
+		TextView textView = (TextView) rowView.findViewById(R.id.name);
+		TextView textView2 = (TextView) rowView.findViewById(R.id.mentions);
+		TextView textView3 = (TextView) rowView.findViewById(R.id.stockprice);
+		TextView textView4 = (TextView) rowView.findViewById(R.id.stockchange);
+		TextView textView5 = (TextView) rowView.findViewById(R.id.sector);
+		
+		
+		Log.d("Debug", Integer.toString(values.size()));
+		Log.d("Debug", values.get(position).getName());
+		textView.setText(values.get(position).getName());
+		String s = "Mentioned in " + values.get(position).getArticles() + " article";
+		if((values.get(position).getArticles() != 1))
+			s += "s";
+		textView2.setText(s);
+		textView3.setText(Double.toString(values.get(position).getStockPrice()));
+		textView4.setText(Double.toString(values.get(position).getStockChange()));
+		textView5.setText(values.get(position).getSector());
 		return rowView;
 	}
 	

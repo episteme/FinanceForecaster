@@ -57,6 +57,7 @@ public class HomeView extends LinearLayout {
 		
 		for(Sector sector : gState.getAllSectors()){
 			java.util.Collections.sort(sector.getTopicData());
+			java.util.Collections.sort(sector.getCompData());
 			if(!sector.getName().equals(category))
 				continue;
 			int i = 0;

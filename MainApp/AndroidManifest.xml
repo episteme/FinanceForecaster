@@ -14,7 +14,7 @@
         <activity
             android:name=".MainAppActivity"
             android:theme="@android:style/Theme.Holo.Light" 
-            android:label="@string/app_name" >
+            android:label="Breaking Stories" >
         </activity>
          <activity
             android:name=".Homepage"
@@ -27,11 +27,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".SingleTopic" 
-            android:theme="@android:style/Theme.Holo.Light" />
+            android:theme="@android:style/Theme.Holo.Light"
+             android:label="Drilldown" />
         <activity android:name=".GoogleNews"           
-            android:theme="@android:style/Theme.Holo.Light" />
+            android:theme="@android:style/Theme.Holo.Light"
+             android:label="Daily Snapshot" />
                 <activity android:name=".Preferences"           
-            android:theme="@android:style/Theme.Holo.Light" />
+            android:theme="@android:style/Theme.Holo.Light"
+             android:label="Preferences" />
          <service android:name="Background" >
         </service>
 

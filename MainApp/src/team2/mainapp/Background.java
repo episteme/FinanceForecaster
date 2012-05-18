@@ -206,7 +206,8 @@ public class Background extends Service {
 					String[] rawData = company.split(";;\n");
 					Log.d("newcompany",rawData[0]);
 					tempComps.add(
-							new Company(rawData[0], rawData[1], rawData[2], rawData[3], rawData[4], rawData[5], rawData[6]));
+							new Company(rawData[0], rawData[1], rawData[2], rawData[3], 
+									rawData[4], rawData[5], rawData[6],gState.getAllSectors().get(k).getName()));
 				}
 				gState.getAllSectors().get(k).setCompanies(tempComps);
 				k++;

@@ -37,7 +37,7 @@
         android:id="@+id/uid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@+id/cuid"
+        android:text="@+id/uid"
         android:visibility="gone"
        />
     
@@ -45,7 +45,7 @@
         android:id="@+id/sector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@+id/csector"
+        android:text="@+id/sector"
         android:visibility="gone"
        />
 

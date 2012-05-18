@@ -5,18 +5,6 @@
     android:gravity="center_horizontal"
     android:orientation="vertical" >
     
-     <TextView
-         android:id="@+id/textView1"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:paddingBottom="2dp"
-         android:paddingTop="5dp"
-         android:text="News Snapshot"
-         android:textAppearance="?android:attr/textAppearanceMedium"
-         android:textColor="#FF555555"
-         android:textSize="14dp"
-         android:translationX="-95dp" />
-    
     <View
         android:layout_width="wrap_content"
         android:layout_height="2dp"
@@ -26,7 +14,8 @@
            android:id="@+id/indicator"
            style="@style/Widget.MyTitlepageIndicator"
            android:layout_width="match_parent"
-           android:layout_height="wrap_content" />
+           android:layout_height="wrap_content"
+           android:background="#FF000000" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"

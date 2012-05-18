@@ -36,7 +36,7 @@ public class TopicListAdapter extends ArrayAdapter<Topic> {
 		
 		
 		Log.d("Debug", Integer.toString(values.size()));
-		Log.d("Debug", values.get(position).getTitle());
+		Log.d("Debug", values.get(position).getSector());
 		textView.setText(values.get(position).getTitle());
 		String s = "Aggregated from " + values.get(position).getArts() + " source";
 		if((values.get(position).getArts() != 1))
@@ -51,7 +51,7 @@ public class TopicListAdapter extends ArrayAdapter<Topic> {
 			case -1:
 				rowView.setBackgroundColor(Color.rgb(255,50,50));break;
 			case 1:
-				rowView.setBackgroundColor(Color.rgb(235,235,235));break;
+				rowView.setBackgroundColor(Color.rgb(210,210,210));break;
 		}
 		return rowView;
 	}
