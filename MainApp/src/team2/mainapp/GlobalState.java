@@ -14,6 +14,7 @@ public class GlobalState extends Application {
 	static boolean on;
 	int frequency;
 	static Date lastUpdated;
+	static int position;
 	
 	public void onCreate() {
 		Log.d("Starting","Application");
@@ -23,6 +24,7 @@ public class GlobalState extends Application {
 		this.setReady(false);
 		this.setOn(true);
 		this.setFrequency(0);
+		this.position = 0;
 
 		this.setSectors(new LinkedList<Sector>());
 		this.getAllSectors().add(new Sector("oil"));
@@ -49,6 +51,14 @@ public class GlobalState extends Application {
 		ready = r;
 	}
 	
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		GlobalState.position = position;
+	}
+
 	public boolean getReady(){
 		return ready;
 	}

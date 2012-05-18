@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.opengl.Visibility;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,11 @@ public class CompanyListAdapter extends ArrayAdapter<Company> {
 		textView3.setText(Double.toString(values.get(position).getStockPrice()));
 		textView4.setText(Double.toString(values.get(position).getStockChange()));
 		textView5.setText(values.get(position).getSector());
+		
+		if(!values.get(position).isTraded()){
+			textView3.setVisibility(View.GONE);
+			textView4.setVisibility(View.GONE);
+		}
 		return rowView;
 	}
 	

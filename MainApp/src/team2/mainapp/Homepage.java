@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,7 +34,11 @@ public class Homepage extends Activity {
 				(TitlePageIndicator)findViewById( R.id.indicator );
 		pager.setAdapter( adapter2 );
 		indicator.setViewPager( pager );
+		
+		GlobalState gState = (GlobalState) getApplication();
+		pager.setCurrentItem(gState.getPosition());
 	}
+	
 	
 
 	@Override
@@ -59,7 +65,7 @@ public class Homepage extends Activity {
 			startActivity(myIntent);
 			break;
 		case R.id.button2:
-			Intent myIntent2 = new Intent(this, MainAppActivity.class);
+			Intent myIntent2 = new Intent(this, CompanyList.class);
 			myIntent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			startActivity(myIntent2);
 			break;

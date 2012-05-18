@@ -16,6 +16,11 @@
             android:theme="@android:style/Theme.Holo.Light" 
             android:label="Breaking Stories" >
         </activity>
+        <activity
+            android:name=".CompanyList"
+            android:theme="@android:style/Theme.Holo.Light" 
+            android:label="Companies" >
+        </activity>
          <activity
             android:name=".Homepage"
             android:theme="@android:style/Theme.Holo.Light" 

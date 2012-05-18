@@ -32,7 +32,9 @@ public class MainAppActivity extends Activity {
 				(TitlePageIndicator)findViewById( R.id.indicator );
 		pager.setAdapter( adapter2 );
 		indicator.setViewPager( pager );
-		pager.setCurrentItem(1);
+		
+		GlobalState gState = (GlobalState) getApplication();
+		pager.setCurrentItem(gState.getPosition());
 	}
 	
 	@Override

@@ -18,6 +18,8 @@
 package team2.mainapp;
 
 import java.util.ArrayList;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -697,6 +699,9 @@ public class TitlePageIndicator extends View implements PageIndicator {
 
     @Override
     public void onPageSelected(int position) {
+		GlobalState gState = (GlobalState) ((Activity) this.getContext()).getApplication();
+	    gState.setPosition(position);
+    	
         if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
             mCurrentPage = position;
             invalidate();

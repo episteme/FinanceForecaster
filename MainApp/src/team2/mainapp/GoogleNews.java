@@ -32,6 +32,9 @@ public class GoogleNews extends Activity {
 				(TitlePageIndicator)findViewById( R.id.indicator );
 		pager.setAdapter( adapter2 );
 		indicator.setViewPager( pager );
+		
+		GlobalState gState = (GlobalState) getApplication();
+		pager.setCurrentItem(gState.getPosition());
 	}
 
 	@Override
