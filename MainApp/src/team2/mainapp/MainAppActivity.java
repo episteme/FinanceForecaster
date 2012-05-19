@@ -1,9 +1,12 @@
 package team2.mainapp;
+import team2.mainapp.R.drawable;
 import team2.mainapp.ViewPagerAdapter.GetDataTask;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +21,11 @@ public class MainAppActivity extends Activity {
 	static boolean started;
 	static ViewPagerAdapter adapter2;
 	int ready;
+	static ViewPager pager;
+	Menu menu;
+	MenuItem refresh;
+	Handler handler;
+	static Thread mRefreshChecker;
 	/** Called when the activity is first created. */
 
 	@Override
@@ -26,7 +34,7 @@ public class MainAppActivity extends Activity {
 		setContentView(R.layout.main);
 
 		adapter2 = new ViewPagerAdapter( this );
-		ViewPager pager =
+		pager =
 				(ViewPager)findViewById( R.id.viewpager );
 		TitlePageIndicator indicator =
 				(TitlePageIndicator)findViewById( R.id.indicator );
@@ -35,6 +43,7 @@ public class MainAppActivity extends Activity {
 		
 		GlobalState gState = (GlobalState) getApplication();
 		pager.setCurrentItem(gState.getPosition());
+		handler = new Handler();
 	}
 	
 	@Override
@@ -42,8 +51,21 @@ public class MainAppActivity extends Activity {
 		super.onResume();
 			GetDataTask task = adapter2.new GetDataTask();
 			task.execute();
+			GlobalState gState = (GlobalState) getApplication();
+			if(gState.getRefreshState() == 1){
+				gState.setRefreshState(0);
+				refresh.setIcon(drawable.ic_menu_refresh);
+			}
+			pager.setCurrentItem(gState.getPosition());
+			refreshChecker();
+			pager.setCurrentItem(gState.getPosition());
 	}
-
+	
+	public void onPause(){
+		super.onPause();
+		mRefreshChecker.interrupt();
+	}
+	
 	public void topicClickHandler(View view) {
 		TextView tv = (TextView) view.findViewById(R.id.uid);
 		TextView tv2 = (TextView) view.findViewById(R.id.sector);
@@ -56,26 +78,79 @@ public class MainAppActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.mainmenu, menu);
+		this.menu = menu;
+		refresh = menu.findItem(R.id.refresh);
 		return true;
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.menuitem1:
-			Intent myIntent = new Intent(this, GoogleNews.class);
-			myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			startActivity(myIntent);
+		case R.id.refresh:
+			GetDataTask task = adapter2.new GetDataTask();
+			task.execute();
+			GlobalState gState = (GlobalState) getApplication();
+			if(gState.getRefreshState() == 1){
+				gState.setRefreshState(0);
+				refresh.setIcon(drawable.ic_menu_refresh);
+			}
+			refresh.setIcon(drawable.ic_menu_refresh);
 			break;
-		case R.id.menuitem2:
-			Intent myIntent2 = new Intent(this, Preferences.class);
+		case R.id.home:
+			Intent myIntent2 = new Intent(this, Homepage.class);
+			//			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			myIntent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			startActivity(myIntent2);
-			break;
 
+			break;
+		case R.id.snapshot:
+			Intent myIntent3 = new Intent(this, GoogleNews.class);
+			//			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			myIntent3.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(myIntent3);
+
+			break;
+		case R.id.prefs:
+			Intent myIntent4 = new Intent(this, Preferences.class);
+			myIntent4.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(myIntent4);
+			break;
 		default:
 			break;
 		}
 
 		return true;
+	}
+	
+	private void refreshChecker(){
+		// Do something long
+		Runnable runnable = new Runnable() {
+			private String s;
+
+			@Override
+			public void run() {
+				while(true) {
+					while(refresh == null)
+					{}
+					handler.post(new Runnable() {
+						@Override
+						public void run() {
+							GlobalState gState = (GlobalState) getApplication();
+							int state = (gState.getRefreshState());
+							if(state == -1)
+								refresh.setIcon(drawable.ic_menu_refreshr);
+							else if(state == 1)
+								refresh.setIcon(drawable.ic_menu_refreshg);	
+						}
+					});
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						return;
+					}
+				}
+			}	
+		};
+		mRefreshChecker = new Thread(runnable);
+		mRefreshChecker.start();
 	}
 }

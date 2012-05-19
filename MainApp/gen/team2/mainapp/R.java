@@ -289,27 +289,35 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
-        public static final int ic_pulltorefresh_arrow=0x7f020001;
-        public static final int icon=0x7f020002;
-        public static final int logo=0x7f020003;
-        public static final int picy=0x7f020004;
-        public static final int plastic=0x7f020005;
-        public static final int psyduck2=0x7f020006;
-        public static final int pull_to_refresh_header_background=0x7f020007;
-        public static final int vpi__tab_indicator=0x7f020008;
-        public static final int vpi__tab_selected_focused_holo=0x7f020009;
-        public static final int vpi__tab_selected_holo=0x7f02000a;
-        public static final int vpi__tab_selected_pressed_holo=0x7f02000b;
-        public static final int vpi__tab_unselected_focused_holo=0x7f02000c;
-        public static final int vpi__tab_unselected_holo=0x7f02000d;
-        public static final int vpi__tab_unselected_pressed_holo=0x7f02000e;
+        public static final int ic_menu_deleted=0x7f020001;
+        public static final int ic_menu_home=0x7f020002;
+        public static final int ic_menu_preferences=0x7f020003;
+        public static final int ic_menu_refresh=0x7f020004;
+        public static final int ic_menu_refreshg=0x7f020005;
+        public static final int ic_menu_refreshr=0x7f020006;
+        public static final int ic_menu_view=0x7f020007;
+        public static final int ic_pulltorefresh_arrow=0x7f020008;
+        public static final int icon=0x7f020009;
+        public static final int logo=0x7f02000a;
+        public static final int picy=0x7f02000b;
+        public static final int plastic=0x7f02000c;
+        public static final int psyduck2=0x7f02000d;
+        public static final int pull_to_refresh_header_background=0x7f02000e;
+        public static final int vpi__tab_indicator=0x7f02000f;
+        public static final int vpi__tab_selected_focused_holo=0x7f020010;
+        public static final int vpi__tab_selected_holo=0x7f020011;
+        public static final int vpi__tab_selected_pressed_holo=0x7f020012;
+        public static final int vpi__tab_unselected_focused_holo=0x7f020013;
+        public static final int vpi__tab_unselected_holo=0x7f020014;
+        public static final int vpi__tab_unselected_pressed_holo=0x7f020015;
     }
     public static final class id {
         public static final int button1=0x7f060017;
         public static final int button2=0x7f06001a;
         public static final int csector=0x7f06000a;
         public static final int cuid=0x7f060026;
-        public static final int gauge1=0x7f060028;
+        public static final int hide=0x7f060029;
+        public static final int home=0x7f06002e;
         public static final int horizontal=0x7f060000;
         public static final int indicator=0x7f060005;
         public static final int label=0x7f06000e;
@@ -321,30 +329,31 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int labelq=0x7f060011;
         public static final int labelr=0x7f060013;
         public static final int list1=0x7f060027;
-        public static final int list2=0x7f060029;
+        public static final int list2=0x7f060028;
         public static final int listView1=0x7f060016;
         public static final int listView2=0x7f060019;
         public static final int mentions=0x7f060008;
-        public static final int menuitem1=0x7f06002b;
-        public static final int menuitem2=0x7f06002c;
         public static final int name=0x7f060007;
         public static final int none=0x7f060002;
+        public static final int prefs=0x7f06002d;
         public static final int pull_to_refresh_header=0x7f060020;
         public static final int pull_to_refresh_image=0x7f060022;
         public static final int pull_to_refresh_progress=0x7f060021;
         public static final int pull_to_refresh_text=0x7f060023;
         public static final int pull_to_refresh_updated_at=0x7f060024;
+        public static final int refresh=0x7f06002b;
         public static final int sector=0x7f060009;
         public static final int seekBar1=0x7f06001d;
         public static final int seekBar2=0x7f06001f;
         public static final int seekBar3=0x7f06001c;
+        public static final int snapshot=0x7f06002c;
+        public static final int star=0x7f06002a;
         public static final int stockchange=0x7f06000c;
         public static final int stockprice=0x7f06000b;
         public static final int textView1=0x7f060015;
         public static final int textView2=0x7f060018;
         public static final int textView3=0x7f06001e;
         public static final int toggleButton1=0x7f06001b;
-        public static final int toggleButton2=0x7f06002a;
         public static final int triangle=0x7f060003;
         public static final int uid=0x7f060025;
         public static final int underline=0x7f060004;
@@ -374,9 +383,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int vpi__tab=0x7f03000f;
     }
     public static final class menu {
-        public static final int googmenu=0x7f0b0000;
-        public static final int mainmenu=0x7f0b0001;
-        public static final int prefmenu=0x7f0b0002;
+        public static final int mainmenu=0x7f0b0000;
+        public static final int prefsmenu=0x7f0b0001;
+        public static final int snapmenu=0x7f0b0002;
     }
     public static final class string {
         public static final int app_name=0x7f040001;

@@ -1,6 +1,5 @@
 package team2.mainapp;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -8,7 +7,7 @@ public class Sector {
 	String name;
 	LinkedList<Topic> topicData;
 	LinkedList<GoogleStory> googStories;
-	LinkedList<Company> compData;
+	CompList compData;
 	int threshold;
 	
 	Sector(String name)
@@ -16,7 +15,7 @@ public class Sector {
 		this.name = name;
 		googStories = new LinkedList<GoogleStory>();
 		topicData = new LinkedList<Topic>();
-		compData = new LinkedList<Company>();
+		compData = new CompList();
 		threshold = 100;
 	}
 
@@ -81,13 +80,31 @@ public class Sector {
 		return compData;
 	}
 
-	public void setCompanies(LinkedList<Company> tempComps) {
+	public void setCompanies(CompList tempComps) {
 		compData = tempComps;
 	}
 	
 	public void setTopicData(LinkedList<Topic> tempTopics) {
 		topicData = tempTopics;
 	}
+}
+
+class CompList extends LinkedList<Company> {
+
+	private static final long serialVersionUID = -2879891466110522574L;
+
+	CompList ()
+	{
+		super();
+	}
 	
-	
+	Company findCompany(String name) {
+		Company found = null;
+		for(Company comp : this)
+		{
+			if(comp.getName().equals(name))
+				return comp;
+		}
+		return found;
+	}
 }

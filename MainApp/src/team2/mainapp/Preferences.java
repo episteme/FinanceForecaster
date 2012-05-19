@@ -21,14 +21,14 @@ public class Preferences extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preferences);
-		
-	    sb1 = (SeekBar)findViewById( R.id.seekBar1 );
-	    sb2 = (SeekBar) findViewById( R.id.seekBar2 );
-	    sb3 = (SeekBar) findViewById( R.id.seekBar3);
-	    tb = (ToggleButton) findViewById( R.id.toggleButton1 );
+
+		sb1 = (SeekBar)findViewById( R.id.seekBar1 );
+		sb2 = (SeekBar) findViewById( R.id.seekBar2 );
+		sb3 = (SeekBar) findViewById( R.id.seekBar3);
+		tb = (ToggleButton) findViewById( R.id.toggleButton1 );
 
 		GlobalState gState = (GlobalState) getApplication();
-		
+
 		sb1.setProgress(gState.getAllSectors().get(0).getThreshold());
 		sb2.setProgress(gState.getAllSectors().get(1).getThreshold());
 		sb3.setProgress(gState.getFrequency());
@@ -37,22 +37,30 @@ public class Preferences extends Activity {
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.prefmenu, menu);
+		inflater.inflate(R.menu.prefsmenu, menu);
 		return true;
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.menuitem1:
-			GlobalState gState = (GlobalState) getApplication();
-			gState.getAllSectors().get(0).setThreshold(sb1.getProgress());
-			gState.getAllSectors().get(1).setThreshold(sb2.getProgress());
-			gState.setFrequency(sb3.getProgress());
-			if(tb.getText().equals("Updates Enabled"))
-				gState.setOn(true);
-			else
-				gState.setOn(false);
-			finish();
+		case R.id.home:
+			Intent myIntent2 = new Intent(this, Homepage.class);
+			//			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			myIntent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(myIntent2);
+
+			break;
+		case R.id.snapshot:
+			Intent myIntent3 = new Intent(this, GoogleNews.class);
+			//			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			myIntent3.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(myIntent3);
+
+			break;
+		case R.id.prefs:
+			Intent myIntent4 = new Intent(this, Preferences.class);
+			myIntent4.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(myIntent4);
 			break;
 		default:
 			break;
@@ -60,7 +68,20 @@ public class Preferences extends Activity {
 
 		return true;
 	}
-	
+
+	public void onPause(){
+		GlobalState gState = (GlobalState) getApplication();
+		gState.getAllSectors().get(0).setThreshold(sb1.getProgress());
+		gState.getAllSectors().get(1).setThreshold(sb2.getProgress());
+		gState.setFrequency(sb3.getProgress());
+		if(tb.getText().equals("Updates Enabled"))
+			gState.setOn(true);
+		else
+			gState.setOn(false);
+		super.onPause();
+		finish();
+	}
+
 	public void resetHandler(View view) {
 		GlobalState gState = (GlobalState) getApplication();
 		for(Sector sector : gState.getAllSectors())

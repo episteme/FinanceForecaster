@@ -177,5 +177,4 @@ public class Company {
 	public String strRel() {
 		return Double.toString(relevance);
 	}
-
 }

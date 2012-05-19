@@ -16,6 +16,7 @@ public class GlobalState extends Application {
 	int frequency;
 	static Date lastUpdated;
 	static int position;
+	static int refreshState;
 
 	public void onCreate() {
 		Log.d("Starting","Application");
@@ -26,11 +27,20 @@ public class GlobalState extends Application {
 		this.setOn(true);
 		this.setFrequency(0);
 		this.position = 0;
+		this.refreshState = 0;
 
 		this.setSectors(new LinkedList<Sector>());
 		this.getAllSectors().add(new Sector("oil"));
 		this.getAllSectors().add(new Sector("technology"));
 		options = new OptionList();
+	}
+
+	public int getRefreshState() {
+		return refreshState;
+	}
+
+	public void setRefreshState(int refreshState) {
+		GlobalState.refreshState = refreshState;
 	}
 
 	public OptionList getOptions() {

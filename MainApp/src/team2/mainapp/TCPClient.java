@@ -24,7 +24,7 @@ public class TCPClient {
 
 			Log.d("TCP", "C: Connecting...");
 
-			SocketAddress socketaddr = new InetSocketAddress("10.131.156.65", 8009);
+			SocketAddress socketaddr = new InetSocketAddress("192.168.0.100", 8009);
 			Socket socket = new Socket();
 			socket.connect(socketaddr,5000);
 
@@ -60,7 +60,7 @@ public class TCPClient {
 
 		} catch (Exception e) {
 			Log.e("TCP", "C: Error", e);
-
+			Log.d("TCP","FAIL");
 		}
 		return "error";
 

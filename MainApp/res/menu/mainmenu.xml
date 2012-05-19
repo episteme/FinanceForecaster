@@ -2,14 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menuitem1"
+        android:id="@+id/refresh"
         android:showAsAction="ifRoom"
-        android:title="Snapshot">
-    </item>
+        android:icon="@drawable/ic_menu_refresh" />
     <item
-        android:id="@+id/menuitem2"
+        android:id="@+id/snapshot"
         android:showAsAction="ifRoom"
-        android:title="Prefs">
-    </item>
+        android:icon="@drawable/ic_menu_view" />
+    <item
+        android:id="@+id/prefs"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_menu_preferences" />
 
 </menu>

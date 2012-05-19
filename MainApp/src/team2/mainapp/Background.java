@@ -87,6 +87,7 @@ public class Background extends Service {
 							Log.d("Debug1", query);
 							s = TCPClient.go(query);
 
+							if(s != "error"){
 							// Parse retrieved information
 							parseInput(s);
 
@@ -95,7 +96,10 @@ public class Background extends Service {
 							// Turns date into string
 							DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/d HH:mm:ss");
 							query = sectors + ";" + dateFormat.format(dateType);
-
+							}else{
+								Log.d("Info Received","Fail");
+								gState.setRefreshState(-1);
+							}
 						}
 
 						int waited = 0;
@@ -206,7 +210,7 @@ public class Background extends Service {
 			for (String sector : compsectors)
 			{
 				String[] companies = sector.split("SPECCOMP\n");
-				LinkedList<Company> tempComps = new LinkedList<Company>();
+				CompList tempComps = new CompList();
 				for (String company : companies)
 				{
 					// Split story in to fields
@@ -220,7 +224,7 @@ public class Background extends Service {
 				k++;
 			}
 
-						Log.d("newsdata",type[0]);
+			Log.d("newsdata",type[0]);
 			// Parse Google News
 			// Split sectors
 			String[] newssectors = type[0].split("NEWSTOP\n");
@@ -235,15 +239,20 @@ public class Background extends Service {
 					String[] rawData = story.split(";;\n");
 
 					// Splits the keyWords into individual parts
-					String[] words = rawData[4].split(";\n");
 
 					ArrayList<KeyWord> keyWords = new ArrayList<KeyWord>();
-					for (String word : words)
-					{
-						// Split each keyword into its word and its sentiment
-						String[] bits = word.split("@");
-						// Put each bit into the list
-						keyWords.add(new KeyWord(bits[0], bits[1]));
+
+
+					if(rawData.length > 4){
+						String[] words = rawData[4].split(";\n");
+
+						for (String word : words)
+						{
+							// Split each keyword into its word and its sentiment
+							String[] bits = word.split("@");
+							// Put each bit into the list
+							keyWords.add(new KeyWord(bits[0], bits[1]));
+						}
 					}
 					tempStories.add(new GoogleStory(
 							Double.parseDouble(rawData[3]), rawData[0], rawData[1], keyWords, rawData[2]));
@@ -254,6 +263,7 @@ public class Background extends Service {
 			}
 
 			gState.setReady(true);
+			gState.setRefreshState(1);
 			gState.setUpdated(new Date());
 
 			// Replaces allTopics with parseInf

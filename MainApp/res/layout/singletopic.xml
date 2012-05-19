@@ -18,7 +18,7 @@
         android:translationX="-75dp" />
 
     <View
-        android:layout_width="280dp"
+        android:layout_width="wrap_content"
         android:layout_height="2dp"
         android:background="#FFCCCCCC" />
 
@@ -33,11 +33,7 @@
             android:layout_weight="0.60"
             android:translationX="15dp" >
         </ListView>
-        
-        <team2.mainapp.Gauge
-            android:id="@+id/gauge1"
-            android:layout_width="150dp"
-            android:layout_height="150dp" />
+       
         
     </LinearLayout>
 
@@ -51,10 +47,11 @@
         android:textColor="#FF555555"
         android:textSize="12dp"
         android:translationX="-95dp" />
-
+
     <View
-        android:layout_width="280dp"
+        android:layout_width="match_parent"
         android:layout_height="2dp"
+        android:layout_weight="0.05"
         android:background="#FFCCCCCC" />
 
     <ListView
@@ -66,7 +63,7 @@
     </ListView>
     
         <View
-        android:layout_width="280dp"
+        android:layout_width="wrap_content"
         android:layout_height="2dp"
         android:background="#FFCCCCCC" />
     
@@ -75,23 +72,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical" >
-
-        <ToggleButton
-            android:id="@+id/toggleButton1"
-            android:layout_width="79dp"
+
+        <ImageButton
+            android:id="@+id/hide"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="myClickHandler"
-            android:textOff="Visible"
-            android:textOn="Hidden" />
-
-        <ToggleButton
-            android:id="@+id/toggleButton2"
-            android:layout_width="85dp"
+            android:onClick="hideClickHandler"
+            android:src="@android:drawable/ic_menu_delete" />
+
+        <View
+            android:layout_width="101dp"
+            android:layout_height="32dp"
+            android:background="#FFFFFFFF" />
+
+        <ImageButton
+            android:id="@+id/star"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:onClick="myClickHandler"
-            android:textOff="Normal"
-            android:textOn="Starred" />
+            android:onClick="starClickHandler"
+            android:src="@android:drawable/btn_star_big_off" />
+        
 
     </LinearLayout>
 

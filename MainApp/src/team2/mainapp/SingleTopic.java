@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import team2.mainapp.ViewPagerAdapter.GetDataTask;
 
+import android.R.drawable;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AnalogClock;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -23,11 +26,12 @@ import android.widget.ToggleButton;
 
 public class SingleTopic extends Activity {
 
-	ToggleButton hide;
-	ToggleButton star;
-	Gauge ac;
+	ImageButton hide;
+	ImageButton star;
 	int uid;
 	String sectorName;
+	boolean hidestate;
+	boolean starstate;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +58,14 @@ public class SingleTopic extends Activity {
 			}
 		}
 		
-		hide = (ToggleButton) findViewById(R.id.toggleButton1);
-		star = (ToggleButton) findViewById(R.id.toggleButton2);
-		ac = (Gauge) findViewById(R.id.gauge1);
-
+		hide = (ImageButton) findViewById(R.id.hide);
+		star = (ImageButton) findViewById(R.id.star);
+		hidestate = false;
+		starstate = false;
 
 		switch(thistopic.getState()){
-			case -1: star.setChecked(false);hide.setChecked(true);break;
-			case 0: star.setChecked(false);hide.setChecked(false);break;
-			case 1: star.setChecked(true);hide.setChecked(false);break;
+			case -1: hide.setImageResource(team2.mainapp.R.drawable.ic_menu_deleted);hidestate=true;break;
+			case 1: star.setImageResource(drawable.btn_star_big_on);starstate=true;break;
 		}
 		
 		double sent = thistopic.getSentiment();
@@ -73,9 +76,7 @@ public class SingleTopic extends Activity {
 			sent = 1;
 		if(sent < -1)
 			sent = -1;
-		
-		ac.setHandTarget((float) sent*100);
-		
+				
 		ArrayList<KeyWord> mListItems = new ArrayList<KeyWord>();
 
 		KeywordAdapter adapter1 = new KeywordAdapter(this, mListItems);
@@ -97,19 +98,28 @@ public class SingleTopic extends Activity {
 		nListItems.addAll(thistopic.getArticle());
 	}
 	
-	public void myClickHandler(View view) {
-		switch(view.getId()){
-			case R.id.toggleButton1:
-				if(hide.isChecked())
-					star.setChecked(false);
-				break;
-			case R.id.toggleButton2:
-				if(star.isChecked())
-					hide.setChecked(false);
-				break;
+	public void starClickHandler(View view) {
+		if(starstate){
+			star.setImageResource(drawable.btn_star_big_off);
+			starstate = false;
+		}else{
+			hide.setImageResource(drawable.ic_menu_delete);
+			star.setImageResource(drawable.btn_star_big_on);		
+			hidestate = false;
+			starstate = true;
 		}
-		Log.d("Starhide",Boolean.toString(star.isChecked()));
-		Log.d("Starhide",Boolean.toString(hide.isChecked()));
+	}
+	
+	public void hideClickHandler(View view) {
+		if(hidestate){
+			hide.setImageResource(drawable.ic_menu_delete);
+			hidestate = false;
+		}else{
+			hide.setImageResource(team2.mainapp.R.drawable.ic_menu_deleted);
+			star.setImageResource(drawable.btn_star_big_off);		
+			starstate = false;
+			hidestate = true;
+		}
 	}
 
 	public void titleClickHandler(View view) {
@@ -121,39 +131,57 @@ public class SingleTopic extends Activity {
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.prefmenu, menu);
+		inflater.inflate(R.menu.prefsmenu, menu);
 		return true;
+	}
+	
+	public void onPause(){
+		GlobalState gState = (GlobalState) getApplication();
+		for (Sector sector : gState.getAllSectors()) {
+			if(!sector.getName().equals(sectorName))
+				continue;
+			for (Topic topic : sector.getTopicData()) {
+				if (topic.getUid() == uid) {
+					if(starstate){
+						topic.setState(1);
+						gState.getOptions().setState(uid, sectorName, 1);
+					}
+					else if(hidestate){
+						topic.setState(-1);
+						gState.getOptions().setState(uid, sectorName, -1);
+
+					}
+					else{
+						topic.setState(0);
+						gState.getOptions().setState(uid, sectorName, 0);
+					}
+					break;
+				}
+			}
+		}
+		super.onPause();
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.d("Starhide",Boolean.toString(star.isChecked()));
-		Log.d("Starhide",Boolean.toString(hide.isChecked()));
-		GlobalState gState = (GlobalState) getApplication();
 		switch (item.getItemId()) {
-		case R.id.menuitem1:
-			for (Sector sector : gState.getAllSectors()) {
-				if(!sector.getName().equals(sectorName))
-					continue;
-				for (Topic topic : sector.getTopicData()) {
-					if (topic.getUid() == uid) {
-						if(star.isChecked()){
-							topic.setState(1);
-							gState.getOptions().setState(uid, sectorName, 1);
-						}
-						else if(hide.isChecked()){
-							topic.setState(-1);
-							gState.getOptions().setState(uid, sectorName, -1);
+		case R.id.home:
+			Intent myIntent2 = new Intent(this, Homepage.class);
+			//			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			myIntent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(myIntent2);
 
-						}
-						else{
-							topic.setState(0);
-							gState.getOptions().setState(uid, sectorName, 0);
-						}
-						break;
-					}
-				}
-			}
-			finish();
+			break;
+		case R.id.snapshot:
+			Intent myIntent3 = new Intent(this, GoogleNews.class);
+			//			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			myIntent3.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(myIntent3);
+
+			break;
+		case R.id.prefs:
+			Intent myIntent4 = new Intent(this, Preferences.class);
+			myIntent4.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(myIntent4);
 			break;
 		default:
 			break;
