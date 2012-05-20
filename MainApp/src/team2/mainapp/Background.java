@@ -15,6 +15,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.view.ViewDebug.FlagToString;
 
 public class Background extends Service {
 
@@ -61,6 +62,10 @@ public class Background extends Service {
 		// Hide the notification after its selected
 		not.setAutoCancel(true);
 		Notification notification = not.getNotification();
+		long[] vibrate = {0,1000,1000,1000};
+		notification.vibrate = vibrate;
+		notification.tickerText = title;
+		notification.defaults |= Notification.DEFAULT_LIGHTS;
 		Log.d("Debug", "Sending Notification");
 		notificationManager.notify(Integer.parseInt(uid), notification);
 	}
