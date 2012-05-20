@@ -8,10 +8,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainAppActivity extends Activity {
@@ -52,7 +54,7 @@ public class MainAppActivity extends Activity {
 			GetDataTask task = adapter2.new GetDataTask();
 			task.execute();
 			GlobalState gState = (GlobalState) getApplication();
-			if(gState.getRefreshState() == 1){
+			if(gState.getRefreshState() == 1 && refresh != null){
 				gState.setRefreshState(0);
 				refresh.setIcon(drawable.ic_menu_refresh);
 			}
@@ -74,12 +76,52 @@ public class MainAppActivity extends Activity {
 		myIntent.putExtra("SECTOR", tv2.getText());
 		startActivity(myIntent);
 	}
+	
+	public void topicStarClickHandler(View view) {
+		String data = (String) view.getTag();
+		String uidSector[] = data.split(";");
+		ImageView star = (ImageView) view;
+		int uid = Integer.parseInt(uidSector[0]);
+		int starstate = Integer.parseInt(uidSector[2]);
+		if(starstate == 1){
+			star.setImageResource(android.R.drawable.btn_star_big_off);
+			starstate = 0;
+		}else{
+			star.setImageResource(android.R.drawable.btn_star_big_on);		
+			starstate = 1;
+		}
+		star.setTag(uidSector[0]+";"+uidSector[1]+";"+starstate);
+		
+		String sectorName = uidSector[1];
+		GlobalState gState = (GlobalState) getApplication();
+		for (Sector sector : gState.getAllSectors()) {
+			if(!sector.getName().equals(sectorName))
+				continue;
+			for (Topic topic : sector.getTopicData()) {
+				if (topic.getUid() == uid) {
+					if(starstate == 1){
+						Log.d("setstate","1");
+						topic.setState(1);
+						gState.getAllSectors().get(2).addTopic(topic);
+					}
+					else{
+						Log.d("setstate","0");
+						topic.setState(0);
+						gState.getAllSectors().get(2).removeTopic(topic);
+					}
+					break;
+				}
+			}
+		}
+	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.mainmenu, menu);
 		this.menu = menu;
 		refresh = menu.findItem(R.id.refresh);
+		GlobalState gState = (GlobalState) getApplication();
+		gState.setRefreshState(0);
 		return true;
 	}
 
@@ -138,6 +180,8 @@ public class MainAppActivity extends Activity {
 							int state = (gState.getRefreshState());
 							if(state == -1)
 								refresh.setIcon(drawable.ic_menu_refreshr);
+							else if(state == 0)
+								refresh.setIcon(drawable.ic_menu_refresh);
 							else if(state == 1)
 								refresh.setIcon(drawable.ic_menu_refreshg);	
 						}

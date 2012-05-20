@@ -295,21 +295,23 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ic_menu_refresh=0x7f020004;
         public static final int ic_menu_refreshg=0x7f020005;
         public static final int ic_menu_refreshr=0x7f020006;
-        public static final int ic_menu_view=0x7f020007;
-        public static final int ic_pulltorefresh_arrow=0x7f020008;
-        public static final int icon=0x7f020009;
-        public static final int logo=0x7f02000a;
-        public static final int picy=0x7f02000b;
-        public static final int plastic=0x7f02000c;
-        public static final int psyduck2=0x7f02000d;
-        public static final int pull_to_refresh_header_background=0x7f02000e;
-        public static final int vpi__tab_indicator=0x7f02000f;
-        public static final int vpi__tab_selected_focused_holo=0x7f020010;
-        public static final int vpi__tab_selected_holo=0x7f020011;
-        public static final int vpi__tab_selected_pressed_holo=0x7f020012;
-        public static final int vpi__tab_unselected_focused_holo=0x7f020013;
-        public static final int vpi__tab_unselected_holo=0x7f020014;
-        public static final int vpi__tab_unselected_pressed_holo=0x7f020015;
+        public static final int ic_menu_revert=0x7f020007;
+        public static final int ic_menu_star=0x7f020008;
+        public static final int ic_menu_view=0x7f020009;
+        public static final int ic_pulltorefresh_arrow=0x7f02000a;
+        public static final int icon=0x7f02000b;
+        public static final int logo=0x7f02000c;
+        public static final int picy=0x7f02000d;
+        public static final int plastic=0x7f02000e;
+        public static final int psyduck2=0x7f02000f;
+        public static final int pull_to_refresh_header_background=0x7f020010;
+        public static final int vpi__tab_indicator=0x7f020011;
+        public static final int vpi__tab_selected_focused_holo=0x7f020012;
+        public static final int vpi__tab_selected_holo=0x7f020013;
+        public static final int vpi__tab_selected_pressed_holo=0x7f020014;
+        public static final int vpi__tab_unselected_focused_holo=0x7f020015;
+        public static final int vpi__tab_unselected_holo=0x7f020016;
+        public static final int vpi__tab_unselected_pressed_holo=0x7f020017;
     }
     public static final class id {
         public static final int button1=0x7f060017;
@@ -317,7 +319,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int csector=0x7f06000a;
         public static final int cuid=0x7f060026;
         public static final int hide=0x7f060029;
-        public static final int home=0x7f06002e;
+        public static final int home=0x7f06002f;
         public static final int horizontal=0x7f060000;
         public static final int indicator=0x7f060005;
         public static final int label=0x7f06000e;
@@ -346,8 +348,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int seekBar1=0x7f06001d;
         public static final int seekBar2=0x7f06001f;
         public static final int seekBar3=0x7f06001c;
-        public static final int snapshot=0x7f06002c;
+        public static final int snapshot=0x7f06002e;
         public static final int star=0x7f06002a;
+        public static final int starred=0x7f06002c;
         public static final int stockchange=0x7f06000c;
         public static final int stockprice=0x7f06000b;
         public static final int textView1=0x7f060015;
@@ -384,8 +387,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class menu {
         public static final int mainmenu=0x7f0b0000;
-        public static final int prefsmenu=0x7f0b0001;
-        public static final int snapmenu=0x7f0b0002;
+        public static final int menutwo=0x7f0b0001;
+        public static final int prefsmenu=0x7f0b0002;
+        public static final int snapmenu=0x7f0b0003;
     }
     public static final class string {
         public static final int app_name=0x7f040001;

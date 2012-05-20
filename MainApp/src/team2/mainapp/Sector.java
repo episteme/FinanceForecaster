@@ -3,6 +3,8 @@ package team2.mainapp;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import android.util.Log;
+
 public class Sector {
 	String name;
 	LinkedList<Topic> topicData;
@@ -36,26 +38,40 @@ public class Sector {
 	}
 
 	// Returns true if >= articles added in past hour.
-	public boolean addTopic(Topic topic) {
-		Iterator<Topic> iterator = topicData.iterator();
-	    boolean repeat = false;
-	    while (iterator.hasNext()) {
-	    	Topic tempTopic = iterator.next();
-	       if (topic.getUid() == tempTopic.getUid()) {
-	    	   int tempState = tempTopic.getState();
-	    	   topicData.remove(tempTopic);
-	    	   topicData.add(topic);
-	    	   topic.setState(tempState);
-	    	   repeat = true;
-	    	   break;
-	       }
-	    }
-	    if (!repeat)
-	    	topicData.add(topic);
-	    if(topic.getArtsLastHour() >= (105-threshold) && threshold != 0)
-	    	return true;
-	    else
-	    	return false;
+//	public boolean addTopic(Topic topic) {
+//		Iterator<Topic> iterator = topicData.iterator();
+//	    boolean repeat = false;
+//	    while (iterator.hasNext()) {
+//	    	Topic tempTopic = iterator.next();
+//	       if (topic.getUid() == tempTopic.getUid()) {
+//	    	   int tempState = tempTopic.getState();
+//	    	   topicData.remove(tempTopic);
+//	    	   topicData.add(topic);
+//	    	   topic.setState(tempState);
+//	    	   repeat = true;
+//	    	   break;
+//	       }
+//	    }
+//	    if (!repeat)
+//	    	topicData.add(topic);
+//	    if(topic.getArtsLastHour() >= (105-threshold) && threshold != 0)
+//	    	return true;
+//	    else
+//	    	return false;
+//	}
+	
+	public void addTopic(Topic topic){
+		topicData.add(topic);
+	}
+	
+	public void removeTopic(Topic topic){
+		for(Topic temp : topicData)
+		{
+			if(topic.getUid() == temp.getUid() && topic.getSector().equals(temp.getSector())){
+				topicData.remove(temp);
+				break;
+			}
+		}
 	}
 
 	public int getThreshold() {
@@ -65,16 +81,16 @@ public class Sector {
 	public void setThreshold(int progress) {
 		threshold = progress;
 	}
-
-	public void updateTopic(int parseInt, int parseInt2) {
-		Iterator<Topic> iterator = topicData.iterator();
-	    while (iterator.hasNext()) {
-	    	Topic tempTopic = iterator.next();
-	       if (tempTopic.getUid() == parseInt) {
-	    	   tempTopic.setArtsLastHour(parseInt2);
-	       }
-	    }		
-	}
+//
+//	public void updateTopic(int parseInt, int parseInt2) {
+//		Iterator<Topic> iterator = topicData.iterator();
+//	    while (iterator.hasNext()) {
+//	    	Topic tempTopic = iterator.next();
+//	       if (tempTopic.getUid() == parseInt) {
+//	    	   tempTopic.setArtsLastHour(parseInt2);
+//	       }
+//	    }		
+//	}
 
 	public LinkedList<Company> getCompData() {
 		return compData;
@@ -86,6 +102,27 @@ public class Sector {
 	
 	public void setTopicData(LinkedList<Topic> tempTopics) {
 		topicData = tempTopics;
+	}
+
+	public boolean checkForFavourites(Topic topic) {
+		for(Topic temp : topicData)
+		{
+			if(topic.getUid() == temp.getUid() && topic.getSector().equals(temp.getSector())){
+				temp = topic;
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean checkForTopic(Topic topic) {
+		for(Topic temp : topicData)
+		{
+			if(topic.getUid() == temp.getUid() && topic.getSector().equals(temp.getSector())){
+				return true;
+			}
+		}
+		return false;
 	}
 }
 

@@ -42,11 +42,11 @@ public class Topic implements Comparable<Topic> {
 	}
 
 	public int compareTo(Topic temp) {
-		if(temp.getState() > this.getState())
-			return 1;
-		else if(temp.getState() < this.getState())
-			return -1;
-		else
+//		if(temp.getState() > this.getState())
+//			return 1;
+//		else if(temp.getState() < this.getState())
+//			return -1;
+//		else
 			return temp.artsLastHour - this.artsLastHour;
 	}
 

@@ -10,7 +10,7 @@ import android.util.Log;
 public class GlobalState extends Application {
 
 	static LinkedList<Sector> allSectors;
-	static OptionList options;
+//	static OptionList options;
 	static boolean ready;
 	static boolean on;
 	int frequency;
@@ -32,7 +32,9 @@ public class GlobalState extends Application {
 		this.setSectors(new LinkedList<Sector>());
 		this.getAllSectors().add(new Sector("oil"));
 		this.getAllSectors().add(new Sector("technology"));
-		options = new OptionList();
+		this.getAllSectors().add(new Sector("starred"));
+		this.getAllSectors().add(new Sector("hidden"));
+//		options = new OptionList();
 	}
 
 	public int getRefreshState() {
@@ -42,10 +44,10 @@ public class GlobalState extends Application {
 	public void setRefreshState(int refreshState) {
 		GlobalState.refreshState = refreshState;
 	}
-
-	public OptionList getOptions() {
-		return options;
-	}
+//
+//	public OptionList getOptions() {
+//		return options;
+//	}
 
 	public int getFrequency() {
 		return frequency;

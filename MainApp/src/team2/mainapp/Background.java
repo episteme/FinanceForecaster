@@ -141,12 +141,12 @@ public class Background extends Service {
 
 					//					Log.d("datalength",Integer.toString(rawData.length));
 
-					if(rawData.length == 2)
-					{
-						gState.getAllSectors().get(i).updateTopic(Integer.parseInt(rawData[0]), Integer.parseInt(rawData[1]));
-						continue;
-					}
-					else if (rawData.length < 8)
+//					if(rawData.length == 2)
+//					{
+//						gState.getAllSectors().get(i).updateTopic(Integer.parseInt(rawData[0]), Integer.parseInt(rawData[1]));
+//						continue;
+//					}
+					if (rawData.length < 8)
 						continue;
 
 					// Splits the URLS and keyWords into individual parts
@@ -188,8 +188,8 @@ public class Background extends Service {
 							Double.parseDouble(rawData[6]),rawData[7],companyLinks,gState.getAllSectors().get(i).getName());
 
 					// Add the topic info to the sector info
-					int tempState = gState.getOptions().getState(newTopic.getUid(), newTopic.getSector());
-					newTopic.setState(tempState);
+					if(gState.getAllSectors().get(2).checkForFavourites(newTopic))
+						newTopic.setState(1);
 					tempTopics.add(newTopic);
 					if(newTopic.getArtsLastHour() >= gState.getAllSectors().get(i).getThreshold())
 						createNotification(rawData[1],KeyWords,rawData[0],gState.getAllSectors().get(i).getName()); 
@@ -200,6 +200,17 @@ public class Background extends Service {
 				i++;
 			}
 
+			for(Topic starred : gState.getAllSectors().get(2).getTopicData())
+			{
+				for(Sector current : gState.getAllSectors())
+				{
+					if(current.getName().equals("starred") || current.getName().equals("hidden"))
+						break;
+					if(starred.getSector() == current.getName())
+						if(!current.checkForTopic(starred))
+							current.addTopic(starred);
+				}
+			}
 
 
 			//			Log.d("compdata",type[2]);

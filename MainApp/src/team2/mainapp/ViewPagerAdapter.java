@@ -19,19 +19,17 @@ import android.view.View;
 public class ViewPagerAdapter extends PagerAdapter
 implements TitleProvider
 {
-	ArrayList<ArrayList<Topic>> mListItems;
+	ArrayList<PagerPackage> packages;
 	PullToRefreshListView v;
 	String category;
-	ArrayList<PullToRefreshListView> vl;
-	private static String[] titles = new String[] {"Oil", "Technology" };
+	private static String[] titles = new String[] {"Oil", "Technology", "Starred" };
 
 	private final Context context;
 
 	public ViewPagerAdapter( Context context )
 	{
 		this.context = context;
-		mListItems = new ArrayList<ArrayList<Topic>>();
-		vl = new ArrayList<PullToRefreshListView>();
+		packages = new ArrayList<PagerPackage>();
 	}
 
 	@Override
@@ -51,18 +49,14 @@ implements TitleProvider
 	{
 		v = new PullToRefreshListView( context );
 		((ViewPager)pager).addView( v, 0 );
-		if(category != null)
-			Log.d("superduper",category);
-		category = titles[ position ];
-		Log.d("dupersuper",category);
-		
-		mListItems.add(new ArrayList<Topic>());
+
+		ArrayList<Topic> mListItems = new ArrayList<Topic>();
 
 		TopicListAdapter adapter = new TopicListAdapter(context,
-				mListItems.get(position));
+				mListItems);
 
 		v.setAdapter(adapter);
-		
+
 		((PullToRefreshListView) v).setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
@@ -71,7 +65,10 @@ implements TitleProvider
 				task.execute();
 			}
 		});
-		vl.add(v);
+
+		packages.add(new PagerPackage(mListItems, v, position, titles[position]));
+		GetDataTask task = new GetDataTask();
+		task.execute();
 		return v;
 	}
 
@@ -79,7 +76,7 @@ implements TitleProvider
 		@Override
 		protected Void doInBackground(Void... params) {
 			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
-			while(gState.getReady() != true || mListItems.size() == 0)
+			while(gState.getReady() != true)
 			{
 				try {
 					Thread.sleep(1000);
@@ -93,28 +90,23 @@ implements TitleProvider
 		@Override
 		protected void onPostExecute(Void x) {
 			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
-			for(ArrayList<Topic> list : mListItems)
-				list.clear();
-			int i = 0;
-		
-			// Go through the allTopics data structure, pasting title & date
-			for (Sector topicsector : gState.getAllSectors()) {
-				java.util.Collections.sort(topicsector.getTopicData());
-				int j = 0;
-				for (Topic topic : topicsector.getTopicData()) {
-					if(topic.getArtsLastHour() == 0)
-						break;
-					mListItems.get(i).add(topic);
-					j++;
+			for(PagerPackage pp : packages){
+				Log.d("package","package");
+				pp.getmListItems().clear();
+				
+				for(Sector topicsector : gState.getAllSectors()){
+					if(topicsector.getName().equals(pp.getCategory().toLowerCase())){
+						java.util.Collections.sort(topicsector.getTopicData());
+						for (Topic topic : topicsector.getTopicData()) {
+							if(topic.getArtsLastHour() == 0)
+								break;
+							pp.getmListItems().add(topic);
+						}
+						// Complete the refresh
+						((PullToRefreshListView) pp.getView()).onRefreshComplete();
+					}
 				}
-				// Complete the refresh
-				((PullToRefreshListView) vl.get(i)).onRefreshComplete();
-//				DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-//				((PullToRefreshListView) vl.get(i)).setLastUpdated(dateFormat.format(new Date()));
-				i++;
 			}
-
-
 		}
 	}
 
@@ -123,6 +115,11 @@ implements TitleProvider
 	public void destroyItem( View pager, int position, Object view )
 	{
 		((ViewPager)pager).removeView( (View) view );
+		for(PagerPackage pp : packages){
+			if(pp.getPosition() == position){
+				packages.remove(pp);
+				break;}
+		}
 	}
 
 
@@ -145,4 +142,34 @@ implements TitleProvider
 
 	@Override
 	public void startUpdate( View view ) {}
+}
+
+class PagerPackage {
+	ArrayList<Topic> mListItems;
+	PullToRefreshListView view;
+	int position;
+	String category;
+	
+	PagerPackage(ArrayList<Topic> m, PullToRefreshListView v, int p, String cat){
+		mListItems = m;
+		view = v;
+		position = p;
+		category = cat;
+	}
+
+	public ArrayList<Topic> getmListItems() {
+		return mListItems;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public PullToRefreshListView getView() {
+		return view;
+	}
+
+	public int getPosition() {
+		return position;
+	}
 }

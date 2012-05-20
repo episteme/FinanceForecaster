@@ -49,7 +49,7 @@ public class CompanyList extends Activity {
 		GetDataTask2 task = adapter2.new GetDataTask2();
 		task.execute();
 		GlobalState gState = (GlobalState) getApplication();
-		if(gState.getRefreshState() == 1){
+		if(gState.getRefreshState() == 1 && refresh != null){
 			gState.setRefreshState(0);
 			refresh.setIcon(drawable.ic_menu_refresh);
 		}
@@ -68,6 +68,8 @@ public class CompanyList extends Activity {
 		inflater.inflate(R.menu.mainmenu, menu);
 		this.menu = menu;
 		refresh = menu.findItem(R.id.refresh);
+		GlobalState gState = (GlobalState) getApplication();
+		gState.setRefreshState(0);
 		return true;
 	}
 
@@ -128,6 +130,8 @@ public class CompanyList extends Activity {
 							int state = (gState.getRefreshState());
 							if(state == -1)
 								refresh.setIcon(drawable.ic_menu_refreshr);
+							else if(state == 0)
+								refresh.setIcon(drawable.ic_menu_refresh);
 							else if(state == 1)
 								refresh.setIcon(drawable.ic_menu_refreshg);	
 						}

@@ -6,9 +6,9 @@
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_menu_refresh" />
     <item
-        android:id="@+id/snapshot"
+        android:id="@+id/starred"
         android:showAsAction="ifRoom"
-        android:icon="@drawable/ic_menu_view" />
+        android:icon="@drawable/ic_menu_star" />
     <item
         android:id="@+id/prefs"
         android:showAsAction="ifRoom"

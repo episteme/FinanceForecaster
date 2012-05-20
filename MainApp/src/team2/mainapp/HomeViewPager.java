@@ -18,7 +18,7 @@ implements TitleProvider
 {
 	ArrayList<HomeView> vl;
 	String category;
-	private static String[] titles = new String[] {"Oil", "Technology" };
+	private static String[] titles = new String[] {"Oil", "Technology"};
 
 	private final Context context;
 

@@ -64,7 +64,7 @@ public class SingleTopic extends Activity {
 		starstate = false;
 
 		switch(thistopic.getState()){
-			case -1: hide.setImageResource(team2.mainapp.R.drawable.ic_menu_deleted);hidestate=true;break;
+			case -1: hide.setImageResource(team2.mainapp.R.drawable.ic_menu_revert);hidestate=true;break;
 			case 1: star.setImageResource(drawable.btn_star_big_on);starstate=true;break;
 		}
 		
@@ -115,7 +115,7 @@ public class SingleTopic extends Activity {
 			hide.setImageResource(drawable.ic_menu_delete);
 			hidestate = false;
 		}else{
-			hide.setImageResource(team2.mainapp.R.drawable.ic_menu_deleted);
+			hide.setImageResource(team2.mainapp.R.drawable.ic_menu_revert);
 			star.setImageResource(drawable.btn_star_big_off);		
 			starstate = false;
 			hidestate = true;
@@ -144,16 +144,15 @@ public class SingleTopic extends Activity {
 				if (topic.getUid() == uid) {
 					if(starstate){
 						topic.setState(1);
-						gState.getOptions().setState(uid, sectorName, 1);
+						gState.getAllSectors().get(2).addTopic(topic);
 					}
 					else if(hidestate){
 						topic.setState(-1);
-						gState.getOptions().setState(uid, sectorName, -1);
-
+						gState.getAllSectors().get(2).removeTopic(topic);
 					}
 					else{
 						topic.setState(0);
-						gState.getOptions().setState(uid, sectorName, 0);
+						gState.getAllSectors().get(2).removeTopic(topic);
 					}
 					break;
 				}
