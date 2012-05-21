@@ -265,7 +265,7 @@ public class Topic implements Comparable<Topic> {
 		}
 		// add remainder of right list
 		while (j < newa.size()) {
-			reta.add(thisa.get(j));
+			reta.add(newa.get(j));
 			j++;
 		}
 		// articles merged
