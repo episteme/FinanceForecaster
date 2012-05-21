@@ -341,6 +341,8 @@ public class Topic implements Comparable<Topic> {
 		}
 		// merging done
 		this.companies = retCL;
+		this.numWords = words.size();
+		this.count = articles.size();
 	}
 
 	public Article getFirst() {
