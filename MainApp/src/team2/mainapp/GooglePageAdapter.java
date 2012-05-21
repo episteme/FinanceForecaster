@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import team2.mainapp.PullToRefreshListView.OnRefreshListener;
+import team2.mainapp.ViewPagerAdapter.GetDataTask;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,19 +20,17 @@ import android.view.View;
 public class GooglePageAdapter extends PagerAdapter
 implements TitleProvider
 {
-	ArrayList<ArrayList<String[]>> mListItems;
+	ArrayList<GooglePackage> packages;
 	PullToRefreshListView v;
 	String category;
-	ArrayList<PullToRefreshListView> vl;
-	private static String[] titles = new String[] {"Oil", "Technology" };
+	private static String[] titles = new String[] {"Oil", "Technology"};
 
 	private final Context context;
 
 	public GooglePageAdapter( Context context )
 	{
 		this.context = context;
-		mListItems = new ArrayList<ArrayList<String[]>>();
-		vl = new ArrayList<PullToRefreshListView>();
+		packages = new ArrayList<GooglePackage>();
 	}
 
 	@Override
@@ -51,15 +50,11 @@ implements TitleProvider
 	{
 		v = new PullToRefreshListView( context );
 		((ViewPager)pager).addView( v, 0 );
-		if(category != null)
-			Log.d("superduper",category);
-		category = titles[ position ];
-		Log.d("dupersuper",category);
 
-		mListItems.add(new ArrayList<String[]>());
+		ArrayList<GoogleStory> mListItems = new ArrayList<GoogleStory>();
 
 		GoogleArrayAdapter adapter = new GoogleArrayAdapter(context,
-				mListItems.get(position));
+				mListItems);
 
 		v.setAdapter(adapter);
 
@@ -71,8 +66,10 @@ implements TitleProvider
 				task.execute();
 			}
 		});
-		vl.add(v);
 
+		packages.add(new GooglePackage(mListItems, v, position, titles[position]));
+		GetDataTask2 task = new GetDataTask2();
+		task.execute();
 		return v;
 	}
 
@@ -80,7 +77,7 @@ implements TitleProvider
 		@Override
 		protected Void doInBackground(Void... params) {
 			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
-			while(gState.getReady() != true || mListItems.size() == 0)
+			while(gState.getReady() != true)
 			{
 				try {
 					Thread.sleep(1000);
@@ -94,28 +91,21 @@ implements TitleProvider
 		@Override
 		protected void onPostExecute(Void x) {
 			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
-			for(ArrayList<String[]> list : mListItems)
-				list.clear();
-			int i = 0;
-			// Go through the allTopics data structure, pasting title & date
-			for (Sector topicsector : gState.getAllSectors()) {
-				for (GoogleStory googStory : topicsector.getGoogStories()) {
-					String[] allInfo = new String[5];
-					allInfo[0] = googStory.getTitle();
-					allInfo[1] = googStory.getTimestamp();
-					allInfo[2] = googStory.printKeyWords();
-					allInfo[3] = Double.toString(googStory.getSentiment());
-					allInfo[4] = googStory.getLink();
-					mListItems.get(i).add(allInfo);
+			gState.setRefreshState(0);
+			for(GooglePackage pp : packages){
+				Log.d("package","package");
+				pp.getmListItems().clear();
+				
+				for(Sector topicsector : gState.getAllSectors()){
+					if(topicsector.getName().equals(pp.getCategory().toLowerCase())){
+						for (GoogleStory goog : topicsector.getGoogStories()) {
+							pp.getmListItems().add(goog);
+						}
+						// Complete the refresh
+						((PullToRefreshListView) pp.getView()).onRefreshComplete();
+					}
 				}
-				// Complete the refresh
-				((PullToRefreshListView) vl.get(i)).onRefreshComplete();
-//				DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-//				((PullToRefreshListView) vl.get(i)).setLastUpdated(dateFormat.format(new Date()));
-				i++;
 			}
-
-
 		}
 	}
 
@@ -146,4 +136,34 @@ implements TitleProvider
 
 	@Override
 	public void startUpdate( View view ) {}
+}
+
+class GooglePackage {
+	ArrayList<GoogleStory> mListItems;
+	PullToRefreshListView view;
+	int position;
+	String category;
+	
+	GooglePackage(ArrayList<GoogleStory> m, PullToRefreshListView v, int p, String cat){
+		mListItems = m;
+		view = v;
+		position = p;
+		category = cat;
+	}
+
+	public ArrayList<GoogleStory> getmListItems() {
+		return mListItems;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public PullToRefreshListView getView() {
+		return view;
+	}
+
+	public int getPosition() {
+		return position;
+	}
 }

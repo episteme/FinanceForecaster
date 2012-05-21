@@ -41,7 +41,10 @@ public class GoogleNews extends Activity {
 		indicator.setViewPager( pager );
 
 		GlobalState gState = (GlobalState) getApplication();
-		pager.setCurrentItem(gState.getPosition());
+		int position = gState.getPosition();
+		if(position > 2)
+			position = 2;
+		pager.setCurrentItem(position);
 		handler = new Handler();
 	}
 
@@ -51,10 +54,6 @@ public class GoogleNews extends Activity {
 		GetDataTask2 task = adapter2.new GetDataTask2();
 		task.execute();
 		GlobalState gState = (GlobalState) getApplication();
-		if(gState.getRefreshState() == 1 && refresh != null){
-			gState.setRefreshState(0);
-			refresh.setIcon(drawable.ic_menu_refresh);
-		}
 		pager.setCurrentItem(gState.getPosition());
 		refreshChecker();
 	}
@@ -69,8 +68,6 @@ public class GoogleNews extends Activity {
 		inflater.inflate(R.menu.snapmenu, menu);
 		this.menu = menu;
 		refresh = menu.findItem(R.id.refresh);
-		GlobalState gState = (GlobalState) getApplication();
-		gState.setRefreshState(0);
 		return true;
 	}
 
@@ -80,10 +77,6 @@ public class GoogleNews extends Activity {
 			GetDataTask2 task = adapter2.new GetDataTask2();
 			task.execute();
 			GlobalState gState = (GlobalState) getApplication();
-			if(gState.getRefreshState() == 1){
-				gState.setRefreshState(0);
-				refresh.setIcon(drawable.ic_menu_refresh);
-			}
 			refresh.setIcon(drawable.ic_menu_refresh);
 			break;
 		case R.id.home:
@@ -138,7 +131,7 @@ public class GoogleNews extends Activity {
 						}
 					});
 					try {
-						Thread.sleep(5000);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						return;
 					}

@@ -44,7 +44,15 @@ public class MainAppActivity extends Activity {
 		indicator.setViewPager( pager );
 		
 		GlobalState gState = (GlobalState) getApplication();
-		pager.setCurrentItem(gState.getPosition());
+		int position = gState.getPosition();
+		if(position > 3)
+			position = 3;
+		boolean starPosition = getIntent().getBooleanExtra("STAR",false);
+		if(starPosition)
+			position = 3;
+		Log.d("Position",Integer.toString(position));
+		Log.d("starPosition",Boolean.toString(starPosition));
+		pager.setCurrentItem(position);
 		handler = new Handler();
 	}
 	
@@ -54,10 +62,6 @@ public class MainAppActivity extends Activity {
 			GetDataTask task = adapter2.new GetDataTask();
 			task.execute();
 			GlobalState gState = (GlobalState) getApplication();
-			if(gState.getRefreshState() == 1 && refresh != null){
-				gState.setRefreshState(0);
-				refresh.setIcon(drawable.ic_menu_refresh);
-			}
 			pager.setCurrentItem(gState.getPosition());
 			refreshChecker();
 			pager.setCurrentItem(gState.getPosition());
@@ -117,11 +121,9 @@ public class MainAppActivity extends Activity {
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.mainmenu, menu);
+		inflater.inflate(R.menu.menutwo, menu);
 		this.menu = menu;
 		refresh = menu.findItem(R.id.refresh);
-		GlobalState gState = (GlobalState) getApplication();
-		gState.setRefreshState(0);
 		return true;
 	}
 
@@ -130,12 +132,6 @@ public class MainAppActivity extends Activity {
 		case R.id.refresh:
 			GetDataTask task = adapter2.new GetDataTask();
 			task.execute();
-			GlobalState gState = (GlobalState) getApplication();
-			if(gState.getRefreshState() == 1){
-				gState.setRefreshState(0);
-				refresh.setIcon(drawable.ic_menu_refresh);
-			}
-			refresh.setIcon(drawable.ic_menu_refresh);
 			break;
 		case R.id.home:
 			Intent myIntent2 = new Intent(this, Homepage.class);
@@ -187,7 +183,7 @@ public class MainAppActivity extends Activity {
 						}
 					});
 					try {
-						Thread.sleep(5000);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						return;
 					}

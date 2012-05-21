@@ -24,6 +24,10 @@ public class HomeView extends LinearLayout {
     String category;
 
 		
+	public String getCategory() {
+		return category;
+	}
+
 	public HomeView(Context context, String category) {
 		super(context);
 		LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -6,21 +6,29 @@ import java.util.Date;
 import team2.mainapp.HomeViewPager.GetDataTask;
 import team2.mainapp.R.drawable;
 
+import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 public class Homepage extends Activity {
@@ -49,7 +57,10 @@ public class Homepage extends Activity {
 		pager.setAdapter( adapter2 );
 		indicator.setViewPager( pager );
 		GlobalState gState = (GlobalState) getApplication();
-		pager.setCurrentItem(gState.getPosition());
+		int position = gState.getPosition();
+		if(position > 2)
+			position = 2;
+		pager.setCurrentItem(position);
 		handler = new Handler();
 	}
 
@@ -59,10 +70,6 @@ public class Homepage extends Activity {
 		GetDataTask task = adapter2.new GetDataTask();
 		task.execute();
 		GlobalState gState = (GlobalState) getApplication();
-		if(gState.getRefreshState() == 1 && refresh != null){
-			gState.setRefreshState(0);
-			refresh.setIcon(drawable.ic_menu_refresh);
-		}
 		pager.setCurrentItem(gState.getPosition());
 		refreshChecker();
 	}
@@ -139,8 +146,6 @@ public class Homepage extends Activity {
 		inflater.inflate(R.menu.mainmenu, menu);
 		this.menu = menu;
 		refresh = menu.findItem(R.id.refresh);
-		GlobalState gState = (GlobalState) getApplication();
-		gState.setRefreshState(0);
 		return true;
 	}
 
@@ -149,18 +154,13 @@ public class Homepage extends Activity {
 		case R.id.refresh:
 			GetDataTask task = adapter2.new GetDataTask();
 			task.execute();
-			GlobalState gState = (GlobalState) getApplication();
-			if(gState.getRefreshState() == 1){
-				gState.setRefreshState(0);
-				refresh.setIcon(drawable.ic_menu_refresh);
-			}
 			break;
 		case R.id.starred:
-			Intent myIntent3 = new Intent(this, GoogleNews.class);
+			Intent myIntent3 = new Intent(this, MainAppActivity.class);
 			//			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			myIntent3.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			myIntent3.putExtra("STAR", true);
 			startActivity(myIntent3);
-
 			break;
 		case R.id.prefs:
 			Intent myIntent4 = new Intent(this, Preferences.class);
@@ -198,7 +198,7 @@ public class Homepage extends Activity {
 						}
 					});
 					try {
-						Thread.sleep(5000);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						return;
 					}
@@ -209,3 +209,4 @@ public class Homepage extends Activity {
 		mRefreshChecker.start();
 	}
 }
+

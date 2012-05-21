@@ -90,6 +90,7 @@ implements TitleProvider
 		@Override
 		protected void onPostExecute(Void x) {
 			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
+			gState.setRefreshState(0);
 			for(PagerPackage pp : packages){
 				Log.d("package","package");
 				pp.getmListItems().clear();

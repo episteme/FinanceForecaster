@@ -10,4 +10,11 @@
     <string name="breaking_news">Breaking News</string>
     <string name="keyw">Keywords &amp; Sentiment</string>
     <string name="articl">Find out more</string>
+    <string-array name="action_list">
+        <item>Home</item>
+        <item>Topics</item>
+        <item>Companies</item>
+        <item>Snapshot</item>
+        <item>Preferences</item>
+    </string-array>
 </resources>

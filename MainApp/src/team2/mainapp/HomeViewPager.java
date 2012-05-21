@@ -67,6 +67,8 @@ implements TitleProvider
 
 		@Override
 		protected void onPostExecute(Void x) {
+			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
+			gState.setRefreshState(0);
 			for(HomeView view : vl)
 				view.refresh();
 		}
@@ -76,6 +78,11 @@ implements TitleProvider
 	public void destroyItem( View pager, int position, Object view )
 	{
 		((ViewPager)pager).removeView( (View) view );
+		for(HomeView hv : vl){
+			if(hv.getCategory().equals(titles[position])){
+				vl.remove(hv);
+				break;}
+		}
 	}
 
 

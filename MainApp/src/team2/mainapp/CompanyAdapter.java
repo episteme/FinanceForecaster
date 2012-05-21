@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import team2.mainapp.PullToRefreshListView.OnRefreshListener;
+import team2.mainapp.ViewPagerAdapter.GetDataTask;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,10 +20,9 @@ import android.view.View;
 public class CompanyAdapter extends PagerAdapter
 implements TitleProvider
 {
-	ArrayList<ArrayList<Company>> mListItems;
+	ArrayList<CompanyPackage> packages;
 	PullToRefreshListView v;
 	String category;
-	ArrayList<PullToRefreshListView> vl;
 	private static String[] titles = new String[] {"Oil", "Technology" };
 
 	private final Context context;
@@ -30,8 +30,7 @@ implements TitleProvider
 	public CompanyAdapter( Context context )
 	{
 		this.context = context;
-		mListItems = new ArrayList<ArrayList<Company>>();
-		vl = new ArrayList<PullToRefreshListView>();
+		packages = new ArrayList<CompanyPackage>();
 	}
 
 	@Override
@@ -51,15 +50,11 @@ implements TitleProvider
 	{
 		v = new PullToRefreshListView( context );
 		((ViewPager)pager).addView( v, 0 );
-		if(category != null)
-			Log.d("superduper",category);
-		category = titles[ position ];
-		Log.d("dupersuper",category);
 
-		mListItems.add(new ArrayList<Company>());
+		ArrayList<Company> mListItems = new ArrayList<Company>();
 
 		CompanyListAdapter adapter = new CompanyListAdapter(context,
-				mListItems.get(position));
+				mListItems);
 
 		v.setAdapter(adapter);
 
@@ -71,8 +66,10 @@ implements TitleProvider
 				task.execute();
 			}
 		});
-		vl.add(v);
 
+		packages.add(new CompanyPackage(mListItems, v, position, titles[position]));
+		GetDataTask2 task = new GetDataTask2();
+		task.execute();
 		return v;
 	}
 
@@ -80,7 +77,7 @@ implements TitleProvider
 		@Override
 		protected Void doInBackground(Void... params) {
 			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
-			while(gState.getReady() != true || mListItems.size() == 0)
+			while(gState.getReady() != true)
 			{
 				try {
 					Thread.sleep(1000);
@@ -94,22 +91,22 @@ implements TitleProvider
 		@Override
 		protected void onPostExecute(Void x) {
 			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
-			for(ArrayList<Company> list : mListItems)
-				list.clear();
-			int i = 0;
-			// Go through the allTopics data structure, pasting title & date
-			for (Sector topicsector : gState.getAllSectors()) {
-				for (Company comp : topicsector.getCompData()) {
-					mListItems.get(i).add(comp);
+			gState.setRefreshState(0);
+			for(CompanyPackage pp : packages){
+				Log.d("package","package");
+				pp.getmListItems().clear();
+				
+				for(Sector topicsector : gState.getAllSectors()){
+					if(topicsector.getName().equals(pp.getCategory().toLowerCase())){
+						java.util.Collections.sort(topicsector.getCompData());
+						for (Company company : topicsector.getCompData()) {
+							pp.getmListItems().add(company);
+						}
+						// Complete the refresh
+						((PullToRefreshListView) pp.getView()).onRefreshComplete();
+					}
 				}
-				// Complete the refresh
-				((PullToRefreshListView) vl.get(i)).onRefreshComplete();
-//				DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-//				((PullToRefreshListView) vl.get(i)).setLastUpdated(dateFormat.format(new Date()));
-				i++;
 			}
-
-
 		}
 	}
 
@@ -140,4 +137,34 @@ implements TitleProvider
 
 	@Override
 	public void startUpdate( View view ) {}
+}
+
+class CompanyPackage {
+	ArrayList<Company> mListItems;
+	PullToRefreshListView view;
+	int position;
+	String category;
+	
+	CompanyPackage(ArrayList<Company> m, PullToRefreshListView v, int p, String cat){
+		mListItems = m;
+		view = v;
+		position = p;
+		category = cat;
+	}
+
+	public ArrayList<Company> getmListItems() {
+		return mListItems;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public PullToRefreshListView getView() {
+		return view;
+	}
+
+	public int getPosition() {
+		return position;
+	}
 }
