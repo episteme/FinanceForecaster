@@ -51,11 +51,12 @@ public class GoogleNews extends Activity {
 			position = 2;
 		pager.setCurrentItem(position);
 		handler = new Handler();
-		
-		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.snap_list,
-				android.R.layout.simple_spinner_dropdown_item);
-
 		actionBar = getActionBar();
+		
+
+		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(actionBar.getThemedContext(), R.array.snap_list,
+				android.R.layout.simple_spinner_dropdown_item);
+		
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		actionBar.setTitle("");
 
@@ -119,13 +120,7 @@ public class GoogleNews extends Activity {
 			GlobalState gState = (GlobalState) getApplication();
 			refresh.setIcon(drawable.ic_menu_refresh);
 			break;
-		case R.id.home:
-			Intent myIntent2 = new Intent(this, Homepage.class);
-			//			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			myIntent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			startActivity(myIntent2);
 
-			break;
 		case R.id.prefs:
 			Intent myIntent4 = new Intent(this, Preferences.class);
 			myIntent4.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);

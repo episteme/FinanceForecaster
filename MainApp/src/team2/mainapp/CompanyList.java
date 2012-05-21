@@ -50,10 +50,11 @@ public class CompanyList extends Activity {
 		pager.setCurrentItem(position);
 		handler = new Handler();
 		
-		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.comp_list,
-				android.R.layout.simple_spinner_dropdown_item);
-
 		actionBar = getActionBar();
+
+		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(actionBar.getThemedContext(), R.array.comp_list,
+				android.R.layout.simple_spinner_dropdown_item);
+		
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		actionBar.setTitle("");
 
@@ -114,13 +115,6 @@ public class CompanyList extends Activity {
 		case R.id.refresh:
 			GetDataTask2 task = adapter2.new GetDataTask2();
 			task.execute();
-			break;
-		case R.id.snapshot:
-			Intent myIntent3 = new Intent(this, GoogleNews.class);
-			//			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			myIntent3.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			startActivity(myIntent3);
-
 			break;
 		case R.id.prefs:
 			Intent myIntent4 = new Intent(this, Preferences.class);

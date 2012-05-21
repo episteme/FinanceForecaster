@@ -7,4 +7,6 @@
         <item name="textSize">12dp</item>
         <item name="selectedColor">#CCCCCC</item>
     </style>
+    
+    
 </resources>

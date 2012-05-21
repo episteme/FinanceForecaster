@@ -11,20 +11,18 @@
     <application
         android:name="team2.mainapp.GlobalState"
         android:icon="@drawable/psyduck2"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar"
         android:label="@string/app_name" >
         <activity
             android:name=".MainAppActivity"
-            android:theme="@android:style/Theme.Holo.Light" 
             android:label="" >
         </activity>
         <activity
             android:name=".CompanyList"
-            android:theme="@android:style/Theme.Holo.Light" 
             android:label="" >
         </activity>
          <activity
             android:name=".Homepage"
-            android:theme="@android:style/Theme.Holo.Light" 
             android:label="Psyduck" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,13 +31,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".SingleTopic" 
-            android:theme="@android:style/Theme.Holo.Light"
              android:label="Drilldown" />
         <activity android:name=".GoogleNews"           
-            android:theme="@android:style/Theme.Holo.Light"
              android:label="" />
                 <activity android:name=".Preferences"           
-            android:theme="@android:style/Theme.Holo.Light"
              android:label="Preferences" />
          <service android:name="Background" >
         </service>

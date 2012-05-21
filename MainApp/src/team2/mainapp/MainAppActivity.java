@@ -60,10 +60,11 @@ public class MainAppActivity extends Activity {
 		pager.setCurrentItem(position);
 		handler = new Handler();
 		
-		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.topi_list,
-				android.R.layout.simple_spinner_dropdown_item);
-
 		actionBar = getActionBar();
+		
+		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(actionBar.getThemedContext(), R.array.topi_list,
+				android.R.layout.simple_spinner_dropdown_item);
+		
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		actionBar.setTitle("");
 
@@ -80,8 +81,8 @@ public class MainAppActivity extends Activity {
 				switch(position) {
 				case 1:myIntent.setClass(getBaseContext(), Homepage.class);break;
 				case 0:check=false;break;
-				case 2:myIntent.setClass(getBaseContext(), GoogleNews.class);break;
-				case 3:myIntent.setClass(getBaseContext(), CompanyList.class);break;
+				case 2:myIntent.setClass(getBaseContext(), CompanyList.class);break;
+				case 3:myIntent.setClass(getBaseContext(), GoogleNews.class);break;
 				}
 
 				if(check){
@@ -173,20 +174,7 @@ public class MainAppActivity extends Activity {
 			GetDataTask task = adapter2.new GetDataTask();
 			task.execute();
 			break;
-		case R.id.home:
-			Intent myIntent2 = new Intent(this, Homepage.class);
-			//			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			myIntent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			startActivity(myIntent2);
 
-			break;
-		case R.id.snapshot:
-			Intent myIntent3 = new Intent(this, GoogleNews.class);
-			//			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			myIntent3.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			startActivity(myIntent3);
-
-			break;
 		case R.id.prefs:
 			Intent myIntent4 = new Intent(this, Preferences.class);
 			myIntent4.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);

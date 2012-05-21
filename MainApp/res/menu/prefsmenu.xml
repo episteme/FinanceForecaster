@@ -2,17 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/home"
-        android:showAsAction="ifRoom"
-		android:icon="@drawable/ic_menu_home"
-		>
-    </item>
-    <item
-        android:id="@+id/snapshot"
-        android:showAsAction="ifRoom"
-        android:icon="@drawable/ic_menu_view" >
-    </item>
-    <item
         android:id="@+id/prefs"
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_menu_preferences" >

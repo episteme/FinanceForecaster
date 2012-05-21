@@ -133,7 +133,8 @@ public class MultipleSocketServer implements Runnable {
 					if (((Parse) parsers[i]).getSector().compareTo(topic) == 0) {
 						Parse theparse = ((Parse) parsers[i]);
 						//java.util.Collections.sort(theparse.getTopics());
-						for (Company C : theparse.getCompanies()) {
+						LinkedList<Company> companiez = (LinkedList<Company>) theparse.getCompanies().clone();
+						for (Company C : companiez) {
 							if (C == null)
 								continue;
 							{

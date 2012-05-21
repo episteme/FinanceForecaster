@@ -64,11 +64,13 @@ public class Homepage extends Activity {
 			position = 2;
 		pager.setCurrentItem(position);
 		handler = new Handler();
-
-		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.home_list,
-				android.R.layout.simple_spinner_dropdown_item);
-
+		
 		actionBar = getActionBar();
+
+
+		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(actionBar.getThemedContext(), R.array.home_list,
+				android.R.layout.simple_spinner_dropdown_item);
+		
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		actionBar.setTitle("");
 
@@ -85,8 +87,8 @@ public class Homepage extends Activity {
 				switch(position) {
 				case 0:check=false;break;
 				case 1:myIntent.setClass(getBaseContext(), MainAppActivity.class);break;
-				case 2:myIntent.setClass(getBaseContext(), GoogleNews.class);break;
-				case 3:myIntent.setClass(getBaseContext(), CompanyList.class);break;
+				case 3:myIntent.setClass(getBaseContext(), GoogleNews.class);break;
+				case 2:myIntent.setClass(getBaseContext(), CompanyList.class);break;
 				}
 
 				if(check){
@@ -192,13 +194,7 @@ public class Homepage extends Activity {
 			GetDataTask task = adapter2.new GetDataTask();
 			task.execute();
 			break;
-		case R.id.starred:
-			Intent myIntent3 = new Intent(this, MainAppActivity.class);
-			//			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			myIntent3.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			myIntent3.putExtra("STAR", true);
-			startActivity(myIntent3);
-			break;
+
 		case R.id.prefs:
 			Intent myIntent4 = new Intent(this, Preferences.class);
 			myIntent4.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);

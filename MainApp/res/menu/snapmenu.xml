@@ -6,10 +6,6 @@
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_menu_refresh" />
     <item
-        android:id="@+id/home"
-        android:showAsAction="ifRoom"
-		android:icon="@drawable/ic_menu_home" />
-    <item
         android:id="@+id/prefs"
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_menu_preferences" />

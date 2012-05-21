@@ -1,5 +1,6 @@
 package team2.mainapp;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +22,9 @@ public class Preferences extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preferences);
-
+		
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		sb1 = (SeekBar)findViewById( R.id.seekBar1 );
 		sb2 = (SeekBar) findViewById( R.id.seekBar2 );
 		sb3 = (SeekBar) findViewById( R.id.seekBar3);
@@ -43,25 +46,13 @@ public class Preferences extends Activity {
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.home:
-			Intent myIntent2 = new Intent(this, Homepage.class);
-			//			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			myIntent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			startActivity(myIntent2);
-
-			break;
-		case R.id.snapshot:
-			Intent myIntent3 = new Intent(this, GoogleNews.class);
-			//			myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			myIntent3.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			startActivity(myIntent3);
-
-			break;
 		case R.id.prefs:
 			Intent myIntent4 = new Intent(this, Preferences.class);
 			myIntent4.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			startActivity(myIntent4);
 			break;
+		case android.R.id.home:
+			finish();
 		default:
 			break;
 		}
@@ -79,6 +70,7 @@ public class Preferences extends Activity {
 		else
 			gState.setOn(false);
 		super.onPause();
+		overridePendingTransition(0, 0);
 		finish();
 	}
 
