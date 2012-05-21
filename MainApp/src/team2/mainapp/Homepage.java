@@ -44,6 +44,7 @@ public class Homepage extends Activity {
 	MenuItem refresh;
 	Handler handler;
 	static Thread mRefreshChecker;
+	ActionBar actionBar;
 	/** Called when the activity is first created. */
 
 	@Override
@@ -64,17 +65,17 @@ public class Homepage extends Activity {
 		pager.setCurrentItem(position);
 		handler = new Handler();
 
-		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.action_list,
+		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.home_list,
 				android.R.layout.simple_spinner_dropdown_item);
 
-		ActionBar actionBar = getActionBar();
+		actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		actionBar.setTitle("");
 
 
 		OnNavigationListener mOnNavigationListener = new OnNavigationListener() {
 			// Get the same strings provided for the drop-down's ArrayAdapter
-			String[] strings = getResources().getStringArray(R.array.action_list);
+			String[] strings = getResources().getStringArray(R.array.home_list);
 
 			@Override
 			public boolean onNavigationItemSelected(int position, long itemId) {
@@ -107,6 +108,7 @@ public class Homepage extends Activity {
 		GlobalState gState = (GlobalState) getApplication();
 		pager.setCurrentItem(gState.getPosition());
 		refreshChecker();
+		actionBar.setSelectedNavigationItem(0);
 	}
 
 	public void onPause(){

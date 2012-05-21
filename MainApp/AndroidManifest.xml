@@ -15,12 +15,12 @@
         <activity
             android:name=".MainAppActivity"
             android:theme="@android:style/Theme.Holo.Light" 
-            android:label="Breaking Stories" >
+            android:label="" >
         </activity>
         <activity
             android:name=".CompanyList"
             android:theme="@android:style/Theme.Holo.Light" 
-            android:label="Companies" >
+            android:label="" >
         </activity>
          <activity
             android:name=".Homepage"
@@ -37,7 +37,7 @@
              android:label="Drilldown" />
         <activity android:name=".GoogleNews"           
             android:theme="@android:style/Theme.Holo.Light"
-             android:label="Daily Snapshot" />
+             android:label="" />
                 <activity android:name=".Preferences"           
             android:theme="@android:style/Theme.Holo.Light"
              android:label="Preferences" />

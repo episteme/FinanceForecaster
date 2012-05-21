@@ -9,7 +9,10 @@ package team2.mainapp;
 
 public final class R {
     public static final class array {
-        public static final int action_list=0x7f050000;
+        public static final int comp_list=0x7f050002;
+        public static final int home_list=0x7f050000;
+        public static final int snap_list=0x7f050001;
+        public static final int topi_list=0x7f050003;
     }
     public static final class attr {
         /**  Whether or not the indicators should be centered. 

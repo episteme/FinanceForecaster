@@ -2,7 +2,9 @@ package team2.mainapp;
 
 import team2.mainapp.CompanyAdapter.GetDataTask2;
 import team2.mainapp.R.drawable;
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -14,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 public class CompanyList extends Activity {
@@ -24,6 +28,7 @@ public class CompanyList extends Activity {
 	static MenuItem refresh;
 	Handler handler;
 	static Thread mRefreshChecker;
+	ActionBar actionBar;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		started = false;
@@ -44,6 +49,39 @@ public class CompanyList extends Activity {
 			position = 2;
 		pager.setCurrentItem(position);
 		handler = new Handler();
+		
+		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.comp_list,
+				android.R.layout.simple_spinner_dropdown_item);
+
+		actionBar = getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		actionBar.setTitle("");
+
+		OnNavigationListener mOnNavigationListener = new OnNavigationListener() {
+			// Get the same strings provided for the drop-down's ArrayAdapter
+			String[] strings = getResources().getStringArray(R.array.comp_list);
+
+			@Override
+			public boolean onNavigationItemSelected(int position, long itemId) {
+				Intent myIntent = new Intent();
+				boolean check = true;
+
+				switch(position) {
+				case 1:myIntent.setClass(getBaseContext(), Homepage.class);break;
+				case 2:myIntent.setClass(getBaseContext(), MainAppActivity.class);break;
+				case 3:myIntent.setClass(getBaseContext(), GoogleNews.class);break;
+				case 0:check=false;break;
+				}
+
+				if(check){
+					myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+					startActivity(myIntent);
+				}
+				return true;
+			}
+		};
+		
+		actionBar.setListNavigationCallbacks(mSpinnerAdapter, mOnNavigationListener);
 	}
 
 	@Override
@@ -55,6 +93,7 @@ public class CompanyList extends Activity {
 		pager.setCurrentItem(gState.getPosition());
 		refreshChecker();
 		pager.setCurrentItem(gState.getPosition());
+		actionBar.setSelectedNavigationItem(0);
 	}
 	
 	public void onPause(){

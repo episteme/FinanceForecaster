@@ -2,7 +2,9 @@ package team2.mainapp;
 import team2.mainapp.R.drawable;
 import team2.mainapp.ViewPagerAdapter.GetDataTask;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,7 +15,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 public class MainAppActivity extends Activity {
@@ -28,6 +32,7 @@ public class MainAppActivity extends Activity {
 	MenuItem refresh;
 	Handler handler;
 	static Thread mRefreshChecker;
+	ActionBar actionBar;
 	/** Called when the activity is first created. */
 
 	@Override
@@ -54,6 +59,40 @@ public class MainAppActivity extends Activity {
 		Log.d("starPosition",Boolean.toString(starPosition));
 		pager.setCurrentItem(position);
 		handler = new Handler();
+		
+		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.topi_list,
+				android.R.layout.simple_spinner_dropdown_item);
+
+		actionBar = getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		actionBar.setTitle("");
+
+
+		OnNavigationListener mOnNavigationListener = new OnNavigationListener() {
+			// Get the same strings provided for the drop-down's ArrayAdapter
+			String[] strings = getResources().getStringArray(R.array.topi_list);
+
+			@Override
+			public boolean onNavigationItemSelected(int position, long itemId) {
+				Intent myIntent = new Intent();
+				boolean check = true;
+
+				switch(position) {
+				case 1:myIntent.setClass(getBaseContext(), Homepage.class);break;
+				case 0:check=false;break;
+				case 2:myIntent.setClass(getBaseContext(), GoogleNews.class);break;
+				case 3:myIntent.setClass(getBaseContext(), CompanyList.class);break;
+				}
+
+				if(check){
+					myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+					startActivity(myIntent);
+				}
+				return true;
+			}
+		};
+
+		actionBar.setListNavigationCallbacks(mSpinnerAdapter, mOnNavigationListener);
 	}
 	
 	@Override
@@ -65,6 +104,7 @@ public class MainAppActivity extends Activity {
 			pager.setCurrentItem(gState.getPosition());
 			refreshChecker();
 			pager.setCurrentItem(gState.getPosition());
+			actionBar.setSelectedNavigationItem(0);
 	}
 	
 	public void onPause(){
