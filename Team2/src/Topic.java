@@ -316,7 +316,7 @@ public class Topic implements Comparable<Topic> {
 		CompanyLink ricl;
 		while (cIt.hasNext()) {
 			cl = cIt.next();
-			Iterator<CompanyLink> rIt = rCL.iterator();
+			Iterator<CompanyLink> rIt = toMerge.companies.iterator();
 			boolean contains = false;
 			while (rIt.hasNext()) {
 				ricl = rIt.next();
