@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.io.*;
 
 import org.jsoup.Jsoup;
@@ -98,9 +99,10 @@ public class Parse implements Runnable {
 				// Create a list of articles and titles
 				// Is there a guarantee that these match up?
 				LinkedList<Article> articles = new LinkedList<Article>();
+				Date d = new Date();
 				for (int i = 0; i < theURLS.size(); i++) {
 					System.out.println(theTitles.get(i));
-					articles.add(new Article(theURLS.get(i),theTitles.get(i),new Date(),theSources.get(i),theDescrips.get(i)));
+					articles.add(new Article(theURLS.get(i),theTitles.get(i),d,theSources.get(i),theDescrips.get(i)));
 				}
 
 				LinkedList<Article> newArticles = new LinkedList<Article>();
@@ -192,6 +194,7 @@ public class Parse implements Runnable {
 							nextTopic.printWordData();
 							topics.add(nextTopic);
 						}
+						
 					} catch (Exception e) {
 //						e.printStackTrace();
 						System.out.println("URL parsed incorrectly");
@@ -200,9 +203,40 @@ public class Parse implements Runnable {
 				for (Company c : cList) {
 					c.updatePrice();
 				}
+				
+				ArrayList<Integer> removeThese = new ArrayList<Integer>();
+				for (int i = 0; i < topics.size(); i++) {
+					for (int j = 0; j < topics.size(); j++) {
+						if (!removeThese.contains(j)) {
+							int overlaps = 0;
+							Iterator<Map.Entry<String, WordInfo>> it = topics.get(i).getWords().entrySet().iterator();
+							String s;
+							Map.Entry<String, WordInfo> swi;
+							while (it.hasNext()) {
+								swi = it.next();
+								s = swi.getKey();
+								if (topics.get(j).containsWord(s)) {
+									overlaps += swi.getValue().getRel() * topics.get(i).getWords().get(s).getRel();
+								}
+							}
+							// overlap is sum of (topic relevance * art relevance)
+							if (overlaps >= Math.round((topics.get(i).totalRel()/3))) {
+								topics.get(i).mergeTopic(topics.get(j));
+								removeThese.add(j);
+							}
+						}
+					}
+				}
+				ArrayList<Topic> at = new ArrayList<Topic>();
+				for (Integer i : removeThese) {
+					at.add(topics.get(i));
+				}
+				for (Topic t : at) {
+					topics.remove(t);
+				}
+				
 				// Output information on topics
 				for (Topic t : topics) {
-
 					System.out.println("Topic has " + (t.getArticles().size()) + " articles");
 					System.out.println("Topic has " + t.artsLastHour() + " articles in the last hour");
 					System.out.println(t.getRecentTitle());

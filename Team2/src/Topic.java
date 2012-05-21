@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 // A Topic is the large concept of a story,
 // it is a collection of relevant keywords,
@@ -229,9 +230,117 @@ public class Topic implements Comparable<Topic> {
 		return words;
 	}
 	
+	// merge a topic with this topic
 	public void mergeTopic(Topic toMerge){
-		// Ideally, have a merge topic function
-		// complex, ugly code needed
+		// 1. need to merge list of articles
+		// 2. need to merge keywords
+		// 3. need to merge company list
+		// 1. articles
+		int i = 0;
+		int j = 0;
+		LinkedList<Article> thisa = this.getArticles();
+		LinkedList<Article> newa = toMerge.getArticles();
+		LinkedList<Article> reta = new LinkedList<Article>();
+		while (i < this.articles.size() & j < toMerge.getArticles().size()) {
+			int iCompareToJ = thisa.get(i).getDate().compareTo(newa.get(j).getDate());
+			// if i < j
+			if (iCompareToJ < 0) {
+				reta.add(thisa.get(i));
+				i++;
+			}
+			// j > i
+			else if (iCompareToJ > 0) {
+				reta.add(thisa.get(j));
+				j++;
+			}
+			else if (iCompareToJ == 0) {
+				i++;
+				j++;
+			}
+		}
+		// add remainder of left list
+		while (i < thisa.size()) {
+			reta.add(thisa.get(i));
+			i++;
+		}
+		// add remainder of right list
+		while (j < newa.size()) {
+			reta.add(thisa.get(j));
+			j++;
+		}
+		// articles merged
+		this.articles =  reta;
+		// 2. keywords
+		Iterator<Map.Entry<String, WordInfo>> it = this.getWords().entrySet().iterator();
+		Map.Entry<String, WordInfo> e;
+		HashMap<String, WordInfo> retHM = new HashMap<String, WordInfo>();
+		@SuppressWarnings("unchecked")
+		HashMap<String, WordInfo> rHM = (HashMap<String, WordInfo>) toMerge.getWords().clone();
+		while (it.hasNext()) {
+			e = it.next();
+			if (toMerge.getWords().containsKey(e.getKey())) {
+				Double newRel = (this.getWords().size() * this.getWords().get(e.getKey()).getRel());
+				newRel += (toMerge.getWords().size() * rHM.get(e.getKey()).getRel());
+				newRel /= toMerge.getWords().size() + this.getWords().size();
+				Double newSent = (this.getWords().size() * this.getWords().get(e.getKey()).getSent());
+				newSent += (toMerge.getWords().size() * rHM.get(e.getKey()).getSent());
+				newSent /= toMerge.getWords().size() + this.getWords().size();
+				retHM.put(e.getKey(), new WordInfo(newRel, newSent));
+				rHM.remove(e.getKey());
+			}
+			else {
+				retHM.put(e.getKey(), e.getValue());
+			}
+		}
+		if (!rHM.isEmpty()) {
+			Iterator<Map.Entry<String, WordInfo>> it2 = rHM.entrySet().iterator();
+			Map.Entry<String, WordInfo> e2;
+			while (it2.hasNext()) {
+				e2 = it2.next();
+				Double newRel2 = (toMerge.getWords().size() * toMerge.getWords().get(e2.getKey()).getRel());
+				newRel2 /= toMerge.getWords().size() + this.getWords().size();
+				Double newSent2 = (toMerge.getWords().size() * toMerge.getWords().get(e2.getKey()).getSent());
+				newSent2 /= toMerge.getWords().size() + this.getWords().size();
+				retHM.put(e2.getKey(), new WordInfo(newRel2, newSent2));
+			}
+		}
+		// keywords merged
+		this.words = retHM;
+		// 3. company list
+		@SuppressWarnings("unchecked")
+		ArrayList<CompanyLink> retCL = (ArrayList<CompanyLink>) this.companies.clone();
+		@SuppressWarnings("unchecked")
+		ArrayList<CompanyLink> rCL = (ArrayList<CompanyLink>) toMerge.companies.clone();
+		Iterator<CompanyLink> cIt = retCL.iterator();
+		CompanyLink cl;
+		CompanyLink ricl;
+		while (cIt.hasNext()) {
+			cl = cIt.next();
+			Iterator<CompanyLink> rIt = rCL.iterator();
+			boolean contains = false;
+			while (rIt.hasNext()) {
+				ricl = rIt.next();
+				if (ricl.name.equals(cl.name)) {
+					cl.merge(ricl);
+					contains = true;
+					rCL.remove(ricl);
+				}
+			}
+			if (!contains) {
+				// do nothing too lazy
+			}
+		}
+
+		while (!rCL.isEmpty()) {
+			Iterator<CompanyLink> rIt2 = rCL.iterator();
+			CompanyLink ecl;
+			while (rIt2.hasNext()) {
+				ecl = rIt2.next();
+				retCL.add(ecl);
+			}
+		}
+		// merging done
+		this.companies = retCL;
 	}
 
 	public Article getFirst() {
