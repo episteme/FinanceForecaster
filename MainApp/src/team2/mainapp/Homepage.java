@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
 import android.util.Log;
@@ -62,6 +63,40 @@ public class Homepage extends Activity {
 			position = 2;
 		pager.setCurrentItem(position);
 		handler = new Handler();
+
+		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.action_list,
+				android.R.layout.simple_spinner_dropdown_item);
+
+		ActionBar actionBar = getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		actionBar.setTitle("");
+
+
+		OnNavigationListener mOnNavigationListener = new OnNavigationListener() {
+			// Get the same strings provided for the drop-down's ArrayAdapter
+			String[] strings = getResources().getStringArray(R.array.action_list);
+
+			@Override
+			public boolean onNavigationItemSelected(int position, long itemId) {
+				Intent myIntent = new Intent();
+				boolean check = true;
+
+				switch(position) {
+				case 0:check=false;break;
+				case 1:myIntent.setClass(getBaseContext(), MainAppActivity.class);break;
+				case 2:myIntent.setClass(getBaseContext(), GoogleNews.class);break;
+				case 3:myIntent.setClass(getBaseContext(), CompanyList.class);break;
+				}
+
+				if(check){
+					myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+					startActivity(myIntent);
+				}
+				return true;
+			}
+		};
+
+		actionBar.setListNavigationCallbacks(mSpinnerAdapter, mOnNavigationListener);
 	}
 
 	@Override
@@ -87,7 +122,7 @@ public class Homepage extends Activity {
 		myIntent.putExtra("SECTOR", tv2.getText());
 		startActivity(myIntent);
 	}
-	
+
 	public void topicStarClickHandler(View view) {
 		String data = (String) view.getTag();
 		String uidSector[] = data.split(";");
@@ -102,7 +137,7 @@ public class Homepage extends Activity {
 			starstate = 1;
 		}
 		star.setTag(uidSector[0]+";"+uidSector[1]+";"+starstate);
-		
+
 		String sectorName = uidSector[1];
 		GlobalState gState = (GlobalState) getApplication();
 		for (Sector sector : gState.getAllSectors()) {

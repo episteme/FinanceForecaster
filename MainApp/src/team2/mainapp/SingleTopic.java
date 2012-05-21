@@ -32,6 +32,7 @@ public class SingleTopic extends Activity {
 	String sectorName;
 	boolean hidestate;
 	boolean starstate;
+	Topic thistopic;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,6 @@ public class SingleTopic extends Activity {
 		
 		Log.d("uidsec",Integer.toString(uid));
 		Log.d("uidsec",sectorName);
-
-		Topic thistopic = null;
 
 		GlobalState gState = (GlobalState) getApplication();
 		for (Sector sector : gState.getAllSectors()) {
@@ -99,18 +98,24 @@ public class SingleTopic extends Activity {
 	}
 	
 	public void starClickHandler(View view) {
+		GlobalState gState = (GlobalState) getApplication();
 		if(starstate){
 			star.setImageResource(drawable.btn_star_big_off);
 			starstate = false;
+			thistopic.setState(0);
+			gState.getAllSectors().get(2).removeTopic(thistopic);
 		}else{
 			hide.setImageResource(drawable.ic_menu_delete);
-			star.setImageResource(drawable.btn_star_big_on);		
+			gState.getAllSectors().get(2).addTopic(thistopic);
+			star.setImageResource(drawable.btn_star_big_on);	
+			thistopic.setState(1);
 			hidestate = false;
 			starstate = true;
 		}
 	}
 	
 	public void hideClickHandler(View view) {
+		GlobalState gState = (GlobalState) getApplication();
 		if(hidestate){
 			hide.setImageResource(drawable.ic_menu_delete);
 			hidestate = false;
@@ -119,6 +124,8 @@ public class SingleTopic extends Activity {
 			star.setImageResource(drawable.btn_star_big_off);		
 			starstate = false;
 			hidestate = true;
+			thistopic.setState(0);
+			gState.getAllSectors().get(2).removeTopic(thistopic);
 		}
 	}
 
@@ -136,28 +143,6 @@ public class SingleTopic extends Activity {
 	}
 	
 	public void onPause(){
-		GlobalState gState = (GlobalState) getApplication();
-		for (Sector sector : gState.getAllSectors()) {
-			if(!sector.getName().equals(sectorName))
-				continue;
-			for (Topic topic : sector.getTopicData()) {
-				if (topic.getUid() == uid) {
-					if(starstate){
-						topic.setState(1);
-						gState.getAllSectors().get(2).addTopic(topic);
-					}
-					else if(hidestate){
-						topic.setState(-1);
-						gState.getAllSectors().get(2).removeTopic(topic);
-					}
-					else{
-						topic.setState(0);
-						gState.getAllSectors().get(2).removeTopic(topic);
-					}
-					break;
-				}
-			}
-		}
 		super.onPause();
 	}
 
