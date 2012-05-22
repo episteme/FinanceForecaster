@@ -203,8 +203,8 @@ public class Parse implements Runnable {
 				
 				ArrayList<Integer> removeThese = new ArrayList<Integer>();
 				for (int i = 0; i < topics.size(); i++) {
-					for (int j = 0; j < topics.size(); j++) {
-						if (!removeThese.contains(j)) {
+					for (int j = (i + 1); j < topics.size(); j++) {
+						if (!removeThese.contains(j) && !removeThese.contains(i)) {
 							int overlaps = 0;
 							Iterator<Map.Entry<String, WordInfo>> it = topics.get(i).getWords().entrySet().iterator();
 							String s;
