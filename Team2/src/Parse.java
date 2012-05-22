@@ -274,6 +274,10 @@ public class Parse implements Runnable {
 		blackList.add("facebook");
 		blackList.add("google");
 		blackList.add("twitter");
+		blackList.add("youtube");
+		blackList.add("reuters");
+		blackList.add("asset management company");
+		blackList.add("charset-error");
 		
 		AlchemyAPI alchemyObj = AlchemyAPI.GetInstanceFromString(APIkey);
 		AlchemyAPI_NamedEntityParams entityParams = new AlchemyAPI_NamedEntityParams();
