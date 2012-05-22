@@ -2,10 +2,14 @@ import java.net.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.io.*;
 
 import org.jsoup.Jsoup;
@@ -197,7 +201,7 @@ public class Parse implements Runnable {
 						
 					} catch (Exception e) {
 //						e.printStackTrace();
-						System.out.println("URL parsed incorrectly");
+						System.err.println("URL parsed incorrectly");
 					}
 				}
 				for (Company c : cList) {
@@ -266,13 +270,18 @@ public class Parse implements Runnable {
 				Thread.sleep(16000);
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println(e);
+				System.err.println(e);
 			}
 		}
 	}
 
 	public ArrayList<CompanyLink> financeParse(String URL) throws Exception {
-
+		
+		Set<String> blackList = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER); 
+		blackList.add("facebook");
+		blackList.add("google");
+		blackList.add("twitter");
+		
 		AlchemyAPI alchemyObj = AlchemyAPI.GetInstanceFromString(APIkey);
 		AlchemyAPI_NamedEntityParams entityParams = new AlchemyAPI_NamedEntityParams();
 		entityParams.setSentiment(true);
@@ -314,7 +323,8 @@ public class Parse implements Runnable {
 						System.out.println("Updated old company: " + s[0]);
 					}
 				}
-				if (!found && !s[0].toLowerCase().equals("facebook") && !s[0].toLowerCase().equals("google") && !s[0].toLowerCase().equals("twitter")) {
+				
+				if (!found && !blackList.contains(s[0])) {
 					Company c = new Company(s[0], s[1], s[2]);
 					c.updatePrice();
 					cList.add(c);

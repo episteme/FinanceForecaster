@@ -55,6 +55,7 @@ public class MultipleSocketServer implements Runnable {
 				process.append((char)character);
 			}
 			String processStr = process.toString();
+			
 
 			// Process input
 			// Format: topic;topic;;datetime
