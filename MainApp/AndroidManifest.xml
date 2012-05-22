@@ -31,7 +31,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".SingleTopic" 
-             android:label="Drilldown" />
+             android:label="Topic details" />
+        <activity android:name=".SingleCompany" 
+             android:label="Company Details" />
         <activity android:name=".GoogleNews"           
              android:label="" />
                 <activity android:name=".Preferences"           

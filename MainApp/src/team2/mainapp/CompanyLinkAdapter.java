@@ -56,9 +56,9 @@ public class CompanyLinkAdapter extends ArrayAdapter<CompanyLink> {
 		
 		String htmlColor;
 		if(thiscompany.getStockChange() < 0)
-			htmlColor = "<font color=#FF0000>";
+			htmlColor = "<font color=#BB0000>";
 		else
-			htmlColor = "<font color=#00FF00>";
+			htmlColor = "<font color=#00BB00>";
 		
 		textView2.setText(Html.fromHtml("Current Stock Value : " + thiscompany.getStockPrice() + " : " 
 		+ htmlColor + thiscompany.getStockChange() + "</font>"));
@@ -89,10 +89,10 @@ public class CompanyLinkAdapter extends ArrayAdapter<CompanyLink> {
 		
 		
 		TextView textView3 = (TextView) rowView.findViewById(R.id.textView3);
-		textView3.setText("Outlook based on this topic is " + sentiment2);
+		textView3.setText("Outlook based on this topic is " + sent2);
 		
 		TextView textView4 = (TextView) rowView.findViewById(R.id.textView4);
-		textView4.setText("Overall outlook for this company is " + sentiment);
+		textView4.setText("Overall outlook for this company is " + sent);
 		
 		
 		

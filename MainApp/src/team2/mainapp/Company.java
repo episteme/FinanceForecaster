@@ -26,7 +26,8 @@ public class Company  implements Comparable<Company>{
 	public int compareTo(Company temp) {
 		if(temp.getRelevance() > this.getRelevance())
 			return 1;
-		return -1;
+		else
+			return -1;
 	}
 
 	public String getName() {
@@ -57,7 +58,7 @@ public class Company  implements Comparable<Company>{
 		return traded;
 	}
 
-	public CharSequence getSector() {
+	public String getSector() {
 		return sector;
 	}
 }

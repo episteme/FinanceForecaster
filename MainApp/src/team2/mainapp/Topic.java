@@ -74,7 +74,7 @@ public class Topic implements Comparable<Topic> {
 		} catch (ParseException e) {
 			return "some time in the past";
 		}
-		dateFormat = new SimpleDateFormat("hh:mma");
+		dateFormat = new SimpleDateFormat("HH:mm");
 		String result = dateFormat.format(temp);
 		dateFormat = new SimpleDateFormat("EEEE");
 		result += " on " + dateFormat.format(temp);

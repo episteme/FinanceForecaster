@@ -195,9 +195,9 @@ public class Background extends Service {
 					// Add the topic info to the sector info
 					if(gState.getAllSectors().get(2).checkForFavourites(newTopic))
 						newTopic.setState(1);
-					tempTopics.add(newTopic);
 					if(newTopic.getArtsLastHour() >= gState.getAllSectors().get(i).getThreshold())
 						createNotification(rawData[1],KeyWords,rawData[0],gState.getAllSectors().get(i).getName()); 
+					tempTopics.add(newTopic);
 
 				}
 				// Add the sectorInfo to the parseInfo
@@ -218,7 +218,7 @@ public class Background extends Service {
 			}
 
 
-			//			Log.d("compdata",type[2]);
+						Log.d("compdata",type[1]);
 			// Parse Company Data
 			// Split sectors
 			String[] compsectors = type[1].split("COMPSTOP\n");

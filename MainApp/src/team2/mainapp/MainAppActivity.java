@@ -129,10 +129,10 @@ public class MainAppActivity extends Activity {
 		int uid = Integer.parseInt(uidSector[0]);
 		int starstate = Integer.parseInt(uidSector[2]);
 		if(starstate == 1){
-			star.setImageResource(android.R.drawable.btn_star_big_off);
+			star.setImageResource(drawable.star_empty);
 			starstate = 0;
 		}else{
-			star.setImageResource(android.R.drawable.btn_star_big_on);		
+			star.setImageResource(drawable.star_yellow);		
 			starstate = 1;
 		}
 		star.setTag(uidSector[0]+";"+uidSector[1]+";"+starstate);

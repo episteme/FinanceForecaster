@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Color;
 import android.opengl.Visibility;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,12 +45,18 @@ public class CompanyListAdapter extends ArrayAdapter<Company> {
 			s += "s";
 		textView2.setText(s);
 		textView3.setText(Double.toString(values.get(position).getStockPrice()));
-		textView4.setText(Double.toString(values.get(position).getStockChange()));
+		String htmlColor;
+		if(values.get(position).getStockChange() < 0)
+			htmlColor = "<font color=#BB0000>";
+		else
+			htmlColor = "<font color=#00BB00>";
+		
+		textView4.setText(Html.fromHtml(htmlColor + values.get(position).getStockChange() + "</font>" + " " + values.get(position).getRelevance()));
 		textView5.setText(values.get(position).getSector());
 		
 		if(!values.get(position).isTraded()){
 			textView3.setVisibility(View.GONE);
-			textView4.setVisibility(View.GONE);
+			textView4.setText("This company is not publically traded");
 		}
 		return rowView;
 	}

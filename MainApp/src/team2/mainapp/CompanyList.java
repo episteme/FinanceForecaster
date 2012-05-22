@@ -128,13 +128,13 @@ public class CompanyList extends Activity {
 		return true;
 	}
 
-	public void myClickHandler(View view) {
-		TextView tv = (TextView) view.findViewById(R.id.labelr);
-		Log.d("uri", (String) tv.getText());
 
-		Uri uriUrl = Uri.parse((String) tv.getText());
-		Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);  
-		startActivity(launchBrowser);
+	
+	public void companyClickHandler(View view) {
+		TextView tv = (TextView) view.findViewById(R.id.name);
+		Intent myIntent = new Intent(this, SingleCompany.class);
+		myIntent.putExtra("company", tv.getText());
+		startActivity(myIntent);
 	}
 	
 	private void refreshChecker(){

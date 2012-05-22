@@ -126,6 +126,13 @@ public class Homepage extends Activity {
 		myIntent.putExtra("SECTOR", tv2.getText());
 		startActivity(myIntent);
 	}
+	
+	public void companyClickHandler(View view) {
+		TextView tv = (TextView) view.findViewById(R.id.name);
+		Intent myIntent = new Intent(this, SingleCompany.class);
+		myIntent.putExtra("company", tv.getText());
+		startActivity(myIntent);
+	}
 
 	public void topicStarClickHandler(View view) {
 		String data = (String) view.getTag();
