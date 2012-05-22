@@ -172,9 +172,9 @@ public class Topic implements Comparable<Topic> {
 	    String rString = "";
 	    for (int i = 1; i <= j; i++) {
 	    	WordAndVal nextWord = wavl.get(wavl.size() - i);
-	    	rString = rString + nextWord.getWord() + "@" + words.get(nextWord.getWord()).getSent() + ";\n";
+	    	rString = rString + Jsoup.parse(nextWord.getWord()).text() + "@" + words.get(nextWord.getWord()).getSent() + ";\n";
 	    }
-	    return Jsoup.parse(rString).text();
+	    return rString;
 	}
 	
 	public void printTopLinks() {
