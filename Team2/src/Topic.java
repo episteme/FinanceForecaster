@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
@@ -339,8 +340,13 @@ public class Topic implements Comparable<Topic> {
 				retCL.add(ecl);
 			}
 		}
+		
+		// uniqify?
+		@SuppressWarnings("unchecked")
+		ArrayList<CompanyLink> retCLf = new ArrayList<CompanyLink>(new HashSet<CompanyLink>(retCL));
+		
 		// merging done
-		this.companies = retCL;
+		this.companies = retCLf;
 		this.numWords = words.size();
 		this.count = articles.size();
 	}

@@ -336,7 +336,7 @@ public class Parse implements Runnable {
 				retList.add(new CompanyLink(s[0],Double.parseDouble(s[1]),Double.parseDouble(s[2])));
 			}			
 		}
-		return retList;
+		return new ArrayList<CompanyLink>(new HashSet<CompanyLink>(retList));
 	}
 
 	private static String getTagValue(String sTag, Element eElement) {
