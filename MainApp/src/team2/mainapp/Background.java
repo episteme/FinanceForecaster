@@ -130,8 +130,8 @@ public class Background extends Service {
 			String[] type = s2.split("SPLITINFO\n");
 
 			// Read in flag which splits between each sector in the Parse information
-			String[] topicsectors = type[1].split("TOPSTOP\n");
-						Log.d("topicdata",type[1]);
+			String[] topicsectors = type[0].split("TOPSTOP\n");
+						Log.d("topicdata",type[0]);
 			//			Log.d("datatypes",Integer.toString(type.length));
 			int i = 0;
 			for (String sector : topicsectors)
@@ -221,7 +221,7 @@ public class Background extends Service {
 			//			Log.d("compdata",type[2]);
 			// Parse Company Data
 			// Split sectors
-			String[] compsectors = type[2].split("COMPSTOP\n");
+			String[] compsectors = type[1].split("COMPSTOP\n");
 			int k = 0;
 			for (String sector : compsectors)
 			{
@@ -240,43 +240,43 @@ public class Background extends Service {
 				k++;
 			}
 
-			Log.d("newsdata",type[0]);
-			// Parse Google News
-			// Split sectors
-			String[] newssectors = type[0].split("NEWSTOP\n");
-			int j = 0;
-			for (String sector : newssectors)
-			{
-				String[] stories = sector.split("SPECNEWS\n");
-				LinkedList<GoogleStory> tempStories = new LinkedList<GoogleStory>();
-				for (String story : stories)
-				{
-					// Split story in to fields
-					String[] rawData = story.split(";;\n");
-
-					// Splits the keyWords into individual parts
-
-					ArrayList<KeyWord> keyWords = new ArrayList<KeyWord>();
-
-
-					if(rawData.length > 4){
-						String[] words = rawData[4].split(";\n");
-
-						for (String word : words)
-						{
-							// Split each keyword into its word and its sentiment
-							String[] bits = word.split("@");
-							// Put each bit into the list
-							keyWords.add(new KeyWord(bits[0], bits[1]));
-						}
-					}
-					tempStories.add(new GoogleStory(
-							Double.parseDouble(rawData[3]), rawData[0], rawData[1], keyWords, rawData[2]));
-
-				}
-				gState.getAllSectors().get(j).setGoogStories(tempStories);
-				j++;
-			}
+//			Log.d("newsdata",type[0]);
+//			// Parse Google News
+//			// Split sectors
+//			String[] newssectors = type[0].split("NEWSTOP\n");
+//			int j = 0;
+//			for (String sector : newssectors)
+//			{
+//				String[] stories = sector.split("SPECNEWS\n");
+//				LinkedList<GoogleStory> tempStories = new LinkedList<GoogleStory>();
+//				for (String story : stories)
+//				{
+//					// Split story in to fields
+//					String[] rawData = story.split(";;\n");
+//
+//					// Splits the keyWords into individual parts
+//
+//					ArrayList<KeyWord> keyWords = new ArrayList<KeyWord>();
+//
+//
+//					if(rawData.length > 4){
+//						String[] words = rawData[4].split(";\n");
+//
+//						for (String word : words)
+//						{
+//							// Split each keyword into its word and its sentiment
+//							String[] bits = word.split("@");
+//							// Put each bit into the list
+//							keyWords.add(new KeyWord(bits[0], bits[1]));
+//						}
+//					}
+//					tempStories.add(new GoogleStory(
+//							Double.parseDouble(rawData[3]), rawData[0], rawData[1], keyWords, rawData[2]));
+//
+//				}
+//				gState.getAllSectors().get(j).setGoogStories(tempStories);
+//				j++;
+//			}
 
 			gState.setReady(true);
 			gState.setRefreshState(1);

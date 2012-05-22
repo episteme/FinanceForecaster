@@ -48,12 +48,6 @@ public class CompanyLinkAdapter extends ArrayAdapter<CompanyLink> {
 			}
 		}
 		
-		if(thiscompany == null){
-			Log.d("Couldn't find",values.get(position).getCompany());
-			rowView.setVisibility(View.GONE);
-			return rowView;
-		}
-		
 		TextView textView1 = (TextView) rowView.findViewById(R.id.textView1);
 		textView1.setText(thiscompany.getName());
 		TextView textView2 = (TextView) rowView.findViewById(R.id.textView2);

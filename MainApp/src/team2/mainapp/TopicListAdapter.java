@@ -39,7 +39,7 @@ public class TopicListAdapter extends ArrayAdapter<Topic> {
 		imageButton.setTag(values.get(position).getUid()+";"+values.get(position).getSector()+";"+values.get(position).getState());
 		
 		if(values.get(position).getState() == 1){
-			imageButton.setImageResource(drawable.btn_star_big_on);
+			imageButton.setImageResource(team2.mainapp.R.drawable.star_yellow);
 		}
 		
 		Log.d("Debug", Integer.toString(values.size()));

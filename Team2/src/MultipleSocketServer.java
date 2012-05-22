@@ -1,17 +1,23 @@
 import java.net.*;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
-import org.jsoup.Jsoup;
-
 public class MultipleSocketServer implements Runnable {
-	
+
+	static Runnable[] feeds = new Runnable[2];
 	static Runnable[] parsers = new Runnable[2];
 	private Socket connection;
 	public static void main(String[] args) {
+		feeds[0] = new FeedReader("oil");
+		feeds[1] = new FeedReader("technology");
 		parsers[0] = new Parse("oil");
 		parsers[1] = new Parse("technology");
 
+		Thread oilt = new Thread(feeds[0]);
+		oilt.start();
+		Thread currt = new Thread(feeds[1]);
+		currt.start();
 		Thread oiltopt = new Thread(parsers[0]);
 		oiltopt.start();
 		Thread currtopt = new Thread(parsers[1]);
@@ -58,7 +64,32 @@ public class MultipleSocketServer implements Runnable {
 			String[] topicArr = processArr[0].split(";");
 			BufferedOutputStream os = new BufferedOutputStream(connection.getOutputStream());
 			OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
+			Date convertedDate = dateFormat.parse(processArr[1]); 
 			System.out.println(processArr[1]);
+
+			// Send news - Feedreader
+			for (String topic : topicArr) {
+				for (int i = 0; i < feeds.length; i++) {
+					if (((FeedReader) feeds[i]).getSector().compareTo(topic) == 0) {
+						FeedReader thefeed = ((FeedReader) feeds[i]);
+						for (Story S: thefeed.getStories()) {
+							if (S == null) {
+								continue;
+							}
+							osw.write(S.getTitle() + ";;\n");
+							osw.write(S.getLink() + ";;\n");
+							osw.write(S.getDate() + ";;\n");
+							osw.write(S.getSentiment() + ";;\n");
+							osw.write(S.top5keyWords() + ";;\n");
+							osw.write("SPECNEWS\n");
+						}
+					}
+				}
+				osw.write("NEWSTOP\n");
+			}
+			
+			osw.write("SPLITINFO\n");
 
 			// Send topics - Parse
 			for (String topic : topicArr) {
@@ -67,7 +98,6 @@ public class MultipleSocketServer implements Runnable {
 						Parse theparse = ((Parse) parsers[i]);
 						java.util.Collections.sort(theparse.getTopics());
 						int j = 0;
-						@SuppressWarnings("unchecked")
 						LinkedList<Topic> topicz = (LinkedList<Topic>) theparse.getTopics().clone();
 						for (Topic T: topicz) {
 							if (T == null)
@@ -77,7 +107,7 @@ public class MultipleSocketServer implements Runnable {
 								returnTitle += T.getDate() + ";;\n";
 								returnTitle += T.artsLastHour() + ";;\n";
 								returnTitle += T.topArticles() + ";;\n";
-								returnTitle += T.topWords() + ";;\n";
+								returnTitle += T.topWords()+ ";;\n";
 								returnTitle += T.getSentiment()+ ";;\n";
 								returnTitle += T.getCount() + ";;\n";
 								returnTitle += T.sendCompanyList() + ";;\n";
@@ -104,14 +134,12 @@ public class MultipleSocketServer implements Runnable {
 					if (((Parse) parsers[i]).getSector().compareTo(topic) == 0) {
 						Parse theparse = ((Parse) parsers[i]);
 						//java.util.Collections.sort(theparse.getTopics());
-						@SuppressWarnings("unchecked")
 						LinkedList<Company> companiez = (LinkedList<Company>) theparse.getCompanies().clone();
 						for (Company C : companiez) {
-							if (C == null) 
-
+							if (C == null)
 								continue;
 							{
-								String returnTitle = Jsoup.parse(C.getName()).text() + ";;\n";
+								String returnTitle = C.getName() + ";;\n";
 								returnTitle += C.getSentiment() + ";;\n";
 								returnTitle += C.getRelevance() + ";;\n";
 								returnTitle += C.getArticles() + ";;\n";

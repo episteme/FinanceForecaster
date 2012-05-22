@@ -315,13 +315,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int plastic=0x7f020012;
         public static final int psyduck2=0x7f020013;
         public static final int pull_to_refresh_header_background=0x7f020014;
-        public static final int vpi__tab_indicator=0x7f020015;
-        public static final int vpi__tab_selected_focused_holo=0x7f020016;
-        public static final int vpi__tab_selected_holo=0x7f020017;
-        public static final int vpi__tab_selected_pressed_holo=0x7f020018;
-        public static final int vpi__tab_unselected_focused_holo=0x7f020019;
-        public static final int vpi__tab_unselected_holo=0x7f02001a;
-        public static final int vpi__tab_unselected_pressed_holo=0x7f02001b;
+        public static final int star_empty=0x7f020015;
+        public static final int star_yellow=0x7f020016;
+        public static final int vpi__tab_indicator=0x7f020017;
+        public static final int vpi__tab_selected_focused_holo=0x7f020018;
+        public static final int vpi__tab_selected_holo=0x7f020019;
+        public static final int vpi__tab_selected_pressed_holo=0x7f02001a;
+        public static final int vpi__tab_unselected_focused_holo=0x7f02001b;
+        public static final int vpi__tab_unselected_holo=0x7f02001c;
+        public static final int vpi__tab_unselected_pressed_holo=0x7f02001d;
     }
     public static final class id {
         public static final int articlesheader=0x7f070030;
@@ -355,18 +357,20 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int part4text1=0x7f070031;
         public static final int part4text2=0x7f070032;
         public static final int part4text3=0x7f070033;
-        public static final int prefs=0x7f070036;
+        public static final int part4text4=0x7f070034;
+        public static final int part4text5=0x7f070035;
+        public static final int prefs=0x7f070038;
         public static final int pull_to_refresh_header=0x7f070022;
         public static final int pull_to_refresh_image=0x7f070024;
         public static final int pull_to_refresh_progress=0x7f070023;
         public static final int pull_to_refresh_text=0x7f070025;
         public static final int pull_to_refresh_updated_at=0x7f070026;
-        public static final int refresh=0x7f070035;
+        public static final int refresh=0x7f070037;
         public static final int sector=0x7f070009;
         public static final int seekBar1=0x7f070020;
         public static final int seekBar2=0x7f070021;
         public static final int seekBar3=0x7f07001f;
-        public static final int star=0x7f070034;
+        public static final int star=0x7f070036;
         public static final int stockchange=0x7f07000c;
         public static final int stockprice=0x7f07000b;
         public static final int textView1=0x7f070015;
