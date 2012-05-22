@@ -87,7 +87,7 @@ public class MultipleSocketServer implements Runnable {
 								osw.write(returnTitle);
 								osw.write("SPECTOPS\n");
 							j++;
-							if (j > 20) {
+							if (j > 40) {
 								break;
 							}
 						}
