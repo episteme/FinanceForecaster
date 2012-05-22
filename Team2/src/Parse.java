@@ -113,6 +113,9 @@ public class Parse implements Runnable {
 					}
 				}
 
+				@SuppressWarnings("unchecked")
+				LinkedList<Topic> newtopics = (LinkedList<Topic>) topics.clone();
+				
 				for (Article art : newArticles) {
 					//System.out.println(art.getURL());
 					art.printMe();
@@ -157,8 +160,9 @@ public class Parse implements Runnable {
 
 						// Check for overlap in existing topics
 						// Current check is if at least 3 words 
+
 						topicloop:
-						for (Topic t : topics) {
+						for (Topic t : newtopics) {
 							// check for unique sources
 							for (Article a : t.getArticles()) {
 								if (a.getSource().equals(art.getSource())) {
@@ -191,7 +195,7 @@ public class Parse implements Runnable {
 							for (int i = 0; i < result.length; i += 3)
 								nextTopic.addWord(result[i], Double.parseDouble(result[i+1]), Double.parseDouble(result[i+2]));
 							nextTopic.printWordData();
-							topics.add(nextTopic);
+							newtopics.add(nextTopic);
 						}
 						
 					} catch (Exception e) {
@@ -204,23 +208,23 @@ public class Parse implements Runnable {
 				}
 				
 				ArrayList<Integer> removeThese = new ArrayList<Integer>();
-				for (int i = 0; i < topics.size(); i++) {
-					for (int j = (i + 1); j < topics.size(); j++) {
+				for (int i = 0; i < newtopics.size(); i++) {
+					for (int j = (i + 1); j < newtopics.size(); j++) {
 						if (!removeThese.contains(j) && !removeThese.contains(i)) {
 							int overlaps = 0;
-							Iterator<Map.Entry<String, WordInfo>> it = topics.get(i).getWords().entrySet().iterator();
+							Iterator<Map.Entry<String, WordInfo>> it = newtopics.get(i).getWords().entrySet().iterator();
 							String s;
 							Map.Entry<String, WordInfo> swi;
 							while (it.hasNext()) {
 								swi = it.next();
 								s = swi.getKey();
-								if (topics.get(j).containsWord(s)) {
-									overlaps += swi.getValue().getRel() * topics.get(i).getWords().get(s).getRel();
+								if (newtopics.get(j).containsWord(s)) {
+									overlaps += swi.getValue().getRel() * newtopics.get(i).getWords().get(s).getRel();
 								}
 							}
 							// overlap is sum of (topic relevance * art relevance)
-							if (overlaps >= Math.round((topics.get(i).totalRel()/3))) {
-								topics.get(i).mergeTopic(topics.get(j));
+							if (overlaps >= Math.round((newtopics.get(i).totalRel()/3))) {
+								newtopics.get(i).mergeTopic(newtopics.get(j));
 								removeThese.add(j);
 							}
 						}
@@ -228,11 +232,13 @@ public class Parse implements Runnable {
 				}
 				ArrayList<Topic> at = new ArrayList<Topic>();
 				for (Integer i : removeThese) {
-					at.add(topics.get(i));
+					at.add(newtopics.get(i));
 				}
 				for (Topic t : at) {
-					topics.remove(t);
+					newtopics.remove(t);
 				}
+				
+				topics = newtopics;
 				
 				// Output information on topics
 				for (Topic t : topics) {
