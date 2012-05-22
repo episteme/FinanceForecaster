@@ -71,8 +71,7 @@ public class Parse implements Runnable {
 						String titleTemp = inputLine.substring(0,inputLine.indexOf("</a></h3>"));
 						titleTemp = Jsoup.parse(titleTemp).text();
 						inputLine = inputLine.substring(inputLine.indexOf("<span class=\"f\">")+16);
-						String st = inputLine.substring(0,inputLine.indexOf(" "));
-						String sourceTemp = st.substring(0, st.lastIndexOf(".") - 1);
+						String sourceTemp = inputLine.substring(0,inputLine.indexOf(" - ")-1);
 						inputLine = inputLine.substring(inputLine.indexOf("<div>")+5);
 //						System.out.println(inputLine);
 //						String descripTemp = "";
