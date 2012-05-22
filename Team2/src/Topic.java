@@ -232,7 +232,19 @@ public class Topic implements Comparable<Topic> {
 	}
 	
 	// merge a topic with this topic
-	public void mergeTopic(Topic toMerge){
+	public void mergeTopic(Topic toMerge) {
+		System.out.println("MERGE START: This topic top articles");
+		System.out.println(this.topArticles());
+		System.out.println("First topic has " + this.articles.size() + "articles");
+		System.out.println("First topic companies: " + this.sendCompanyList());
+		System.out.println("First topic words:" );
+		this.printWordData();
+		System.out.println("Merging with topic that has these top articles");
+		System.out.println(toMerge.topArticles());
+		System.out.println("Second topic has " + toMerge.articles.size() + "articles");
+		System.out.println("Second topic companies: " + toMerge.sendCompanyList());
+		System.out.println("Second topic words:" );
+		toMerge.printWordData();
 		// 1. need to merge list of articles
 		// 2. need to merge keywords
 		// 3. need to merge company list
@@ -347,6 +359,12 @@ public class Topic implements Comparable<Topic> {
 		this.companies = retCLf;
 		this.numWords = words.size();
 		this.count = articles.size();
+		System.out.println("MERGE END: New topic top articles");
+		System.out.println(this.topArticles());
+		System.out.println("New topic has " + this.articles.size() + "articles");
+		System.out.println("New topic companies: " + this.sendCompanyList());
+		System.out.println("New topic words:" );
+		this.printWordData();
 	}
 
 	public Article getFirst() {
