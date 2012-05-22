@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.jsoup.Jsoup;
+
 // A Topic is the large concept of a story,
 // it is a collection of relevant keywords,
 // links to the relevant articles and the
@@ -172,7 +174,7 @@ public class Topic implements Comparable<Topic> {
 	    	WordAndVal nextWord = wavl.get(wavl.size() - i);
 	    	rString = rString + nextWord.getWord() + "@" + words.get(nextWord.getWord()).getSent() + ";\n";
 	    }
-	    return rString;
+	    return Jsoup.parse(rString).text();
 	}
 	
 	public void printTopLinks() {
@@ -191,7 +193,7 @@ public class Topic implements Comparable<Topic> {
 			"@" + articles.get(articles.size() - i).getSource() +
 			"@" + articles.get(articles.size() - i).getDescription() +
 			";\n";
-		return rString;
+		return Jsoup.parse(rString).text();
 	}
 	
 	// Return the number of articles received in the last hour
@@ -216,7 +218,7 @@ public class Topic implements Comparable<Topic> {
 	}
 	
 	public String getRecentTitle() {
-		return recentTitle;
+		return Jsoup.parse(recentTitle).text();
 	}
 	
 	public Date getTimestamp() {
@@ -341,8 +343,6 @@ public class Topic implements Comparable<Topic> {
 			}
 		}
 		
-		// uniqify?
-		@SuppressWarnings("unchecked")
 		ArrayList<CompanyLink> retCLf = new ArrayList<CompanyLink>(new HashSet<CompanyLink>(retCL));
 		
 		// merging done
@@ -365,7 +365,7 @@ public class Topic implements Comparable<Topic> {
 		{
 			ret += link.getCompany() + "@" + link.getRelevance() + "@" + link.getSentiment() + ";\n";
 		}
-		return ret;
+		return Jsoup.parse(ret).text();
 	}
 	
 	public double totalRel() {
