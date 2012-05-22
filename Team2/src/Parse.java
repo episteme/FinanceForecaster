@@ -83,7 +83,7 @@ public class Parse implements Runnable {
 						theTitles.add(titleTemp);
 						theSources.add(sourceTemp);
 						theDescrips.add(descripTemp);
-						startIndex = inputLine.indexOf("<h3 class=\"r\"><a// href=\"/url?q=");
+						startIndex = inputLine.indexOf("<h3 class=\"r\"><a href=\"/url?q=");
 						}
 						catch(Exception e)
 						{
@@ -253,14 +253,12 @@ public class Parse implements Runnable {
 						System.out.println("Companies Mentioned: ");
 					for(CompanyLink cl : t.companies)
 					{
-						System.out.println(cl.name);
-						for (int i = 0; i < t.companies.size(); i++) {
-							System.out.println(t.companies.get(i).name);
-						}
 						Company current = cList.findCompany(cl.getCompany());
-						System.out.println("Company: " + current.getName());
-						if(current.isTraded())
-							System.out.println("Stock: " + current.getStockPrice() + " : " + current.getStockChange());
+						if (current != null) {
+							System.out.println("Company: " + current.getName());
+							if(current.isTraded())
+								System.out.println("Stock: " + current.getStockPrice() + " : " + current.getStockChange());
+						}
 					}
 				}
 				if (articles.size() != 0)
@@ -375,7 +373,7 @@ class CompanyList extends LinkedList<Company>  {
 		Company found = null;
 		for  (Company comp : this)
 		{
-			if (comp.getName().equals(name))
+			if (comp.getName().toLowerCase().equals(name.toLowerCase()))
 				return comp;
 		}
 		return found;
