@@ -49,14 +49,14 @@ public class Company implements Comparable<Company> {
 		Double newSent = Double.parseDouble(s);
 		sentiment = ((sentiment * (doubarts - 1)) + newSent) / doubarts;
 		double newRel = Double.parseDouble(r);
-		relevance = ((relevance * (doubarts - 1)) + newRel) / doubarts;
+		relevance += newRel;
 	}
 	
 	public void update(Double s, Double r) {
 		articles++;
 		double doubarts = (double) articles;
 		sentiment = ((sentiment * (doubarts - 1)) + s) / doubarts;
-		relevance = ((relevance * (doubarts - 1)) + r) / doubarts;
+		relevance += r;
 	}
 
 	public void updatePrice() {

@@ -398,7 +398,7 @@ class CompanyLink {
 	public void merge(CompanyLink comp2) {
 		num++;
 		relevance += comp2.getRelevance();
-		sentiment = ((sentiment * (num-1)) + comp2.getSentiment());
+		sentiment = ((sentiment * (num-1)) + comp2.getSentiment()) / num;
 	}
 
 }
