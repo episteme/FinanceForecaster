@@ -249,43 +249,24 @@ public class Topic implements Comparable<Topic> {
 		// 2. need to merge keywords
 		// 3. need to merge company list
 		// 1. articles
-		int i = 0;
-		int j = 0;
-		LinkedList<Article> thisa = this.getArticles();
+		@SuppressWarnings("unchecked")
+		LinkedList<Article> thisa = (LinkedList<Article>) this.getArticles().clone();
 		LinkedList<Article> newa = toMerge.getArticles();
-		LinkedList<Article> reta = new LinkedList<Article>();
-//		while (i < this.articles.size() & j < toMerge.getArticles().size()) {
-//			int iCompareToJ = thisa.get(i).getDate().compareTo(newa.get(j).getDate());
-//			// if i < j
-//			if (iCompareToJ < 0) {
-//				reta.add(thisa.get(i));
-//				i++;
-//			}
-//			// j > i
-//			else if (iCompareToJ > 0) {
-//				reta.add(thisa.get(j));
-//				j++;
-//			}
-//			else if (iCompareToJ == 0) {
-//				i++;
-//				j++;
-//			}
-//		}
-//		// add remainder of left list
-//		while (i < thisa.size()) {
-//			reta.add(thisa.get(i));
-//			i++;
-//		}
-//		// add remainder of right list
-//		while (j < newa.size()) {
-//			reta.add(newa.get(j));
-//			j++;
-//		}
-		
+
 		thisa.addAll(newa);
-		reta = new LinkedList<Article>(new HashSet<Article>(thisa));
+		for (int q = 0; q < thisa.size(); q++) {
+			boolean found = false;
+			for (int r = 0; r < newa.size(); r++) {
+				if (thisa.get(q).getURL().equals(newa.get(r).getURL())) {
+					found = true;
+				}
+			}
+			if (!found) {
+				newa.add(thisa.get(q));
+			}
+		}
 		// articles merged
-		this.articles =  reta;
+		this.articles =  newa;
 		// 2. keywords
 		Iterator<Map.Entry<String, WordInfo>> it = this.getWords().entrySet().iterator();
 		Map.Entry<String, WordInfo> e;
@@ -323,43 +304,28 @@ public class Topic implements Comparable<Topic> {
 		// keywords merged
 		this.words = retHM;
 		// 3. company list
+		
 		@SuppressWarnings("unchecked")
-		ArrayList<CompanyLink> retCL = (ArrayList<CompanyLink>) this.companies.clone();
+		ArrayList<CompanyLink> thisCL = (ArrayList<CompanyLink>) this.companies.clone();
 		@SuppressWarnings("unchecked")
-		ArrayList<CompanyLink> rCL = (ArrayList<CompanyLink>) toMerge.companies.clone();
-		Iterator<CompanyLink> cIt = retCL.iterator();
-		CompanyLink cl;
-		CompanyLink ricl;
-		while (cIt.hasNext()) {
-			cl = cIt.next();
-			Iterator<CompanyLink> rIt = toMerge.companies.iterator();
-			boolean contains = false;
-			while (rIt.hasNext()) {
-				ricl = rIt.next();
-				if (ricl.name.equals(cl.name)) {
-					cl.merge(ricl);
-					contains = true;
-					rCL.remove(ricl);
+		ArrayList<CompanyLink> newCL = (ArrayList<CompanyLink>) toMerge.companies.clone();
+		
+		ArrayList<Integer> overlap = new ArrayList<Integer>();
+		for (int i = 0; i < thisCL.size(); i++) {
+			for (int j = 0; j < newCL.size(); j++) {
+				if (thisCL.get(i).name.equals(newCL.get(j).name)) {
+					thisCL.get(i).merge(newCL.get(j));
+					overlap.add(j);
 				}
 			}
-			if (!contains) {
-				// do nothing too lazy
+		}
+		for (int p = 0; p < newCL.size(); p++) {
+			if (!overlap.contains(p)) {
+				thisCL.add(newCL.get(p));
 			}
 		}
-
-		if (!rCL.isEmpty()) {
-			Iterator<CompanyLink> rIt2 = rCL.iterator();
-			CompanyLink ecl;
-			while (rIt2.hasNext()) {
-				ecl = rIt2.next();
-				retCL.add(ecl);
-			}
-		}
-		
-		ArrayList<CompanyLink> retCLf = new ArrayList<CompanyLink>(new HashSet<CompanyLink>(retCL));
-		
 		// merging done
-		this.companies = retCLf;
+		this.companies = thisCL;
 		this.numWords = words.size();
 		this.count = articles.size();
 		System.out.println("MERGE END: New topic top articles");
