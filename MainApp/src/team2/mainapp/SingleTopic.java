@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -57,78 +58,34 @@ public class SingleTopic extends Activity {
 			}
 		}
 		
-		hide = (ImageButton) findViewById(R.id.hide);
-		star = (ImageButton) findViewById(R.id.star);
-		hidestate = false;
-		starstate = false;
+		TextView textView1 = (TextView) findViewById(R.id.part1text2);
+		TextView textView2 = (TextView) findViewById(R.id.part1text3);
+		TextView textView3 = (TextView) findViewById(R.id.part2text2);
+		TextView textView4 = (TextView) findViewById(R.id.part2text3);
+		TextView textView5 = (TextView) findViewById(R.id.part2text3);
+		TextView textView6 = (TextView) findViewById(R.id.part4text1);
+		TextView textView7 = (TextView) findViewById(R.id.part4text2);
+		TextView textView8 = (TextView) findViewById(R.id.part4text3);
 
-		switch(thistopic.getState()){
-			case -1: hide.setImageResource(team2.mainapp.R.drawable.ic_menu_revert);hidestate=true;break;
-			case 1: star.setImageResource(drawable.btn_star_big_on);starstate=true;break;
-		}
+		textView1.setText(thistopic.getArticles().get(0).getTitle());
+		textView2.setText("Aggregated from " + thistopic.getArts() +
+				" sources, last seen " + thistopic.getDate());
+		textView3.setText(thistopic.getArticles().get(0).getSource() + " - "
+				+ Html.fromHtml(thistopic.getArticles().get(0).getDescription()));
+		textView4.setText(Html.fromHtml("Keywords: " + thistopic.printKeyWords()));
 		
-		double sent = thistopic.getSentiment();
-		Log.d("Sentiment",Double.toString(sent));
+		ArrayList<CompanyLink> companyLinks = new ArrayList<CompanyLink>();
 		
-		sent *=2;
-		if(sent > 1)
-			sent = 1;
-		if(sent < -1)
-			sent = -1;
-				
-		ArrayList<KeyWord> mListItems = new ArrayList<KeyWord>();
-
-		KeywordAdapter adapter1 = new KeywordAdapter(this, mListItems);
+		CompanyLinkAdapter adapter1 = new CompanyLinkAdapter(this, companyLinks);
 
 		ListView listView1 = (ListView) findViewById(R.id.list1);
 
 		listView1.setAdapter(adapter1);
-
-		mListItems.addAll(thistopic.getKeyWords());
-
-		ArrayList<String[]> nListItems = new ArrayList<String[]>();
-
-		TitleAdapter adapter2 = new TitleAdapter(this, nListItems);
-
-		ListView listView2 = (ListView) findViewById(R.id.list2);
-
-		listView2.setAdapter(adapter2);
-
-		nListItems.addAll(thistopic.getArticle());
+		
+		
+		companyLinks.addAll(thistopic.getCompanyLinks());
 	}
 	
-	public void starClickHandler(View view) {
-		GlobalState gState = (GlobalState) getApplication();
-		if(starstate){
-			star.setImageResource(drawable.btn_star_big_off);
-			starstate = false;
-			thistopic.setState(0);
-			gState.getAllSectors().get(2).removeTopic(thistopic);
-		}else{
-			hide.setImageResource(drawable.ic_menu_delete);
-			gState.getAllSectors().get(2).addTopic(thistopic);
-			star.setImageResource(drawable.btn_star_big_on);	
-			thistopic.setState(1);
-			hidestate = false;
-			starstate = true;
-		}
-	}
-	
-	public void hideClickHandler(View view) {
-		GlobalState gState = (GlobalState) getApplication();
-		if(hidestate){
-			hide.setImageResource(drawable.ic_menu_delete);
-			hidestate = false;
-		}else{
-			hide.setImageResource(team2.mainapp.R.drawable.ic_menu_revert);
-			star.setImageResource(drawable.btn_star_big_off);		
-			starstate = false;
-			hidestate = true;
-			thistopic.setState(0);
-			gState.getAllSectors().get(2).removeTopic(thistopic);
-		}
-	}
-
 	public void titleClickHandler(View view) {
 		TextView tv = (TextView) view.findViewById(R.id.textView2);
 		Uri uriUrl = Uri.parse((String) tv.getText());

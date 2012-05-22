@@ -149,6 +149,37 @@ public class Topic implements Comparable<Topic> {
 	public String getSector() {
 		return sector;
 	}
+	
+	public String printKeyWords() {
+		if (keyWords.size() == 0) {
+			return "";
+		}
+
+		double sentiment = keyWords.get(0).getSentiment();
+		
+		Double green = ((sentiment + 1) / 2.0) * 255;
+		Double red = 255.0 - green;
+		Integer igreen = (int) Math.round(green);
+		Integer ired = (int) Math.round(red);
+		
+		
+		String result = "<font color=#" + Integer.toHexString(Color.rgb(ired, igreen, 0)).toString().substring(2) + ">" + keyWords.get(0).getWord() + "</font>";
+		for (int i = 1; i < keyWords.size(); i++) {
+			sentiment = keyWords.get(i).getSentiment();
+			
+			green = ((sentiment + 1) / 2.0) * 255;
+			red = 255.0 - green;
+			igreen = (int) Math.round(green);
+			ired = (int) Math.round(red);
+			result += ", " + "<font color=#" + Integer.toHexString(Color.rgb(ired, igreen, 0)).toString().substring(2) + ">" + keyWords.get(i).getWord() + "</font>";
+		}
+		Log.d("herro",result);
+		return result;
+	}
+
+	public ArrayList<CompanyLink> getCompanyLinks() {
+		return companyLinks;
+	}
 }
 
 class CompanyLink {

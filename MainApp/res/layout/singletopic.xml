@@ -2,97 +2,126 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
+    android:gravity="center_horizontal|left"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dp"
-        android:paddingTop="5dp"
-        android:text="@string/keyw"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#FF555555"
-        android:textSize="12dp"
-        android:translationX="-75dp" />
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:background="#FFCCCCCC" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="#FF000000"
+        android:orientation="vertical" >
 
-        <ListView
-            android:id="@+id/list1"
-            android:layout_width="122dp"
-            android:layout_height="148dp"
-            android:layout_weight="0.60"
-            android:translationX="15dp" >
-        </ListView>
-       
-        
+        <TextView
+            android:id="@+id/part1text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Latest article in this topic: "
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#FFFFFFFF" />
+
+        <TextView
+            android:id="@+id/part1text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFFFF" />
+
+        <TextView
+            android:id="@+id/part1text3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aggregated from x sources, last seen 2012/12/12"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#FFFFFFFF" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/part2text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Small Text"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="#FFCCCCCC" />
+
+        <TextView
+            android:id="@+id/part2text3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Keywords"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dp"
-        android:text="@string/articl"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#FF555555"
-        android:textSize="12dp"
-        android:translationX="-95dp" />
-
-    <View
+        android:id="@+id/list1header"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_weight="0.05"
-        android:background="#FFCCCCCC" />
+        android:layout_height="wrap_content"
+        android:background="#FF000000"
+        android:text="Companies Mentioned"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFFFFFFF" />
 
     <ListView
-        android:id="@+id/list2"
+        android:id="@+id/list1"
         android:layout_width="wrap_content"
-        android:layout_height="202dp"
-        android:layout_weight="0.76"
+        android:layout_height="121dp"
+        android:layout_weight="0.24"
         android:translationX="15dp" >
     </ListView>
-    
-        <View
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:background="#FFCCCCCC" />
-    
+
+    <TextView
+        android:id="@+id/articlesheader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FF000000"
+        android:text="Topic Sources"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFFFFFFF" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical" >
+        android:layout_gravity="center"
+        android:orientation="horizontal" >
 
-        <ImageButton
-            android:id="@+id/hide"
-            android:layout_width="90px"
-            android:layout_height="90px"
-            android:onClick="hideClickHandler"
-            android:src="@android:drawable/ic_menu_delete" />
-
-        <View
-            android:layout_width="54dp"
-            android:layout_height="32dp"
-            android:background="#FFFFFFFF" />
+        <TextView
+            android:id="@+id/part4text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#FF000000"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFFFF" />
 
-        <ImageButton
-            android:id="@+id/star"
-            android:layout_width="90px"
-            android:layout_height="90px"
-            android:onClick="starClickHandler"
-            android:src="@android:drawable/btn_star_big_off" />
-        
+        <TextView
+            android:id="@+id/part4text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#FF000000"
+            android:text="Small Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFFFF" />
 
+        <TextView
+            android:id="@+id/part4text3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#FF000000"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFFFF" />
     </LinearLayout>
 
 </LinearLayout>

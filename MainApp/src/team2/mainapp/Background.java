@@ -131,7 +131,7 @@ public class Background extends Service {
 
 			// Read in flag which splits between each sector in the Parse information
 			String[] topicsectors = type[1].split("TOPSTOP\n");
-			//			Log.d("topicdata",type[1]);
+						Log.d("topicdata",type[1]);
 			//			Log.d("datatypes",Integer.toString(type.length));
 			int i = 0;
 			for (String sector : topicsectors)
@@ -179,7 +179,7 @@ public class Background extends Service {
 					}
 
 					ArrayList<CompanyLink> companyLinks = new ArrayList<CompanyLink>();
-					if(rawData.length == 10){
+					if(rawData.length == 9){
 						String[] companies = rawData[8].split(";\n");
 
 						for(String comp : companies)
