@@ -363,9 +363,9 @@ public class Topic implements Comparable<Topic> {
 		String ret = "";
 		for(CompanyLink link : companies)
 		{
-			ret += link.getCompany() + "@" + link.getRelevance() + "@" + link.getSentiment() + ";\n";
+			ret += Jsoup.parse(link.getCompany()).text() + "@" + link.getRelevance() + "@" + link.getSentiment() + ";\n";
 		}
-		return Jsoup.parse(ret).text();
+		return ret;
 	}
 	
 	public double totalRel() {
