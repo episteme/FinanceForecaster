@@ -331,7 +331,7 @@ public class Topic implements Comparable<Topic> {
 			}
 		}
 
-		while (!rCL.isEmpty()) {
+		if (!rCL.isEmpty()) {
 			Iterator<CompanyLink> rIt2 = rCL.iterator();
 			CompanyLink ecl;
 			while (rIt2.hasNext()) {
