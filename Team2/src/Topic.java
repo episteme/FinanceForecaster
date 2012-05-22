@@ -172,9 +172,9 @@ public class Topic implements Comparable<Topic> {
 	    String rString = "";
 	    for (int i = 1; i <= j; i++) {
 	    	WordAndVal nextWord = wavl.get(wavl.size() - i);
-	    	rString = rString + nextWord.getWord() + "@" + words.get(nextWord.getWord()).getSent() + ";\n";
+	    	rString = rString + Jsoup.parse(nextWord.getWord()).text() + "@" + words.get(nextWord.getWord()).getSent() + ";\n";
 	    }
-	    return Jsoup.parse(rString).text();
+	    return rString;
 	}
 	
 	public void printTopLinks() {
@@ -189,11 +189,11 @@ public class Topic implements Comparable<Topic> {
 			j = articles.size();
 		for (int i = 1; i <= j; i++)
 			rString = rString + articles.get(articles.size() - i).getURL() + 
-			"@" + articles.get(articles.size() - i).getTitle() +
-			"@" + articles.get(articles.size() - i).getSource() +
-			"@" + articles.get(articles.size() - i).getDescription() +
+			"@" + Jsoup.parse(articles.get(articles.size() - i).getTitle()).text() +
+			"@" + Jsoup.parse(articles.get(articles.size() - i).getSource()).text() +
+			"@" + Jsoup.parse(articles.get(articles.size() - i).getDescription()).text() +
 			";\n";
-		return Jsoup.parse(rString).text();
+		return rString;
 	}
 	
 	// Return the number of articles received in the last hour
