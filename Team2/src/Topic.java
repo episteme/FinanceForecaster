@@ -254,33 +254,36 @@ public class Topic implements Comparable<Topic> {
 		LinkedList<Article> thisa = this.getArticles();
 		LinkedList<Article> newa = toMerge.getArticles();
 		LinkedList<Article> reta = new LinkedList<Article>();
-		while (i < this.articles.size() & j < toMerge.getArticles().size()) {
-			int iCompareToJ = thisa.get(i).getDate().compareTo(newa.get(j).getDate());
-			// if i < j
-			if (iCompareToJ < 0) {
-				reta.add(thisa.get(i));
-				i++;
-			}
-			// j > i
-			else if (iCompareToJ > 0) {
-				reta.add(thisa.get(j));
-				j++;
-			}
-			else if (iCompareToJ == 0) {
-				i++;
-				j++;
-			}
-		}
-		// add remainder of left list
-		while (i < thisa.size()) {
-			reta.add(thisa.get(i));
-			i++;
-		}
-		// add remainder of right list
-		while (j < newa.size()) {
-			reta.add(newa.get(j));
-			j++;
-		}
+//		while (i < this.articles.size() & j < toMerge.getArticles().size()) {
+//			int iCompareToJ = thisa.get(i).getDate().compareTo(newa.get(j).getDate());
+//			// if i < j
+//			if (iCompareToJ < 0) {
+//				reta.add(thisa.get(i));
+//				i++;
+//			}
+//			// j > i
+//			else if (iCompareToJ > 0) {
+//				reta.add(thisa.get(j));
+//				j++;
+//			}
+//			else if (iCompareToJ == 0) {
+//				i++;
+//				j++;
+//			}
+//		}
+//		// add remainder of left list
+//		while (i < thisa.size()) {
+//			reta.add(thisa.get(i));
+//			i++;
+//		}
+//		// add remainder of right list
+//		while (j < newa.size()) {
+//			reta.add(newa.get(j));
+//			j++;
+//		}
+		
+		thisa.addAll(newa);
+		reta = new LinkedList<Article>(new HashSet<Article>(thisa));
 		// articles merged
 		this.articles =  reta;
 		// 2. keywords
