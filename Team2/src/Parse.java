@@ -1,15 +1,7 @@
 import java.net.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.io.*;
 
 import org.jsoup.Jsoup;
@@ -319,12 +311,11 @@ public class Parse implements Runnable {
 				boolean found = false;
 				for (int k = 0; k < cList.size(); k++) {
 					if (cList.get(k).getName().equals(s[0])) {
-						cList.get(k).update(s[1]);
+						cList.get(k).update(s[1], s[2]);
 						found = true;
 						System.out.println("Updated old company: " + s[0]);
 					}
 				}
-				
 				if (!found && !blackList.contains(s[0])) {
 					Company c = new Company(s[0], s[1], s[2]);
 					c.updatePrice();
@@ -358,9 +349,10 @@ public class Parse implements Runnable {
 	public CompanyList getCompanies() {
 		return cList;
 	}
+	
 }
 
-class CompanyList extends LinkedList<Company> {
+class CompanyList extends LinkedList<Company>  {
 
 	private static final long serialVersionUID = -2879891466110522574L;
 

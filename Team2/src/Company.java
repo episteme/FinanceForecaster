@@ -3,7 +3,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class Company {
+public class Company implements Comparable<Company> {
 
 	String name;
 	double price;
@@ -22,6 +22,7 @@ public class Company {
 		URLfound = false;
 		articles = 1;
 		sentiment = Double.parseDouble(sent);
+		this.relevance = Double.parseDouble(relevance);
 		traded = false;
 	}
 
@@ -33,11 +34,13 @@ public class Company {
 		return relevance;
 	}
 
-	public void update(String s) {
+	public void update(String s, String r) {
 		articles++;
 		double doubarts = (double) articles;
 		Double newSent = Double.parseDouble(s);
 		sentiment = ((sentiment * (doubarts - 1)) + newSent) / doubarts;
+		double newRel = Double.parseDouble(r);
+		relevance = ((relevance * (doubarts - 1)) + newRel) / doubarts;
 	}
 
 	public void updatePrice() {
@@ -176,5 +179,10 @@ public class Company {
 
 	public String strRel() {
 		return Double.toString(relevance);
+	}
+
+	@Override
+	public int compareTo(Company o) {
+		return ((Double) this.relevance).compareTo((Double) o.getRelevance());
 	}
 }

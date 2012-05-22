@@ -9,8 +9,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
-import org.jsoup.Jsoup;
-
 // A Topic is the large concept of a story,
 // it is a collection of relevant keywords,
 // links to the relevant articles and the
@@ -172,7 +170,7 @@ public class Topic implements Comparable<Topic> {
 	    String rString = "";
 	    for (int i = 1; i <= j; i++) {
 	    	WordAndVal nextWord = wavl.get(wavl.size() - i);
-	    	rString = rString + Jsoup.parse(nextWord.getWord()).text() + "@" + words.get(nextWord.getWord()).getSent() + ";\n";
+	    	rString = rString + nextWord.getWord() + "@" + words.get(nextWord.getWord()).getSent() + ";\n";
 	    }
 	    return rString;
 	}
@@ -189,9 +187,9 @@ public class Topic implements Comparable<Topic> {
 			j = articles.size();
 		for (int i = 1; i <= j; i++)
 			rString = rString + articles.get(articles.size() - i).getURL() + 
-			"@" + Jsoup.parse(articles.get(articles.size() - i).getTitle()).text() +
-			"@" + Jsoup.parse(articles.get(articles.size() - i).getSource()).text() +
-			"@" + Jsoup.parse(articles.get(articles.size() - i).getDescription()).text() +
+			"@" + (articles.get(articles.size() - i).getTitle()) +
+			"@" + (articles.get(articles.size() - i).getSource()) +
+			"@" + (articles.get(articles.size() - i).getDescription()) +
 			";\n";
 		return rString;
 	}
@@ -218,7 +216,7 @@ public class Topic implements Comparable<Topic> {
 	}
 	
 	public String getRecentTitle() {
-		return Jsoup.parse(recentTitle).text();
+		return recentTitle;
 	}
 	
 	public Date getTimestamp() {
@@ -363,7 +361,7 @@ public class Topic implements Comparable<Topic> {
 		String ret = "";
 		for(CompanyLink link : companies)
 		{
-			ret += Jsoup.parse(link.getCompany()).text() + "@" + link.getRelevance() + "@" + link.getSentiment() + ";\n";
+			ret += link.getCompany() + "@" + link.getRelevance() + "@" + link.getSentiment() + ";\n";
 		}
 		return ret;
 	}

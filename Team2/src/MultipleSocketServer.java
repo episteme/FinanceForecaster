@@ -106,6 +106,7 @@ public class MultipleSocketServer implements Runnable {
 						//java.util.Collections.sort(theparse.getTopics());
 						@SuppressWarnings("unchecked")
 						LinkedList<Company> companiez = (LinkedList<Company>) theparse.getCompanies().clone();
+						Collections.sort(companiez);
 						for (Company C : companiez) {
 							if (C == null) 
 

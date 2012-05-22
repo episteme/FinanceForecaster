@@ -57,7 +57,7 @@ public class FinanceParse {
 				boolean found = false;
 				for (int k = 0; k < cList.size(); k++) {
 					if (cList.get(k).getName().equals(s[0])) {
-						cList.get(k).update(s[1]);
+						cList.get(k).update(s[1], s[2]);
 						found = true;
 					}
 				}
