@@ -61,9 +61,11 @@ public class MultipleSocketServer implements Runnable {
 			System.out.println(processArr[1]);
 
 			// Send topics - Parse
+			ArrayList<ArrayList<ArrayList<CompanyLink>>> listOfListOfCompanyLLists = new ArrayList<ArrayList<ArrayList<CompanyLink>>>();
 			for (String topic : topicArr) {
 				for (int i = 0; i < parsers.length; i++) {
 					if (((Parse) parsers[i]).getSector().compareTo(topic) == 0) {
+						listOfListOfCompanyLLists.add(new ArrayList<ArrayList<CompanyLink>>());
 						Parse theparse = ((Parse) parsers[i]);
 						java.util.Collections.sort(theparse.getTopics());
 						int j = 0;
@@ -81,6 +83,7 @@ public class MultipleSocketServer implements Runnable {
 								returnTitle += T.getSentiment()+ ";;\n";
 								returnTitle += T.getCount() + ";;\n";
 								returnTitle += T.sendCompanyList() + ";;\n";
+								listOfListOfCompanyLLists.get(listOfListOfCompanyLLists.size() - 1).add(T.getCompanyList());
 								osw.write(returnTitle);
 								osw.write("SPECTOPS\n");
 							j++;
@@ -97,7 +100,6 @@ public class MultipleSocketServer implements Runnable {
 			
 			osw.write("SPLITINFO\n");
 
-
 			// Send companies - Parse
 			for (String topic : topicArr) {
 				for (int i = 0; i < parsers.length; i++) {
@@ -105,10 +107,29 @@ public class MultipleSocketServer implements Runnable {
 						Parse theparse = ((Parse) parsers[i]);
 						//java.util.Collections.sort(theparse.getTopics());
 						@SuppressWarnings("unchecked")
-						LinkedList<Company> companiez = (LinkedList<Company>) theparse.getCompanies().clone();
+						
+						ArrayList<ArrayList<CompanyLink>> thisTopicsCompanyInfo = listOfListOfCompanyLLists.get(i);
+						ArrayList<Company> companiez = new ArrayList<Company>();
+						
+						for (ArrayList<CompanyLink> lc : thisTopicsCompanyInfo) {
+							for (CompanyLink compLink : lc) {
+								boolean found = false;
+								for (int p = 0; p < companiez.size(); p++) {
+									if (companiez.get(p).name.equals(compLink.name)) {
+										found = true;
+										companiez.get(p).update(compLink.getSentiment(), compLink.getRelevance());
+									}
+								}
+								if (!found) {
+									companiez.add(new Company(compLink.name, compLink.getSentiment(), compLink.getRelevance()));
+								}
+							}
+						}
+						
+						CompanyList tt11 = (CompanyList) theparse.getCompanies().clone();
 						Collections.sort(companiez);
 						for (Company C : companiez) {
-							if (C == null) 
+							if (C == null || tt11.findCompany(C.getName()) == null) 
 
 								continue;
 							{
@@ -116,9 +137,9 @@ public class MultipleSocketServer implements Runnable {
 								returnTitle += C.getSentiment() + ";;\n";
 								returnTitle += C.getRelevance() + ";;\n";
 								returnTitle += C.getArticles() + ";;\n";
-								returnTitle += C.getStockPrice() + ";;\n";
-								returnTitle += C.getStockChange() + ";;\n";
-								returnTitle += C.isTraded() + ";;\n";
+								returnTitle += tt11.findCompany(C.getName()).getStockPrice() + ";;\n";
+								returnTitle += tt11.findCompany(C.getName()).getStockChange() + ";;\n";
+								returnTitle += tt11.findCompany(C.getName()).isTraded() + ";;\n";
 								osw.write(returnTitle);
 								osw.write("SPECCOMP\n");
 							}

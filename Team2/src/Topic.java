@@ -343,10 +343,14 @@ public class Topic implements Comparable<Topic> {
 	public int getCount() {
 		return count;
 	}
+	
+	public ArrayList<CompanyLink> getCompanyList() {
+		return companies;
+	}
 
 	public String sendCompanyList() {
 		String ret = "";
-		for(CompanyLink link : companies)
+		for (CompanyLink link : companies)
 		{
 			ret += link.getCompany() + "@" + link.getRelevance() + "@" + link.getSentiment() + ";\n";
 		}

@@ -25,6 +25,15 @@ public class Company implements Comparable<Company> {
 		this.relevance = Double.parseDouble(relevance);
 		traded = false;
 	}
+	
+	public Company(String n, Double s, Double r) {
+		name = n.replaceAll("_", " ");
+		URLfound = false;
+		articles = 1;
+		sentiment = s;
+		this.relevance = r;
+		traded = false;
+	}
 
 	public double getSentiment() {
 		return sentiment;
@@ -41,6 +50,13 @@ public class Company implements Comparable<Company> {
 		sentiment = ((sentiment * (doubarts - 1)) + newSent) / doubarts;
 		double newRel = Double.parseDouble(r);
 		relevance = ((relevance * (doubarts - 1)) + newRel) / doubarts;
+	}
+	
+	public void update(Double s, Double r) {
+		articles++;
+		double doubarts = (double) articles;
+		sentiment = ((sentiment * (doubarts - 1)) + s) / doubarts;
+		relevance = ((relevance * (doubarts - 1)) + r) / doubarts;
 	}
 
 	public void updatePrice() {
