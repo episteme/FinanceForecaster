@@ -23,7 +23,9 @@ public class Parse implements Runnable {
 	private String sector;
 	private String urlCache;
 	private int uid;
-	private String APIkey = "fbde73712800960605177cdcf8cc5ade6ebd15a5";
+	// private String APIkey = "fbde73712800960605177cdcf8cc5ade6ebd15a5";
+	private String APIkey = "6664ab94a526fd251fce5c8ecbe865f91f889980";
+
 
 
 	Parse(String sector) {
@@ -81,7 +83,7 @@ public class Parse implements Runnable {
 						theTitles.add(titleTemp);
 						theSources.add(sourceTemp);
 						theDescrips.add(descripTemp);
-						startIndex = inputLine.indexOf("<h3 class=\"r\"><a href=\"/url?q=");
+						startIndex = inputLine.indexOf("<h3 class=\"r\"><a// href=\"/url?q=");
 						}
 						catch(Exception e)
 						{
@@ -193,7 +195,7 @@ public class Parse implements Runnable {
 						}
 						
 					} catch (Exception e) {
-//						e.printStackTrace();
+						e.printStackTrace();
 						System.err.println("URL parsed incorrectly");
 					}
 				}
@@ -251,6 +253,10 @@ public class Parse implements Runnable {
 						System.out.println("Companies Mentioned: ");
 					for(CompanyLink cl : t.companies)
 					{
+						System.out.println(cl.name);
+						for (int i = 0; i < t.companies.size(); i++) {
+							System.out.println(t.companies.get(i).name);
+						}
 						Company current = cList.findCompany(cl.getCompany());
 						System.out.println("Company: " + current.getName());
 						if(current.isTraded())
@@ -360,16 +366,16 @@ class CompanyList extends LinkedList<Company>  {
 
 	private static final long serialVersionUID = -2879891466110522574L;
 
-	CompanyList ()
+	CompanyList()
 	{
 		super();
 	}
 	
 	Company findCompany(String name) {
 		Company found = null;
-		for(Company comp : this)
+		for  (Company comp : this)
 		{
-			if(comp.getName().equals(name))
+			if (comp.getName().equals(name))
 				return comp;
 		}
 		return found;
