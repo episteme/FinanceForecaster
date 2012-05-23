@@ -1,89 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/topicheader"
+        android:id="@+id/textView1"
         android:layout_width="match_parent"
-        android:layout_height="21dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
+        android:layout_height="wrap_content"
         android:background="#FF555555"
-        android:gravity="center_vertical"
-        android:paddingLeft="3dp"
+        android:paddingBottom="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
         android:text="Hot Topics"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFFFFFFF"
         android:textSize="13dp" />
 
-    <ListView
-        android:id="@+id/listView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android_paddingBottom="10dp" >
-    </ListView>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="#FFCCCCCC" />
+
+
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
 
     <Button
         android:id="@+id/button1"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-                android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-          android:layout_marginTop="10dp"
-        
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
         android:layout_gravity="right"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
         android:background="#FF333333"
         android:onClick="buttonClickHandler"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:text="See all"
         android:textColor="#FFFFFFFF"
-        android:textSize="15dp" />
+        android:textSize="10dp" />
 
     <TextView
-        android:id="@+id/compheader"
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
-        android:layout_height="21dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
+        android:layout_height="wrap_content"
         android:background="#FF555555"
-        android:gravity="center_vertical"
-        android:paddingLeft="3dp"
-        android:paddingRight="3dp"
-        android:text="Hot Companies"
+        android:paddingBottom="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:text="Most Affected Companies"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFFFFFFF"
         android:textSize="13dp" />
 
-    <ListView
-        android:id="@+id/listView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android_paddingBottom="10dp" >
-    </ListView>
+        <ListView
+            android:id="@+id/listView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="match_parent"
-                android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
         android:layout_gravity="right"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
         android:background="#FF333333"
         android:onClick="buttonClickHandler"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:text="See all"
         android:textColor="#FFFFFFFF"
-        android:textSize="15dp" />
+        android:textSize="10dp" />
 
 </LinearLayout>
