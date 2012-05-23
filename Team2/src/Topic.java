@@ -41,20 +41,20 @@ public class Topic implements Comparable<Topic> {
 	
 	private void mergeCompanies(ArrayList<CompanyLink> comps) {
 		ArrayList<CompanyLink> tempList = new ArrayList<CompanyLink>();
-		for(CompanyLink comp1 : companies)
-		{
-			for(CompanyLink comp2 : comps)
-			{
-				if(comp1.getCompany().equals(comp2.getCompany())){
-					comp1.merge(comp2);
-				}
-				else
-				{
-					tempList.add(comp2);
+		ArrayList<Integer> overlap = new ArrayList<Integer>();
+		for (int i = 0; i < companies.size(); i++) {
+			for (int j =  (i + 1); j < comps.size(); j++) {
+				if (!overlap.contains(j) && companies.get(i).getCompany().equals(comps.get(j).getCompany())) {
+					overlap.add(j);
+					companies.get(i).merge(comps.get(j));
 				}
 			}
 		}
-		companies.addAll(tempList);
+		for (int p = 0; p < comps.size(); p++) {
+			if (!overlap.contains(p)) {
+				companies.add(comps.get(p));
+			}
+		}
 	}
 
 	public int compareTo(Topic temp) {
