@@ -11,8 +11,9 @@ public class Company  implements Comparable<Company>{
 	double stockChange;
 	private boolean traded;
 	String sector;
+	String url;
 
-	public Company(String name, String sentiment, String relevance, String articles, String stockPrice, String stockChange, String traded, String sector) {
+	public Company(String name, String sentiment, String relevance, String articles, String stockPrice, String stockChange, String traded, String sector, String url) {
 		this.name = name;
 		this.sentiment = Double.parseDouble(sentiment);
 		this.relevance = Double.parseDouble(relevance);
@@ -21,8 +22,13 @@ public class Company  implements Comparable<Company>{
 		this.stockChange = Double.parseDouble(stockChange);
 		this.traded = Boolean.parseBoolean(traded);
 		this.sector = sector;
+		this.url = url;
 	}
 	
+	public String getUrl() {
+		return url;
+	}
+
 	public int compareTo(Company temp) {
 		if(temp.getRelevance() > this.getRelevance())
 			return 1;

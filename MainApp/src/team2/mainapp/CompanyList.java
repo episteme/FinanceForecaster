@@ -51,16 +51,19 @@ public class CompanyList extends Activity {
 		handler = new Handler();
 		
 		actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(actionBar.getThemedContext(), R.array.comp_list,
-				android.R.layout.simple_spinner_dropdown_item);
+
+		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(actionBar.getThemedContext(), R.array.home_list,
+				R.layout.spinner_layout);
 		
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		actionBar.setTitle("");
+		
 
 		OnNavigationListener mOnNavigationListener = new OnNavigationListener() {
 			// Get the same strings provided for the drop-down's ArrayAdapter
-			String[] strings = getResources().getStringArray(R.array.comp_list);
+			String[] strings = getResources().getStringArray(R.array.home_list);
 
 			@Override
 			public boolean onNavigationItemSelected(int position, long itemId) {
@@ -68,14 +71,14 @@ public class CompanyList extends Activity {
 				boolean check = true;
 
 				switch(position) {
-				case 1:myIntent.setClass(getBaseContext(), Homepage.class);break;
-				case 2:myIntent.setClass(getBaseContext(), MainAppActivity.class);break;
-				case 3:myIntent.setClass(getBaseContext(), GoogleNews.class);break;
-				case 0:check=false;break;
+				case 2:check=false;break;
+				case 1:myIntent.setClass(getBaseContext(), MainAppActivity.class);break;
+				case 0:myIntent.setClass(getBaseContext(), Homepage.class);break;
 				}
 
 				if(check){
 					myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+					finish();
 					startActivity(myIntent);
 				}
 				return true;
@@ -94,7 +97,7 @@ public class CompanyList extends Activity {
 		pager.setCurrentItem(gState.getPosition());
 		refreshChecker();
 		pager.setCurrentItem(gState.getPosition());
-		actionBar.setSelectedNavigationItem(0);
+		actionBar.setSelectedNavigationItem(2);
 	}
 	
 	public void onPause(){
@@ -120,6 +123,9 @@ public class CompanyList extends Activity {
 			Intent myIntent4 = new Intent(this, Preferences.class);
 			myIntent4.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			startActivity(myIntent4);
+			break;
+		case android.R.id.home:
+			finish();
 			break;
 		default:
 			break;

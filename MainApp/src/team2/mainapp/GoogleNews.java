@@ -54,7 +54,7 @@ public class GoogleNews extends Activity {
 		actionBar = getActionBar();
 		
 
-		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(actionBar.getThemedContext(), R.array.snap_list,
+		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(actionBar.getThemedContext(), R.array.home_list,
 				android.R.layout.simple_spinner_dropdown_item);
 		
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
@@ -63,7 +63,7 @@ public class GoogleNews extends Activity {
 
 		OnNavigationListener mOnNavigationListener = new OnNavigationListener() {
 			// Get the same strings provided for the drop-down's ArrayAdapter
-			String[] strings = getResources().getStringArray(R.array.snap_list);
+			String[] strings = getResources().getStringArray(R.array.home_list);
 
 			@Override
 			public boolean onNavigationItemSelected(int position, long itemId) {

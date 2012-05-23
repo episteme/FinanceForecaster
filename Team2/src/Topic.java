@@ -40,6 +40,7 @@ public class Topic implements Comparable<Topic> {
 	}
 	
 	private void mergeCompanies(ArrayList<CompanyLink> comps) {
+		ArrayList<CompanyLink> tempList = new ArrayList<CompanyLink>();
 		ArrayList<Integer> overlap = new ArrayList<Integer>();
 		for (int i = 0; i < companies.size(); i++) {
 			for (int j =  (i + 1); j < comps.size(); j++) {

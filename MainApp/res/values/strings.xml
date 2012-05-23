@@ -12,26 +12,7 @@
     <string name="articl">Find out more</string>
     <string-array name="home_list">
         <item>Dashboard</item>
-        <item>All Topics</item>
+        <item>Topics</item>
         <item>Companies</item>
-        <item>Snapshot</item>
-    </string-array>
-     <string-array name="snap_list">
-        <item>Snapshot</item>
-        <item>Dashboard</item>
-        <item>All Topics</item>
-        <item>Companies</item>
-    </string-array>
-     <string-array name="comp_list">
-        <item>Companies</item>
-        <item>Dashboard</item>
-        <item>All Topics</item>
-        <item>Snapshot</item>
-    </string-array>
-     <string-array name="topi_list">
-        <item>All Topics</item>
-        <item>Dashboard</item>
-        <item>Companies</item>
-        <item>Snapshot</item>
     </string-array>
 </resources>

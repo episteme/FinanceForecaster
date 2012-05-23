@@ -40,7 +40,7 @@ public class CompanyListAdapter extends ArrayAdapter<Company> {
 		Log.d("Debug", Integer.toString(values.size()));
 		Log.d("Debug", values.get(position).getName());
 		textView.setText(values.get(position).getName());
-		String s = "Mentioned in " + values.get(position).getArticles() + " article";
+		String s = "Related to " + values.get(position).getArticles() + " topic";
 		if((values.get(position).getArticles() != 1))
 			s += "s";
 		textView2.setText(s);

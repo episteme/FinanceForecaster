@@ -4,22 +4,31 @@
     android:layout_height="match_parent"
     android:onClick="titleClickHandler"
     android:orientation="vertical"
-    android:paddingTop="5dp" >
-
+    android:paddingBottom="6dp"
+   >
+
+    
+    
+    <View
+        android:layout_width="1000dp"
+        android:layout_height="1dp"
+        android:paddingBottom="15dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#FFCCCCCC" />
+    
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="13dp" />
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
  <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Small Text"
         android:textColor="#FF888888"
-        android:textSize="8dp" 
+        android:textSize="10dp" 
         android:visibility="gone"/>
     <TextView
         android:id="@+id/textView3"
@@ -27,6 +36,6 @@
         android:layout_height="wrap_content"
         android:text="Small Text"
         android:textColor="#FF888888"
-        android:textSize="8dp" />
+        android:textSize="10dp" />
 
 </LinearLayout>

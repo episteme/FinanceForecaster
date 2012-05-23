@@ -62,8 +62,8 @@ public class Background extends Service {
 		// Hide the notification after its selected
 		not.setAutoCancel(true);
 		Notification notification = not.getNotification();
-		long[] vibrate = {0,1000,1000,1000};
-		notification.vibrate = vibrate;
+//		long[] vibrate = {0,1000,1000,1000,50,50,50,50,1000,1000,50};
+//		notification.vibrate = vibrate;
 		notification.tickerText = title;
 		notification.defaults |= Notification.DEFAULT_LIGHTS;
 		Log.d("Debug", "Sending Notification");
@@ -185,7 +185,7 @@ public class Background extends Service {
 						for(String comp : companies)
 						{
 							String[] bits = comp.split("@");
-							companyLinks.add(new CompanyLink(bits[0],bits[1],bits[2]));
+							companyLinks.add(new CompanyLink(bits[0],bits[2],bits[1]));
 						}
 					}
 
@@ -195,7 +195,9 @@ public class Background extends Service {
 					// Add the topic info to the sector info
 					if(gState.getAllSectors().get(2).checkForFavourites(newTopic))
 						newTopic.setState(1);
-					if(newTopic.getArtsLastHour() >= gState.getAllSectors().get(i).getThreshold())
+					Log.d("ArtsLastHour",Integer.toString(newTopic.getArtsLastHour()));
+					Log.d("ArtsLastHourNot",Integer.toString(gState.getAllSectors().get(i).getThreshold()));
+					if(newTopic.getArtsLastHour() >= (105-gState.getAllSectors().get(i).getThreshold()))
 						createNotification(rawData[1],KeyWords,rawData[0],gState.getAllSectors().get(i).getName()); 
 					tempTopics.add(newTopic);
 
@@ -234,7 +236,7 @@ public class Background extends Service {
 					Log.d("newcompany",rawData[0]);
 					tempComps.add(
 							new Company(rawData[0], rawData[1], rawData[2], rawData[3], 
-									rawData[4], rawData[5], rawData[6],gState.getAllSectors().get(k).getName()));
+									rawData[4], rawData[5], rawData[6],gState.getAllSectors().get(k).getName(),rawData[7]));
 				}
 				gState.getAllSectors().get(k).setCompanies(tempComps);
 				k++;

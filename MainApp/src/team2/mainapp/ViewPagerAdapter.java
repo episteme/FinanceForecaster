@@ -94,7 +94,7 @@ implements TitleProvider
 			for(PagerPackage pp : packages){
 				Log.d("package","package");
 				pp.getmListItems().clear();
-				
+
 				for(Sector topicsector : gState.getAllSectors()){
 					if(topicsector.getName().equals(pp.getCategory().toLowerCase())){
 						java.util.Collections.sort(topicsector.getTopicData());
@@ -105,6 +105,47 @@ implements TitleProvider
 						}
 						// Complete the refresh
 						((PullToRefreshListView) pp.getView()).onRefreshComplete();
+					}
+				}
+			}
+		}
+	}
+
+	public class GetDataTask2 extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... params) {
+			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
+			while(gState.getReady() != true)
+			{
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void x) {
+			GlobalState gState = (GlobalState) ((Activity) context).getApplication();
+			gState.setRefreshState(0);
+			for(PagerPackage pp : packages){
+				if(pp.getCategory().equals("Starred")){
+
+				Log.d("package","package");
+				pp.getmListItems().clear();
+					for(Sector topicsector : gState.getAllSectors()){
+						if(topicsector.getName().equals(pp.getCategory().toLowerCase())){
+							java.util.Collections.sort(topicsector.getTopicData());
+							for (Topic topic : topicsector.getTopicData()) {
+								if(topic.getArtsLastHour() == 0)
+									break;
+								pp.getmListItems().add(topic);
+							}
+							// Complete the refresh
+							((PullToRefreshListView) pp.getView()).onRefreshComplete();
+						}
 					}
 				}
 			}
@@ -150,7 +191,7 @@ class PagerPackage {
 	PullToRefreshListView view;
 	int position;
 	String category;
-	
+
 	PagerPackage(ArrayList<Topic> m, PullToRefreshListView v, int p, String cat){
 		mListItems = m;
 		view = v;

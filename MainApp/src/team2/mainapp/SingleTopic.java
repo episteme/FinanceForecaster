@@ -45,6 +45,7 @@ public class SingleTopic extends Activity {
 	boolean starstate;
 	Topic thistopic;
 	ArrayList<CompanyLink> companyLinks;
+	ArrayList<String[]> titleLinks;
 
 
 	@Override
@@ -101,54 +102,51 @@ public class SingleTopic extends Activity {
 			TextView textView2 = (TextView) findViewById(R.id.part1text3);
 			TextView textView3 = (TextView) findViewById(R.id.part2text2);
 			TextView textView4 = (TextView) findViewById(R.id.part2text3);
-			TextView textView5 = (TextView) findViewById(R.id.part4text1);
-			TextView textView6 = (TextView) findViewById(R.id.part4text2);
-			TextView textView7 = (TextView) findViewById(R.id.part4text3);
-			TextView textView8 = (TextView) findViewById(R.id.part4text4);
-			TextView textView9 = (TextView) findViewById(R.id.part4text5);
+			TextView textView5 = (TextView) findViewById(R.id.part2text4);
 			TextView textView10 = (TextView) findViewById(R.id.list1header);
 			LinearLayout ll = (LinearLayout) findViewById(R.id.companyHeader);
 			
 			
 			ll.setBackgroundColor((Color.rgb(ired, igreen, 0)));
+			
+			int mostRecent = 0;
 
-			textView1.setText(thistopic.getArticles().get(0).getTitle());
+			textView1.setText(thistopic.getArticles().get(mostRecent).getTitle());
 			textView2.setText("Aggregated from " + thistopic.getArts() +
 					" sources, last seen " + thistopic.getDate());
-			textView3.setText(Html.fromHtml("<i>" + thistopic.getArticles().get(0).getSource() + "</i> - "
-					+ thistopic.getArticles().get(0).getDescription()));
+			textView3.setText(Html.fromHtml("<i>" + thistopic.getArticles().get(mostRecent).getSource() + "</i> - "
+					+ thistopic.getArticles().get(mostRecent).getDescription()));
 			textView4.setText(Html.fromHtml("<b>Keywords</b>: " + thistopic.printKeyWords()));
+			textView5.setText(Integer.toString(thistopic.getArts()));
 
 			Log.d("numberofarts",Integer.toString(thistopic.getArticles().size()));
 
-			switch(thistopic.getArticles().size()){
-			case 5 : 
-				textView5.setVisibility(View.VISIBLE);
-				textView5.setText(thistopic.getArticles().get(4).getSource());
-				textView5.setTag(thistopic.getArticles().get(4).getURL());
-			case 4 : 
-				textView6.setVisibility(View.VISIBLE);
-				textView6.setText(thistopic.getArticles().get(3).getSource());
-				textView6.setTag(thistopic.getArticles().get(3).getURL());
-			case 3 : 
-				textView7.setVisibility(View.VISIBLE);
-				textView7.setText(thistopic.getArticles().get(2).getSource());
-				textView7.setTag(thistopic.getArticles().get(2).getURL());
-			case 2 : 
-				textView8.setVisibility(View.VISIBLE);
-				textView8.setText(thistopic.getArticles().get(1).getSource());
-				textView8.setTag(thistopic.getArticles().get(1).getURL());
-			case 1 : 
-				textView9.setVisibility(View.VISIBLE);
-				textView9.setText(thistopic.getArticles().get(0).getSource());
-				textView9.setTag(thistopic.getArticles().get(0).getURL());
+
+			titleLinks = new ArrayList<String[]>();
+
+			TableLayout listView2 = (TableLayout) findViewById(R.id.list2);
+
+			for(Article article : thistopic.getArticles()){
+				String[] title = new String[3];
+				title[0] = article.getTitle();
+				title[1] = article.getURL();
+				title[2] = article.getSource();
+				titleLinks.add(title);
 			}
-
-
+			
+			int j = 0;
+			for(Article article : thistopic.getArticles())
+			{
+				listView2.addView(getTitleRow(j,listView2));
+				j++;
+			}
+			
+			
+			LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+			listView2.setLayoutParams(lp);
+			
 
 			companyLinks = new ArrayList<CompanyLink>();
-
-			CompanyLinkAdapter adapter1 = new CompanyLinkAdapter(this, companyLinks);
 
 			TableLayout listView1 = (TableLayout) findViewById(R.id.list1);
 
@@ -167,14 +165,16 @@ public class SingleTopic extends Activity {
 				}
 			}
 			
+			listView1.addView(getRowHeader(listView1));
+			
 			int i = 0;
 			for(CompanyLink cl : companyLinks)
 			{
 				listView1.addView(getRow(i,listView1));
 				i++;
 			}
-												
-			listView1.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+						
+			listView1.setLayoutParams(lp);
 
 			if(companyLinks.size() == 0){
 				listView1.setVisibility(View.GONE);
@@ -192,8 +192,8 @@ public class SingleTopic extends Activity {
 
 
 	public void titleClickHandler(View view) {
-		TextView tv = (TextView) view;
-		Uri uriUrl = Uri.parse((String) tv.getTag());
+		TextView tv = (TextView) view.findViewById(R.id.textView2);
+		Uri uriUrl = Uri.parse((String) tv.getText());
 		Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);  
 		startActivity(launchBrowser);
 	}
@@ -239,6 +239,7 @@ public class SingleTopic extends Activity {
 		TextView textView1 = (TextView) rowView.findViewById(R.id.textView1);
 		textView1.setText(thiscompany.getName());
 		TextView textView2 = (TextView) rowView.findViewById(R.id.textView2);
+		TextView textView10 = (TextView) rowView.findViewById(R.id.textView10);
 		
 		if(thiscompany.isTraded()){
 		
@@ -248,10 +249,11 @@ public class SingleTopic extends Activity {
 		else
 			htmlColor = "<font color=#00BB00>";
 		
-		textView2.setText(Html.fromHtml("Current Stock Value : " + thiscompany.getStockPrice() + " : " 
-		+ htmlColor + thiscompany.getStockChange() + "</font>"));
+		textView2.setText(Double.toString(thiscompany.getStockPrice()));
+		textView10.setText(Html.fromHtml(htmlColor + Math.abs(thiscompany.getStockChange()) + "</font>"));
 		}else{
-			textView2.setVisibility(View.GONE);
+			textView2.setText("N/A");
+			textView10.setVisibility(View.GONE);
 		}
 		
 		ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView1);
@@ -265,7 +267,7 @@ public class SingleTopic extends Activity {
 		}
 		else{
 			sentiment = "negative";
-			imageView.setImageResource(team2.mainapp.R.drawable.arrow_up);
+			imageView.setImageResource(team2.mainapp.R.drawable.arrow_down);
 		}
 		
 		double sent2 = companyLinks.get(position).getSentiment();
@@ -277,14 +279,38 @@ public class SingleTopic extends Activity {
 		
 		
 		TextView textView3 = (TextView) rowView.findViewById(R.id.textView3);
-		textView3.setText("Outlook based on this topic is " + sent2);
+		textView3.setText("Outlook based on this topic is " + sentiment2);
 		
 		TextView textView4 = (TextView) rowView.findViewById(R.id.textView4);
-		textView4.setText("Overall outlook for this company is " + sent);
+		textView4.setText("Overall outlook for this company is " + sentiment);
 		
 		
 		
 		Log.d("COMPANYLINKADAPTER","WORKING");
+
+		return rowView;
+	}
+	
+	public View getRowHeader(TableLayout parent) {
+		LayoutInflater inflater = (LayoutInflater) this
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View rowView = inflater.inflate(R.layout.tableheader, parent, false);
+
+
+		return rowView;
+	}
+	
+	public View getTitleRow(int position, ViewGroup parent) {
+		LayoutInflater inflater = (LayoutInflater) this
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View rowView = inflater.inflate(R.layout.titlelist, parent, false);
+		TextView textView1 = (TextView) rowView.findViewById(R.id.textView1);
+		TextView textView2 = (TextView) rowView.findViewById(R.id.textView2);
+		TextView textView3 = (TextView) rowView.findViewById(R.id.textView3);
+		textView1.setText(titleLinks.get(position)[0]);
+		textView2.setText(titleLinks.get(position)[1]);
+		textView3.setText(titleLinks.get(position)[2]);
+		
 
 		return rowView;
 	}

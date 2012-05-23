@@ -89,10 +89,10 @@ public class CompanyLinkAdapter extends ArrayAdapter<CompanyLink> {
 		
 		
 		TextView textView3 = (TextView) rowView.findViewById(R.id.textView3);
-		textView3.setText("Outlook based on this topic is " + sent2);
+		textView3.setText("Outlook based on this topic is " + sentiment2);
 		
 		TextView textView4 = (TextView) rowView.findViewById(R.id.textView4);
-		textView4.setText("Overall outlook for this company is " + sent);
+		textView4.setText("Overall outlook for this company is " + sentiment);
 		
 		
 		

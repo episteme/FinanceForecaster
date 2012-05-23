@@ -38,19 +38,9 @@ public class Preferences extends Activity {
 		tb.setChecked(gState.isOn());
 	}
 
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.prefsmenu, menu);
-		return true;
-	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.prefs:
-			Intent myIntent4 = new Intent(this, Preferences.class);
-			myIntent4.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			startActivity(myIntent4);
-			break;
 		case android.R.id.home:
 			finish();
 		default:

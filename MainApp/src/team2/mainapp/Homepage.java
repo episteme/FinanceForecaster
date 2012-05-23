@@ -69,7 +69,7 @@ public class Homepage extends Activity {
 
 
 		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(actionBar.getThemedContext(), R.array.home_list,
-				android.R.layout.simple_spinner_dropdown_item);
+				R.layout.spinner_layout);
 		
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		actionBar.setTitle("");
@@ -87,7 +87,6 @@ public class Homepage extends Activity {
 				switch(position) {
 				case 0:check=false;break;
 				case 1:myIntent.setClass(getBaseContext(), MainAppActivity.class);break;
-				case 3:myIntent.setClass(getBaseContext(), GoogleNews.class);break;
 				case 2:myIntent.setClass(getBaseContext(), CompanyList.class);break;
 				}
 
