@@ -19,6 +19,7 @@ public class Company implements Comparable<Company> {
 
 	public Company(String n, String sent, String relevance) {
 		name = n.replaceAll("_", " ");
+		URL = "";
 		URLfound = false;
 		articles = 1;
 		sentiment = Double.parseDouble(sent);
@@ -28,6 +29,7 @@ public class Company implements Comparable<Company> {
 	
 	public Company(String n, Double s, Double r) {
 		name = n.replaceAll("_", " ");
+		URL = "";
 		URLfound = false;
 		articles = 1;
 		sentiment = s;

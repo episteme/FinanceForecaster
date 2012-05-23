@@ -140,6 +140,7 @@ public class MultipleSocketServer implements Runnable {
 								returnTitle += tt11.findCompany(C.getName()).getStockPrice() + ";;\n";
 								returnTitle += tt11.findCompany(C.getName()).getStockChange() + ";;\n";
 								returnTitle += tt11.findCompany(C.getName()).isTraded() + ";;\n";
+								returnTitle += tt11.findCompany(C.getName()).URL + ";;\n";
 								osw.write(returnTitle);
 								osw.write("SPECCOMP\n");
 							}
