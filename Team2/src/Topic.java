@@ -324,6 +324,20 @@ public class Topic implements Comparable<Topic> {
 				thisCL.add(newCL.get(p));
 			}
 		}
+		overlap = new ArrayList<Integer>();
+		for (int i = 0; i < thisCL.size(); i++) {
+			if (!overlap.contains(i)) {
+				for (int j = (i+1); j < thisCL.size(); j++) {
+					if (!overlap.contains(j) && thisCL.get(i).name.equals(thisCL.get(j))) {
+						overlap.add(j);
+					}
+				}
+			}
+		}
+		for (Integer in : overlap) {
+			thisCL.remove(in);
+		}
+		
 		// merging done
 		this.companies = thisCL;
 		this.numWords = words.size();
