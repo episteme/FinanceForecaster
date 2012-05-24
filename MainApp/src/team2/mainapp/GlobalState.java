@@ -17,6 +17,7 @@ public class GlobalState extends Application {
 	static Date lastUpdated;
 	static int position;
 	static int refreshState;
+	static String ipaddress;
 
 	public void onCreate() {
 		Log.d("Starting","Application");
@@ -28,6 +29,8 @@ public class GlobalState extends Application {
 		this.setFrequency(0);
 		this.position = 0;
 		this.refreshState = 0;
+		
+		this.ipaddress = "10.131.156.93";
 
 		this.setSectors(new LinkedList<Sector>());
 		this.getAllSectors().add(new Sector("oil"));
@@ -35,6 +38,14 @@ public class GlobalState extends Application {
 		this.getAllSectors().add(new Sector("starred"));
 		this.getAllSectors().add(new Sector("hidden"));
 //		options = new OptionList();
+	}
+
+	public String getIpaddress() {
+		return ipaddress;
+	}
+
+	public void setIpaddress(String ipaddress) {
+		GlobalState.ipaddress = ipaddress;
 	}
 
 	public int getRefreshState() {

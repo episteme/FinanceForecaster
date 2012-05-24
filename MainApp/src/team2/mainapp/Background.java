@@ -90,7 +90,7 @@ public class Background extends Service {
 							// Get new information from remote server
 							Date dateType = new Date();
 							Log.d("Debug1", query);
-							s = TCPClient.go(query);
+							s = TCPClient.go(query,gState.getIpaddress());
 
 							if(s != "error"){
 							// Parse retrieved information

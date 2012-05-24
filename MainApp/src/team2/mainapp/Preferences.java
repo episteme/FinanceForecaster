@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -20,6 +21,7 @@ import android.widget.ToggleButton;
 
 public class Preferences extends Activity {
 	SeekBar sb1;
+	EditText et;
 	SeekBar sb2;
 	Spinner spinner;
 	Switch switche;
@@ -34,9 +36,9 @@ public class Preferences extends Activity {
 		sb1 = (SeekBar)findViewById( R.id.seekBar1 );
 		sb2 = (SeekBar) findViewById( R.id.seekBar2 );
 		switche = (Switch) findViewById( R.id.switch1 );
+		et = (EditText) findViewById(R.id.editText1);
 		
-
-	    spinner = (Spinner) findViewById(R.id.spinner1);
+	    spinner = (Spinner) findViewById(R.id.Spinner01);
 	    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
 	            this, R.array.freq, R.layout.spinner_layout2);
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -45,6 +47,7 @@ public class Preferences extends Activity {
 
 		GlobalState gState = (GlobalState) getApplication();
 
+		et.setText(gState.getIpaddress());
 		sb1.setProgress(gState.getAllSectors().get(0).getThreshold());
 		sb2.setProgress(gState.getAllSectors().get(1).getThreshold());
 		spinner.setSelection(gState.getFrequency());
@@ -80,6 +83,7 @@ public class Preferences extends Activity {
 		GlobalState gState = (GlobalState) getApplication();
 		gState.getAllSectors().get(0).setThreshold(sb1.getProgress());
 		gState.getAllSectors().get(1).setThreshold(sb2.getProgress());
+		gState.setIpaddress(et.getText().toString());
 		gState.setFrequency(numstate);
 		if(switche.isChecked())
 			gState.setOn(true);

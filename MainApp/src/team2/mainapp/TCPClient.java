@@ -9,12 +9,15 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
+import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 
 public class TCPClient {
 	
-	public static String go(String str) {
+	public static String go(String str,String ip) {
+
 
 		String r;
 		
@@ -24,7 +27,7 @@ public class TCPClient {
 
 			Log.d("TCP", "C: Connecting...");
 //			SocketAddress socketaddr = new InetSocketAddress("192.168.0.100", 8009);
-			SocketAddress socketaddr = new InetSocketAddress("10.131.156.93", 8009);
+			SocketAddress socketaddr = new InetSocketAddress(ip, 8009);
 			Socket socket = new Socket();
 			socket.connect(socketaddr,5000);
 
