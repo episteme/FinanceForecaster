@@ -2,6 +2,8 @@ package team2.mainapp;
 
 import java.util.ArrayList;
 
+import team2.mainapp.R.drawable;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.opengl.Visibility;
@@ -30,35 +32,56 @@ public class CompanyListAdapter extends ArrayAdapter<Company> {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.companylayout, parent, false);
-		TextView textView = (TextView) rowView.findViewById(R.id.name);
+		TextView textView1 = (TextView) rowView.findViewById(R.id.name);
 		TextView textView2 = (TextView) rowView.findViewById(R.id.mentions);
-		TextView textView3 = (TextView) rowView.findViewById(R.id.stockprice);
-		TextView textView4 = (TextView) rowView.findViewById(R.id.stockchange);
-		TextView textView5 = (TextView) rowView.findViewById(R.id.sector);
+		TextView textView3 = (TextView) rowView.findViewById(R.id.price);
+		TextView textView4 = (TextView) rowView.findViewById(R.id.change);
+		TextView textView5 = (TextView) rowView.findViewById(R.id.outlook);
+		TextView textView6 = (TextView) rowView.findViewById(R.id.sector);
 		
+		Company thiscompany = values.get(position);
 		
-		Log.d("Debug", Integer.toString(values.size()));
-		Log.d("Debug", values.get(position).getName());
-		textView.setText(values.get(position).getName());
-		String s = "Related to " + values.get(position).getArticles() + " topic";
-		if((values.get(position).getArticles() != 1))
-			s += "s";
-		textView2.setText(s);
-		textView3.setText(Double.toString(values.get(position).getStockPrice()));
-		String htmlColor;
-		if(values.get(position).getStockChange() < 0)
-			htmlColor = "<font color=#BB0000>";
-		else
-			htmlColor = "<font color=#00BB00>";
+		textView1.setText(thiscompany.getName());
 		
-		textView4.setText(Html.fromHtml(htmlColor + values.get(position).getStockChange() + "</font>" + " " + values.get(position).getRelevance()));
-		textView5.setText(values.get(position).getSector());
+		if(thiscompany.isTraded()){
+			
+			String htmlColor;
+			if(thiscompany.getStockChange() < 0)
+				htmlColor = "<font color=#BB0000>";
+			else
+				htmlColor = "<font color=#00BB00>";
+			
+			textView3.setText(Double.toString(thiscompany.getStockPrice()));
+			textView4.setText(Html.fromHtml(htmlColor + Math.abs(thiscompany.getStockChange()) + "</font>"));
+			}else{
+				textView3.setText("N/A");
+				textView4.setVisibility(View.GONE);
+			}
+			
+			ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView1);
+
+			
+			double sent = thiscompany.getSentiment();
+			String sentiment;
+			if(sent > 0){
+				sentiment = "positive";
+				imageView.setImageResource(team2.mainapp.R.drawable.arrow_up);
+			}
+			else{
+				sentiment = "negative";
+				imageView.setImageResource(team2.mainapp.R.drawable.arrow_down);
+			}
 		
-		if(!values.get(position).isTraded()){
-			textView3.setVisibility(View.GONE);
-			textView4.setText("This company is not publically traded");
-		}
-		return rowView;
+			textView2.setText("Mentioned in " + thiscompany.getArticles() + " topics");
+			textView5.setText("Overall outlook for this company is " + sentiment);
+			
+			textView6.setText(thiscompany.getSector());
+			
+			
+			
+			Log.d("COMPANYLINKADAPTER","WORKING");
+
+			return rowView;
 	}
 	
 	
