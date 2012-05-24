@@ -9,15 +9,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class Preferences extends Activity {
 	SeekBar sb1;
 	SeekBar sb2;
-	SeekBar sb3;
-	ToggleButton tb;
+	Spinner spinner;
+	Switch switche;
+	static int numstate;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,15 +33,35 @@ public class Preferences extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		sb1 = (SeekBar)findViewById( R.id.seekBar1 );
 		sb2 = (SeekBar) findViewById( R.id.seekBar2 );
-		sb3 = (SeekBar) findViewById( R.id.seekBar3);
-		tb = (ToggleButton) findViewById( R.id.toggleButton1 );
+		switche = (Switch) findViewById( R.id.switch1 );
+		
+
+	    spinner = (Spinner) findViewById(R.id.spinner1);
+	    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+	            this, R.array.freq, R.layout.spinner_layout2);
+	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    spinner.setAdapter(adapter);
+	    spinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
 
 		GlobalState gState = (GlobalState) getApplication();
 
 		sb1.setProgress(gState.getAllSectors().get(0).getThreshold());
 		sb2.setProgress(gState.getAllSectors().get(1).getThreshold());
-		sb3.setProgress(gState.getFrequency());
-		tb.setChecked(gState.isOn());
+		spinner.setSelection(gState.getFrequency());
+		numstate = gState.getFrequency();
+		switche.setChecked(gState.isOn());
+	}
+	
+	public class MyOnItemSelectedListener implements OnItemSelectedListener {
+
+	    public void onItemSelected(AdapterView<?> parent,
+	        View view, int pos, long id) {
+	    	numstate = pos;
+	    }
+
+	    public void onNothingSelected(AdapterView parent) {
+	      // Do nothing.
+	    }
 	}
 
 
@@ -54,8 +80,8 @@ public class Preferences extends Activity {
 		GlobalState gState = (GlobalState) getApplication();
 		gState.getAllSectors().get(0).setThreshold(sb1.getProgress());
 		gState.getAllSectors().get(1).setThreshold(sb2.getProgress());
-		gState.setFrequency(sb3.getProgress());
-		if(tb.getText().equals("Updates Enabled"))
+		gState.setFrequency(numstate);
+		if(switche.isChecked())
 			gState.setOn(true);
 		else
 			gState.setOn(false);
@@ -72,3 +98,4 @@ public class Preferences extends Activity {
 					topic.setState(0);
 	}
 }
+

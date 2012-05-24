@@ -9,6 +9,7 @@ package team2.mainapp;
 
 public final class R {
     public static final class array {
+        public static final int freq=0x7f050001;
         public static final int home_list=0x7f050000;
     }
     public static final class attr {
@@ -323,22 +324,22 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int vpi__tab_unselected_pressed_holo=0x7f02001d;
     }
     public static final class id {
-        public static final int articlesheader=0x7f07003d;
+        public static final int articlesheader=0x7f07003e;
         public static final int button1=0x7f07001e;
         public static final int button2=0x7f070020;
         public static final int change=0x7f07000e;
-        public static final int companyHeader=0x7f07002f;
-        public static final int csector=0x7f07002d;
-        public static final int cuid=0x7f07002c;
-        public static final int financeLink=0x7f070036;
-        public static final int header=0x7f07002e;
+        public static final int companyHeader=0x7f070030;
+        public static final int csector=0x7f07002e;
+        public static final int cuid=0x7f07002d;
+        public static final int financeLink=0x7f070037;
+        public static final int header=0x7f07002f;
         public static final int header1=0x7f070006;
         public static final int header2=0x7f070007;
         public static final int header3=0x7f070008;
         public static final int horizontal=0x7f070000;
         public static final int imageView1=0x7f07000f;
         public static final int indicator=0x7f070005;
-        public static final int keyheader=0x7f070034;
+        public static final int keyheader=0x7f070035;
         public static final int label=0x7f070016;
         public static final int label2=0x7f070018;
         public static final int label3=0x7f07001a;
@@ -347,47 +348,48 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int labelp=0x7f070017;
         public static final int labelq=0x7f070019;
         public static final int labelr=0x7f07001b;
-        public static final int list1=0x7f070035;
-        public static final int list1header=0x7f07003c;
-        public static final int list2=0x7f07003e;
+        public static final int list1=0x7f070036;
+        public static final int list1header=0x7f07003d;
+        public static final int list2=0x7f07003f;
         public static final int listView1=0x7f07001d;
         public static final int listView2=0x7f07001f;
         public static final int mentions=0x7f07000b;
         public static final int name=0x7f07000a;
         public static final int none=0x7f070002;
         public static final int outlook=0x7f07000c;
-        public static final int part1text1=0x7f070030;
-        public static final int part1text2=0x7f070031;
-        public static final int part1text3=0x7f070037;
-        public static final int part2text2=0x7f070038;
-        public static final int part2text3=0x7f070039;
-        public static final int part2text4=0x7f07003a;
-        public static final int part2text5=0x7f07003b;
-        public static final int prefs=0x7f070041;
+        public static final int part1text1=0x7f070031;
+        public static final int part1text2=0x7f070032;
+        public static final int part1text3=0x7f070038;
+        public static final int part2text2=0x7f070039;
+        public static final int part2text3=0x7f07003a;
+        public static final int part2text4=0x7f07003b;
+        public static final int part2text5=0x7f07003c;
+        public static final int prefs=0x7f070042;
         public static final int price=0x7f07000d;
-        public static final int pull_to_refresh_header=0x7f070027;
-        public static final int pull_to_refresh_image=0x7f070029;
-        public static final int pull_to_refresh_progress=0x7f070028;
-        public static final int pull_to_refresh_text=0x7f07002a;
-        public static final int pull_to_refresh_updated_at=0x7f07002b;
-        public static final int refresh=0x7f070040;
+        public static final int pull_to_refresh_header=0x7f070028;
+        public static final int pull_to_refresh_image=0x7f07002a;
+        public static final int pull_to_refresh_progress=0x7f070029;
+        public static final int pull_to_refresh_text=0x7f07002b;
+        public static final int pull_to_refresh_updated_at=0x7f07002c;
+        public static final int refresh=0x7f070041;
         public static final int sector=0x7f070010;
-        public static final int seekBar1=0x7f070025;
-        public static final int seekBar2=0x7f070026;
-        public static final int seekBar3=0x7f070024;
-        public static final int star=0x7f07003f;
+        public static final int seekBar1=0x7f070026;
+        public static final int seekBar2=0x7f070027;
+        public static final int spinner1=0x7f070025;
+        public static final int star=0x7f070040;
+        public static final int switch1=0x7f070023;
         public static final int textView1=0x7f070011;
         public static final int textView10=0x7f070022;
         public static final int textView2=0x7f070012;
         public static final int textView3=0x7f070013;
         public static final int textView4=0x7f070021;
-        public static final int textView8=0x7f070032;
-        public static final int textView9=0x7f070033;
-        public static final int toggleButton1=0x7f070023;
+        public static final int textView8=0x7f070033;
+        public static final int textView9=0x7f070034;
         public static final int triangle=0x7f070003;
         public static final int uid=0x7f070014;
         public static final int underline=0x7f070004;
         public static final int vertical=0x7f070001;
+        public static final int view1=0x7f070024;
         public static final int viewpager=0x7f070009;
     }
     public static final class integer {
@@ -411,11 +413,12 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int singlecompany=0x7f03000d;
         public static final int singletopic=0x7f03000e;
         public static final int spinner_layout=0x7f03000f;
-        public static final int tableheader=0x7f030010;
-        public static final int tableheader2=0x7f030011;
-        public static final int titlelist=0x7f030012;
-        public static final int topiclayout=0x7f030013;
-        public static final int vpi__tab=0x7f030014;
+        public static final int spinner_layout2=0x7f030010;
+        public static final int tableheader=0x7f030011;
+        public static final int tableheader2=0x7f030012;
+        public static final int titlelist=0x7f030013;
+        public static final int topiclayout=0x7f030014;
+        public static final int vpi__tab=0x7f030015;
     }
     public static final class menu {
         public static final int mainmenu=0x7f0c0000;

@@ -10,9 +10,33 @@
     <string name="breaking_news">Breaking News</string>
     <string name="keyw">Keywords &amp; Sentiment</string>
     <string name="articl">Find out more</string>
+
     <string-array name="home_list">
         <item>Dashboard</item>
         <item>Topics</item>
         <item>Companies</item>
     </string-array>
+    <string-array name="freq">
+        <item>minute</item>
+        <item>2 minutes</item>
+        <item>3 minutes</item>
+        <item>4 minutes</item>
+        <item>5 minutes</item>
+        <item>6 minutes</item>
+        <item>7 minutes</item>
+        <item>8 minutes</item>
+        <item>9 minutes</item>
+        <item>10 minutes</item>
+        <item>11 minutes</item>
+        <item>12 minutes</item>
+        <item>13 minutes</item>
+        <item>14 minutes</item>
+        <item>15 minutes</item>
+        <item>16 minutes</item>
+        <item>17 minutes</item>
+        <item>18 minutes</item>
+        <item>19 minutes</item>
+        <item>20 minutes</item>
+    </string-array>
+
 </resources>

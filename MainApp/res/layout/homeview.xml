@@ -9,10 +9,12 @@
         android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
         android:background="#FF555555"
         android:paddingBottom="2dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
         android:paddingTop="5dp"
         android:text="Hot Topics"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -47,10 +49,11 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
         android:background="#FF555555"
-        android:paddingBottom="2dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
         android:paddingTop="5dp"
         android:text="Most Affected Companies"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -117,9 +120,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#FFCCCCCC"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" />
+        android:layout_marginRight="10dp"
+        android:background="#FFCCCCCC" />
 
     <ListView
         android:id="@+id/listView2"
