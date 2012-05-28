@@ -30,7 +30,7 @@ public class GlobalState extends Application {
 		this.position = 0;
 		this.refreshState = 0;
 		
-		this.ipaddress = "10.131.156.93";
+		this.ipaddress = "137.205.116.225";
 
 		this.setSectors(new LinkedList<Sector>());
 		this.getAllSectors().add(new Sector("oil"));

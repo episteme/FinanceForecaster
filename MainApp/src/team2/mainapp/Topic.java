@@ -22,6 +22,7 @@ public class Topic implements Comparable<Topic> {
 	private ArrayList<CompanyLink> companyLinks;
 	private ArrayList<Article> articles;
 	private String sector;
+	private int extraThreshold;
 	
 	Topic (String title, String date,  int artsLH, ArrayList<Article> arts, ArrayList<KeyWord> keyWords, String uid, double sentiment2, String rawData, ArrayList<CompanyLink> companyLinks, String sector) {
 		this.uid = (int) Integer.parseInt(uid);
@@ -35,6 +36,15 @@ public class Topic implements Comparable<Topic> {
 		this.companyLinks = companyLinks;
 		this.articles = arts;
 		this.sector = sector;
+		extraThreshold = 0;
+	}
+	
+	public void addThreshold(int thresh) {
+		this.extraThreshold += thresh;
+	}
+	
+	public int getThreshold() {
+		return extraThreshold;
 	}
 	
 	public double getSentiment() {
@@ -179,6 +189,10 @@ public class Topic implements Comparable<Topic> {
 
 	public ArrayList<CompanyLink> getCompanyLinks() {
 		return companyLinks;
+	}
+
+	public int getNotifyThreshold() {
+		return extraThreshold;
 	}
 }
 

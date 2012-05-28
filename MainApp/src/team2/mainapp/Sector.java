@@ -103,6 +103,16 @@ public class Sector {
 	public void setTopicData(LinkedList<Topic> tempTopics) {
 		topicData = tempTopics;
 	}
+	
+	public int checkForNotification(Topic topic) {
+		for(Topic temp : topicData)
+		{
+			if(topic.getUid() == temp.getUid() && topic.getSector().equals(temp.getSector())){
+				return temp.getNotifyThreshold();
+			}
+		}
+		return -1;
+	}
 
 	public boolean checkForFavourites(Topic topic) {
 		for(Topic temp : topicData)

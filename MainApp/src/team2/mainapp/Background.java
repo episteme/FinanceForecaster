@@ -41,33 +41,34 @@ public class Background extends Service {
 		return mBinder;	
 	}	
 
-	public void createNotification(String title, ArrayList<KeyWord> keyWords, String uid, String sector) {
+	public void createNotification(Topic topic) {
 		Log.d("Debug", "Creating Notification");
 		NotificationManager notificationManager = (NotificationManager) 
 				getSystemService(NOTIFICATION_SERVICE);
 		// Construction
 		Notification.Builder not = new Notification.Builder(this);
 		not.setSmallIcon(R.drawable.psyduck2);
-		not.setContentTitle(title);
-		String result = keyWords.get(0).getWord();
-		for (int i = 1; i < keyWords.size(); i++) {
-			result += ", " + keyWords.get(i).getWord();
+		not.setContentTitle(topic.getTitle());
+		String result = topic.getKeyWords().get(0).getWord();
+		for (int i = 1; i < topic.getKeyWords().size(); i++) {
+			result += ", " + topic.getKeyWords().get(i).getWord();
 		}
+		topic.addThreshold(10);
 		not.setContentText(result);
 		Intent intent = new Intent(this, SingleTopic.class);
-		intent.putExtra("EXTRA_UID",uid);
-		intent.putExtra("SECTOR", sector);
-		PendingIntent activity = PendingIntent.getActivity(this, Integer.parseInt(uid), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		intent.putExtra("EXTRA_UID",topic.getUid());
+		intent.putExtra("SECTOR", topic.getSector());
+		PendingIntent activity = PendingIntent.getActivity(this, topic.getUid(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		not.setContentIntent(activity);
 		// Hide the notification after its selected
 		not.setAutoCancel(true);
 		Notification notification = not.getNotification();
-//		long[] vibrate = {0,1000,1000,1000,50,50,50,50,1000,1000,50};
-//		notification.vibrate = vibrate;
-		notification.tickerText = title;
+		long[] vibrate = {0,1000,1000,1000,100,100,100,100,1000,1000};
+		notification.vibrate = vibrate;
+		notification.tickerText = topic.getTitle();
 		notification.defaults |= Notification.DEFAULT_LIGHTS;
 		Log.d("Debug", "Sending Notification");
-		notificationManager.notify(Integer.parseInt(uid), notification);
+		notificationManager.notify(topic.getUid(), notification);
 	}
 
 
@@ -195,10 +196,13 @@ public class Background extends Service {
 					// Add the topic info to the sector info
 					if(gState.getAllSectors().get(2).checkForFavourites(newTopic))
 						newTopic.setState(1);
+					int thresh = gState.getAllSectors().get(i).checkForNotification(newTopic);
+					if(thresh != -1)
+						newTopic.addThreshold(thresh);
 					Log.d("ArtsLastHour",Integer.toString(newTopic.getArtsLastHour()));
 					Log.d("ArtsLastHourNot",Integer.toString(gState.getAllSectors().get(i).getThreshold()));
-					if(newTopic.getArtsLastHour() >= (105-gState.getAllSectors().get(i).getThreshold()))
-						createNotification(rawData[1],KeyWords,rawData[0],gState.getAllSectors().get(i).getName()); 
+					if((newTopic.getArtsLastHour() - newTopic.getThreshold()) >= (105-gState.getAllSectors().get(i).getThreshold()))
+						createNotification(newTopic); 
 					tempTopics.add(newTopic);
 
 				}
