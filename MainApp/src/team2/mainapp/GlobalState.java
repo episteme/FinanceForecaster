@@ -35,8 +35,8 @@ public class GlobalState extends Application {
 		this.setSectors(new LinkedList<Sector>());
 		this.getAllSectors().add(new Sector("oil"));
 		this.getAllSectors().add(new Sector("technology"));
+		this.getAllSectors().add(new Sector("energy"));
 		this.getAllSectors().add(new Sector("starred"));
-		this.getAllSectors().add(new Sector("hidden"));
 //		options = new OptionList();
 	}
 

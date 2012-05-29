@@ -43,7 +43,7 @@ public class Topic implements Comparable<Topic> {
 		ArrayList<CompanyLink> tempList = new ArrayList<CompanyLink>();
 		ArrayList<Integer> overlap = new ArrayList<Integer>();
 		for (int i = 0; i < companies.size(); i++) {
-			for (int j =  (i + 1); j < comps.size(); j++) {
+			for (int j =  0; j < comps.size(); j++) {
 				if (!overlap.contains(j) && companies.get(i).getCompany().equals(comps.get(j).getCompany())) {
 					overlap.add(j);
 					companies.get(i).merge(comps.get(j));
@@ -170,7 +170,7 @@ public class Topic implements Comparable<Topic> {
 	    String rString = "";
 	    for (int i = 1; i <= j; i++) {
 	    	WordAndVal nextWord = wavl.get(wavl.size() - i);
-	    	rString = rString + nextWord.getWord() + "@" + words.get(nextWord.getWord()).getSent() + ";\n";
+	    	rString = rString + nextWord.getWord() + "@" + words.get(nextWord.getWord()).getSent() + "f;f\n";
 	    }
 	    return rString;
 	}
@@ -190,7 +190,7 @@ public class Topic implements Comparable<Topic> {
 			"@" + (articles.get(articles.size() - i).getTitle()) +
 			"@" + (articles.get(articles.size() - i).getSource()) +
 			"@" + (articles.get(articles.size() - i).getDescription()) +
-			";\n";
+			"f;f\n";
 		return rString;
 	}
 	
@@ -366,7 +366,7 @@ public class Topic implements Comparable<Topic> {
 		String ret = "";
 		for (CompanyLink link : companies)
 		{
-			ret += link.getCompany() + "@" + link.getRelevance() + "@" + link.getSentiment() + ";\n";
+			ret += link.getCompany() + "@" + link.getRelevance() + "@" + link.getSentiment() + "f;f\n";
 		}
 		return ret;
 	}

@@ -22,7 +22,7 @@ implements TitleProvider
 	ArrayList<PagerPackage> packages;
 	PullToRefreshListView v;
 	String category;
-	private static String[] titles = new String[] {"Oil", "Technology", "Starred" };
+	private static String[] titles = new String[] {"Oil", "Technology", "Energy", "Starred" };
 
 	private final Context context;
 

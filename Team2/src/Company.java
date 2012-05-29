@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -63,6 +64,7 @@ public class Company implements Comparable<Company> {
 
 	public void updatePrice() {
 		if(!URLfound || traded){
+			BufferedReader in = null;
 			try{
 				String query;
 				if(URLfound)
@@ -75,7 +77,7 @@ public class Company implements Comparable<Company> {
 				// Need to pretend we are a browser so that google responds
 				uc.setRequestProperty
 				( "User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)" );
-				BufferedReader in = new BufferedReader(
+				in = new BufferedReader(
 						new InputStreamReader(
 								uc.getInputStream()));
 				String inputLine;
@@ -158,7 +160,12 @@ public class Company implements Comparable<Company> {
 				this.URLfound = true;
 			}catch (Exception e) {
 				this.traded = false;
-				this.URLfound = true;
+			} finally {
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

@@ -23,6 +23,7 @@ public class Preferences extends Activity {
 	SeekBar sb1;
 	EditText et;
 	SeekBar sb2;
+	SeekBar sb3;
 	Spinner spinner;
 	Switch switche;
 	static int numstate;
@@ -35,6 +36,7 @@ public class Preferences extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		sb1 = (SeekBar)findViewById( R.id.seekBar1 );
 		sb2 = (SeekBar) findViewById( R.id.seekBar2 );
+		sb3 = (SeekBar) findViewById( R.id.seekBar3 );
 		switche = (Switch) findViewById( R.id.switch1 );
 		et = (EditText) findViewById(R.id.editText1);
 		
@@ -50,6 +52,7 @@ public class Preferences extends Activity {
 		et.setText(gState.getIpaddress());
 		sb1.setProgress(gState.getAllSectors().get(0).getThreshold());
 		sb2.setProgress(gState.getAllSectors().get(1).getThreshold());
+		sb3.setProgress(gState.getAllSectors().get(2).getThreshold());
 		spinner.setSelection(gState.getFrequency());
 		numstate = gState.getFrequency();
 		switche.setChecked(gState.isOn());
@@ -83,6 +86,7 @@ public class Preferences extends Activity {
 		GlobalState gState = (GlobalState) getApplication();
 		gState.getAllSectors().get(0).setThreshold(sb1.getProgress());
 		gState.getAllSectors().get(1).setThreshold(sb2.getProgress());
+		gState.getAllSectors().get(2).setThreshold(sb3.getProgress());
 		gState.setIpaddress(et.getText().toString());
 		gState.setFrequency(numstate);
 		if(switche.isChecked())

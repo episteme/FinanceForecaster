@@ -23,7 +23,7 @@ implements TitleProvider
 	ArrayList<CompanyPackage> packages;
 	PullToRefreshListView v;
 	String category;
-	private static String[] titles = new String[] {"Oil", "Technology" };
+	private static String[] titles = new String[] {"Oil", "Technology", "Energy" };
 
 	private final Context context;
 

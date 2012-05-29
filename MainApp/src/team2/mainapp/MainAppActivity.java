@@ -149,12 +149,12 @@ public class MainAppActivity extends Activity {
 					if(starstate == 1){
 						Log.d("setstate","1");
 						topic.setState(1);
-						gState.getAllSectors().get(2).addTopic(topic);
+						gState.getAllSectors().get(3).addTopic(topic);
 					}
 					else{
 						Log.d("setstate","0");
 						topic.setState(0);
-						gState.getAllSectors().get(2).removeTopic(topic);
+						gState.getAllSectors().get(3).removeTopic(topic);
 					}
 					break;
 				}

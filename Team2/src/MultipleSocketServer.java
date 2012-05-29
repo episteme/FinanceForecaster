@@ -6,16 +6,19 @@ import org.jsoup.Jsoup;
 
 public class MultipleSocketServer implements Runnable {
 	
-	static Runnable[] parsers = new Runnable[2];
+	static Runnable[] parsers = new Runnable[3];
 	private Socket connection;
 	public static void main(String[] args) {
 		parsers[0] = new Parse("oil");
 		parsers[1] = new Parse("technology");
+		parsers[2] = new Parse("energy");
 
 		Thread oiltopt = new Thread(parsers[0]);
 		oiltopt.start();
 		Thread currtopt = new Thread(parsers[1]);
 		currtopt.start();
+		Thread enertopt = new Thread(parsers[2]);
+		enertopt.start();
 
 		// Start main server on this port
 		int port = 8009;
@@ -74,15 +77,15 @@ public class MultipleSocketServer implements Runnable {
 						for (Topic T: topicz) {
 							if (T == null)
 								continue;
-								String returnTitle = ((Integer) T.getUid()).toString() + ";;\n";
-								returnTitle += T.getRecentTitle() + ";;\n"; 
-								returnTitle += T.getDate() + ";;\n";
-								returnTitle += T.artsLastHour() + ";;\n";
-								returnTitle += T.topArticles() + ";;\n";
-								returnTitle += T.topWords() + ";;\n";
-								returnTitle += T.getSentiment()+ ";;\n";
-								returnTitle += T.getCount() + ";;\n";
-								returnTitle += T.sendCompanyList() + ";;\n";
+								String returnTitle = ((Integer) T.getUid()).toString() + "f;;f\n";
+								returnTitle += T.getRecentTitle() + "f;;f\n"; 
+								returnTitle += T.getDate() + "f;;f\n";
+								returnTitle += T.artsLastHour() + "f;;f\n";
+								returnTitle += T.topArticles() + "f;;f\n";
+								returnTitle += T.topWords() + "f;;f\n";
+								returnTitle += T.getSentiment()+ "f;;f\n";
+								returnTitle += T.getCount() + "f;;f\n";
+								returnTitle += T.sendCompanyList() + "f;;f\n";
 								listOfListOfCompanyLLists.get(listOfListOfCompanyLLists.size() - 1).add(T.getCompanyList());
 								osw.write(returnTitle);
 								osw.write("SPECTOPS\n");

@@ -2,6 +2,7 @@ package team2.mainapp;
 
 import java.util.ArrayList;
 
+import team2.mainapp.CompanyAdapter.GetDataTask2;
 import team2.mainapp.PullToRefreshListView.OnRefreshListener;
 
 import android.app.Activity;
@@ -18,7 +19,7 @@ implements TitleProvider
 {
 	ArrayList<HomeView> vl;
 	String category;
-	private static String[] titles = new String[] {"Oil", "Technology"};
+	private static String[] titles = new String[] {"Oil", "Technology", "Energy"};
 
 	private final Context context;
 
@@ -46,6 +47,8 @@ implements TitleProvider
 		HomeView v = new HomeView( context , titles[position] );
 		((ViewPager)pager).addView( v, 0 );
 		vl.add(v);
+		GetDataTask task = new GetDataTask();
+		task.execute();
 		return v;
 	}
 	

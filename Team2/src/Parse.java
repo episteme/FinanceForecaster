@@ -23,8 +23,8 @@ public class Parse implements Runnable {
 	private String sector;
 	private String urlCache;
 	private int uid;
-	// private String APIkey = "fbde73712800960605177cdcf8cc5ade6ebd15a5";
-	private String APIkey = "6664ab94a526fd251fce5c8ecbe865f91f889980";
+	 private String APIkey = "fbde73712800960605177cdcf8cc5ade6ebd15a5";
+//	private String APIkey = "6664ab94a526fd251fce5c8ecbe865f91f889980";
 
 
 
@@ -36,6 +36,7 @@ public class Parse implements Runnable {
 	public void run() {
 		uid = 0;
 		while (true) {
+			BufferedReader in = null;
 			try {
 				System.out.println("Starting search");
 				// URL newsURL = new URL("http://www.google.com/search?q=" + sector + "&num=100&tbm=nws&tbs=sbd:1,nsd:1");
@@ -44,7 +45,7 @@ public class Parse implements Runnable {
 				// Need to pretend we are a browser so that google responds
 				uc.setRequestProperty
 				( "User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)" );
-				BufferedReader in = new BufferedReader(
+				in = new BufferedReader(
 						new InputStreamReader(
 								uc.getInputStream()));
 				String inputLine;
@@ -274,6 +275,12 @@ public class Parse implements Runnable {
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.err.println(e);
+			} finally {
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

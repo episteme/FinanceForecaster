@@ -56,7 +56,7 @@ public class Background extends Service {
 		topic.addThreshold(10);
 		not.setContentText(result);
 		Intent intent = new Intent(this, SingleTopic.class);
-		intent.putExtra("EXTRA_UID",topic.getUid());
+		intent.putExtra("EXTRA_UID",Integer.toString(topic.getUid()));
 		intent.putExtra("SECTOR", topic.getSector());
 		PendingIntent activity = PendingIntent.getActivity(this, topic.getUid(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		not.setContentIntent(activity);
@@ -143,7 +143,7 @@ public class Background extends Service {
 				for (String topic : topics)
 				{
 					// Splits the topic data into parts
-					String[] rawData = topic.split(";;\n");
+					String[] rawData = topic.split("f;;f\n");
 
 					//					Log.d("datalength",Integer.toString(rawData.length));
 
@@ -156,8 +156,8 @@ public class Background extends Service {
 						continue;
 
 					// Splits the URLS and keyWords into individual parts
-					String[] articles = rawData[4].split(";\n");
-					String[] words = rawData[5].split(";\n");
+					String[] articles = rawData[4].split("f;f\n");
+					String[] words = rawData[5].split("f;f\n");
 
 					// Creates an arraylist to hold the URLs
 					ArrayList<Article> arts = new ArrayList<Article>();
@@ -181,7 +181,7 @@ public class Background extends Service {
 
 					ArrayList<CompanyLink> companyLinks = new ArrayList<CompanyLink>();
 					if(rawData.length == 9){
-						String[] companies = rawData[8].split(";\n");
+						String[] companies = rawData[8].split("f;f\n");
 
 						for(String comp : companies)
 						{
@@ -194,7 +194,7 @@ public class Background extends Service {
 							Double.parseDouble(rawData[6]),rawData[7],companyLinks,gState.getAllSectors().get(i).getName());
 
 					// Add the topic info to the sector info
-					if(gState.getAllSectors().get(2).checkForFavourites(newTopic))
+					if(gState.getAllSectors().get(3).checkForFavourites(newTopic))
 						newTopic.setState(1);
 					int thresh = gState.getAllSectors().get(i).checkForNotification(newTopic);
 					if(thresh != -1)
@@ -211,7 +211,7 @@ public class Background extends Service {
 				i++;
 			}
 
-			for(Topic starred : gState.getAllSectors().get(2).getTopicData())
+			for(Topic starred : gState.getAllSectors().get(3).getTopicData())
 			{
 				for(Sector current : gState.getAllSectors())
 				{
