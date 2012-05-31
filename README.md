@@ -1,1 +1,1 @@
-![Screen shot 1](/csujen/Main-Project/raw/master/Picture1.png)
+![Screen shot 1](https://github.com/csujen/Main-Project/raw/master/Picture1.png)
