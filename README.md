@@ -4,6 +4,8 @@ CS247 Warwick Software Development Project
 Team 2
 ======================
 
+Second Place 2012
+
 Marcus Peacock, Toby Ross, Kornel Tomasiak, Oliver Stidwell, Yosef Teklai
 
 ![Screen shot 1](https://github.com/csujen/Main-Project/raw/master/Picture1.png)
