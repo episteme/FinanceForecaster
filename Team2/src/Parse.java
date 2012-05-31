@@ -23,11 +23,8 @@ public class Parse implements Runnable {
 	private String sector;
 	private String urlCache;
 	private int uid;
-	 private String APIkey = "fbde73712800960605177cdcf8cc5ade6ebd15a5";
-//	private String APIkey = "6664ab94a526fd251fce5c8ecbe865f91f889980";
-
-
-
+	private String APIkey = "fbde73712800960605177cdcf8cc5ade6ebd15a5";
+	
 	Parse(String sector) {
 		this.sector = sector;
 		urlCache = null;
