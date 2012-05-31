@@ -1,1 +1,1 @@
-![Screen shot 1](csujen/Main-Project/blob/master/Picture1.png)
+![Screen shot 1](/Main-Project/blob/master/Picture1.png)
